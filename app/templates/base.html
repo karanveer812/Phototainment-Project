@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/all.js') }}" type="text/javascript"></script>
+</head>
+<body>
+
+<div class="wrapper">
+    {% block navbar %}{% endblock %}
+    <div id="content">
+        <header class="pb-5">
+            <div class="col-3 p-0"><img class="w-100 p-0" src="{{ url_for('static', filename='img/logo.png') }}"
+                                        alt="logo"/></div>
+        </header>
+        {% block content %}{% endblock %}
+    </div>
+    {% block side_bar %}{% endblock %}
+    {% block custom_scripts %}{% endblock %}
+
+    <script type="text/javascript">
+             {% if request.url_rule.endpoint == "login" %}
+                document.getElementById('content').classList.add("bg-none");
+             {% endif %}
+
+    </script>
+
+</body>
+</html>
+

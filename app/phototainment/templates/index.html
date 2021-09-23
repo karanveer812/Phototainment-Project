@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Index{% endblock %}
+
+{% block navbar %}{% include 'sidebar.html' %}{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+<div class="tab">
+    <button class="tablinks active" onclick="openCity(event, 'Bookings')">Bookings</button>
+    <button class="tablinks" onclick="openCity(event, 'Pending')">Pending</button>
+    <button class="tablinks" onclick="openCity(event, 'Completed')">Completed</button>
+</div>
+
+<div id="Bookings" class="tabcontent" style="display:block">
+    {% with filtered_events=all_bookings %}
+    {% include 'events-table.html' %}
+    {% endwith %}
+</div>
+
+<div id="Pending" class="tabcontent">
+    {% with filtered_events=pending_bookings %}
+    {% include 'events-table.html' %}
+    {% endwith %}
+</div>
+
+<div id="Completed" class="tabcontent">
+    {% with filtered_events=completed_bookings %}
+    {% include 'events-table.html' %}
+    {% endwith %}
+</div>
+
+
+{% endblock %}
+{% block side_bar %}{% include 'right-bar.html' %}{% endblock %}
+
+{% block custom_scripts %}
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+
+</script>
+{% endblock %}

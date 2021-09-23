@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Add User{% endblock %}
+
+
+{% block navbar %}{% include 'sidebar.html' %}{% endblock %}
+{% block content %}
+<div class="row m-0 pb-4">
+    <div class="text-center search-outer">
+        <div class="form-group required">
+            <form action="" method="POST" role="search" class="event-form">
+                {{ form.search(class="form-control search-field",id="search",type="text") }}
+                <div class="btn-group ml-4">
+                    {{ form.search_fname(class="btn search-btn") }}
+                    <button type="button" class="btn dropdown-toggle search-dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu search-dropdown-menu">
+                        {{ form.search_lname(class="btn search-btn dropdown-btn") }}
+                        {{ form.search_email(class="btn search-btn dropdown-btn") }}
+                        {{ form.search_contact(class="btn search-btn dropdown-btn") }}
+                        <div class="dropdown-divider"></div>
+                        {{ form.search_evname(class="btn search-btn dropdown-btn") }}
+                        {{ form.search_evtype(class="btn search-btn dropdown-btn") }}
+                        <div class="dropdown-divider"></div>
+                        {{ form.search_staff(class="btn search-btn dropdown-btn") }}
+                    </div>
+                </div>
+
+                <div class="btn-group ml-4">
+                    <button type="button" class="btn dropdown-toggle sort-dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort By<span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu sort-dropdown-menu">
+                        {{ form.sort_register_date(class="btn search-btn dropdown-btn") }}
+                        {{ form.sort_start_date(class="btn search-btn dropdown-btn") }}
+                        {{ form.sort_end_date(class="btn search-btn dropdown-btn") }}
+                    </div>
+                    <a href="{{ url_for('phototainment.add_event') }}" class="btn btn-success ml-4">Add New Eent</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% include 'events-table.html' %}
+
+{% endblock %}
+
+{% block custom_scripts %}
+<script type="text/javascript">
+             $(document).ready(function () {
+                 $('.search-dropdown-toggle').on('click', function () {
+                     $('.search-dropdown-menu').toggleClass('show');
+                 });
+             });
+             $(document).ready(function () {
+                 $('.sort-dropdown-toggle').on('click', function () {
+                     $('.sort-dropdown-menu').toggleClass('show');
+                 });
+             });
+
+</script>
+<script>
+        function deleteEvent(redirect) {
+            var txt;
+            var isAdd = confirm("Do you want to delete the selected event?");
+            if (isAdd == true) {
+                window.location.href = redirect;
+            }
+        }
+
+</script>
+
+{% endblock %}

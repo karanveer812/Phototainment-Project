@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Add User{% endblock %}
+
+
+{% block navbar %}{% include 'sidebar.html' %}{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12 login-main text-center">
+            <div class="col-lg-5 col-md-7 col-xs-11 mx-auto float-none login-form">
+                {{ wtf.quick_form(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

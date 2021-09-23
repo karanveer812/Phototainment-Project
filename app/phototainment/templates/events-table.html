@@ -1,0 +1,109 @@
+<div class="row m-0">
+        <ul class="table-main">
+            <li class="table-head">
+                <ul class="table-row">
+                    <li class="table-item">Client Name</li>
+                    <li class="table-item">Event Type</li>
+                    <li class="table-item">Event Name</li>
+                    <li class="table-item">Event Date</li>
+                    <li class="table-item">Event Time</li>
+                    <li class="table-item">Event Status</li>
+                    <li></li>
+                </ul>
+            </li>
+            <li class="table-body">
+                {% for event in filtered_events %}
+                <ul class="table-row">
+                    <li class="table-item">{{event.client_first_name.title()}} {{event.client_last_name.title()}}</li>
+                    <li class="table-item">{{event[0].type.event_type.title()}}</li>
+                    <li class="table-item">{{event[0].event_name.title()}}</li>
+                    <li class="table-item">{{event[0].event_date.strftime("%d/%m/%y")|safe}}</li>
+                    <li class="table-item">{{event[0].event_date.strftime("%I:%M %p")|safe}}</li>
+                    <li class="table-item">{{event[0].status.status.title()}}</li>
+                    <li class="table-item manage-table-data">
+                        <a class="btn btn-dark edit-btn"
+                           href="{{ url_for('phototainment.edit_event', event_id=event.id) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17.846" height="17.849"
+                                 viewBox="0 0 17.846 17.849">
+                                <path id="edit_baseline"
+                                      d="M4.5,18.627v3.718H8.217L19.181,11.38,15.464,7.662ZM22.056,8.5a.988.988,0,0,0,0-1.4l-2.32-2.32a.987.987,0,0,0-1.4,0L16.525,6.6l3.717,3.718L22.056,8.5Z"
+                                      transform="translate(-4.5 -4.496)" fill="#f39800"/>
+                            </svg>
+
+                        </a>
+                        <a class="open-btn" target="_blank" href="{{url_for('phototainment.view_booking', booking_id = event[0].booking_id)}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16.5" height="16.5" viewBox="0 0 16.5 16.5">
+                                <path id="Icon_material-open-in-new" data-name="Icon material-open-in-new"
+                                      d="M19.167,19.167H6.333V6.333H12.75V4.5H6.333A1.833,1.833,0,0,0,4.5,6.333V19.167A1.833,1.833,0,0,0,6.333,21H19.167A1.839,1.839,0,0,0,21,19.167V12.75H19.167ZM14.583,4.5V6.333h3.291L8.863,15.344l1.292,1.292,9.011-9.011v3.291H21V4.5Z"
+                                      transform="translate(-4.5 -4.5)" fill="#f39800"/>
+                            </svg>
+                        </a>
+
+
+                        <button class="btn btn-primary delete-btn"
+                                onclick="deleteEvent('{{ url_for('phototainment.delete_event', booking_id=event.booking_id) }}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14.737" height="17.849"
+                                 viewBox="0 0 14.737 17.849">
+                                <path id="delete_baseline"
+                                      d="M8.553,20.366a2.053,2.053,0,0,0,2.105,1.983h8.421a2.053,2.053,0,0,0,2.105-1.983V8.466H8.553ZM22.237,5.492H18.553L17.5,4.5H12.237l-1.053.992H7.5V7.475H22.237Z"
+                                      transform="translate(-7.5 -4.5)" fill="#f39800"/>
+                            </svg>
+
+                        </button>
+
+                    </li>
+                </ul>
+                {% endfor %}
+            </li>
+        </ul>
+    </div>
+
+
+
+
+
+<!--<div class="row m-0">-->
+<!--    <table class="styled-table col-12">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Id</th>-->
+<!--            <th>Client Name</th>-->
+<!--            <th>Event Name</th>-->
+<!--            <th>Event Type</th>-->
+<!--            <th>Date Added</th>-->
+<!--            <th>Event Date</th>-->
+<!--            <th>Email</th>-->
+<!--            <th>Contact</th>-->
+<!--            <th>Staff</th>-->
+<!--            <th>Status</th>-->
+<!--            <th>Manage</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        {% for event in filtered_events %}-->
+<!--        <tr>-->
+<!--            <td><a href="{{url_for('phototainment.view_booking', booking_id = event[0].booking_id)}}">-->
+<!--                {{event[0].booking_id}}</a></td>-->
+<!--            <td>-->
+<!--                {{event.client_first_name.title()}} {{event.client_last_name.title()}}-->
+<!--            </td>-->
+<!--            <td>{{event[0].event_name.title()}}</td>-->
+<!--            <td>{{event[0].type.event_type.title()}}</td>-->
+<!--            <td>{{event[0].lead_date.strftime("<span>%d/%m/%y</span> | %I:%M %p")|safe}}</td>-->
+<!--            <td>{{event[0].event_date.strftime("<span>%d/%m/%y</span> | %I:%M %p")|safe}}</td>-->
+<!--            <td><a href="mailto:{{event.client_email}}">{{event.client_email}}</a></td>-->
+<!--            <td><a href="tel:{{event.client_email}}">{{event.primary_contact}}</a></td>-->
+<!--            <td>{{event[0].user.username.title()}}</td>-->
+<!--            <td>{{event[0].status.status.title()}}</td>-->
+<!--            <td>-->
+<!--                <button class="btn btn-primary"-->
+<!--                        onclick="deleteEvent('{{ url_for('phototainment.delete_event', booking_id=event.booking_id) }}')">-->
+<!--                    Delete-->
+<!--                </button>-->
+<!--                <a class="btn btn-dark" href="{{ url_for('phototainment.edit_event', event_id=event.id) }}">Edit</a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        {% endfor %}-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->

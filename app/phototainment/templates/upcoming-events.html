@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Add User{% endblock %}
+
+
+{% block navbar %}{% include 'sidebar.html' %}{% endblock %}
+{% block content %}
+
+<div class="events">
+    {% include 'events-table.html' %}
+</div>
+
+{% endblock %}
+
+{% block custom_scripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+                 $('.dropdown-toggle').on('click', function () {
+                     $('.dropdown-menu').toggleClass('show');
+                 });
+             });
+</script>
+{% endblock %}

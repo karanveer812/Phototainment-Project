@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Manage User{% endblock %}
+
+
+{% block navbar %}{% include 'sidebar.html' %}{% endblock %}
+{% block content %}
+    <table class="styled-table col-12">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>User Name</th>
+                <th>Role</th>
+                <th>Job Description</th>
+                <th style="width:15%;">Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                {% if not user.id == 1 %}
+                    <tr>
+                        <td>{{user.id}}</td>
+                        <td>{{user.username.title()}}</td>
+                        <td>{{user.role.role_name}}</td>
+                        <td>{{user.job_description}}</td>
+                        <td>
+                            <button  class="btn btn-primary" onclick="deleteUser('{{ url_for('phototainment.delete_user', user_id=user.id) }}')">Delete</button>
+                            <button class="btn btn-dark" onclick="editUser('{{ url_for('phototainment.edit_user', user_id=user.id) }}')">Edit</button>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block custom_scripts %}
+    <script>
+        function deleteUser(redirect) {
+            var txt;
+            var isAdd = confirm("Do you want to delete the selected user?");
+            if (isAdd == true) {
+                window.location.href = redirect;
+            }
+        }
+        function editUser(redirect) {
+            window.location.href = redirect;
+        }
+    </script>
+{% endblock %}
