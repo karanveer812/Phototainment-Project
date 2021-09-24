@@ -150,7 +150,7 @@ class Comment(db.Model):
 
 
 #################### Create Tables #####################
-db.create_all()
+# db.create_all()
 
 #################### Insert to role table #####################
 if not Role.query.all():
