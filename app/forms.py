@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
+from app.models import Role, EventType
 from app import app
 from wtforms import StringField, SubmitField, PasswordField, validators, SelectField
 from wtforms.fields.html5 import EmailField, DateField, TimeField, IntegerField
-from app.models import Role, EventType
 from flask_ckeditor import CKEditor, CKEditorField
 
 ck_editor = CKEditor()
