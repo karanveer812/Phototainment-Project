@@ -17,7 +17,7 @@ def create_app():
 app = create_app()
 
 
-from .phototainment.views import custom_bp
+from app.phototainment.views import custom_bp
 app.register_blueprint(custom_bp, url_prefix='/phototainment')
 
 

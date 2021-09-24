@@ -1,12 +1,11 @@
 #################### Imports #####################
-
+from main import app
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 
 from werkzeug.security import generate_password_hash
 from flask_login import LoginManager
-from main import app
 
 #################### Login Manager #####################
 login_manager = LoginManager()
