@@ -6,6 +6,33 @@
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
+
+<div class="row">
+    <div class="col-sm-12 text-center">
+        <div class="col-lg-10 col-md-10 col-xs-11 mx-auto float-left text-left">
+            {% include 'event-form.html' %}
+        </div>
+    </div>
+</div>
 {% endblock %}
 
+{% block custom_scripts %}
+<script type="text/javascript">
+$(function(){
+    $('[type="date"]').prop('min', function(){
+        return new Date().toJSON().split('T')[0];
+    });
+});
 
+document.getElementById("additional-contact").classList.remove("d-none");
+document.getElementById("referee-contact").classList.remove("d-none");
+var checkBox = document.getElementsByClassName("ck-box");
+for(int i; i=0; i=checkBox.length()) {
+checkBox[i].classList.add("d-none");
+}
+checkBox[0].classList.add("d-none");
+checkBox[1].classList.add("d-none");
+
+
+</script>
+{% endblock %}

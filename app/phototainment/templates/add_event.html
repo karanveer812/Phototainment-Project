@@ -1,122 +1,52 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Add User{% endblock %}
+{% block title %}Add Event{% endblock %}
 
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-sm-12 text-center">
-        <div class="col-lg-7 col-md-7 col-xs-11 mx-auto float-none login-form">
-            <form action="" method="POST" role="form" class="event-form">
-                <div class="row justify-content-around">
-                    <div class="form-group required col-12 form-cell">
-                        {{ form.event_name(class="form-control",id="event_name", required="required",
-                        type="text",value="", placeholder="Event Name") }}
-                    </div>
-                </div>
-                <div class="row justify-content-around">
-                    <div class="form-group required col-4 form-cell">
-                        {{ form.event_type(class="form-control",id="event_type", required="required",
-                        type="Select",value="", placeholder="select") }}
-                    </div>
-                    <div class="form-group required col-4 form-cell">
-                        {{ form.event_date(class="form-control",id="event_date", required="required",
-                        type="Date",value="") }}
-                    </div>
-                    <div class="form-group required col-4 form-cell">
-                        {{ form.start_time(class="form-control",id="start_time", required="required",
-                        type="Time",value="") }}
-                    </div>
-                </div>
-
-
-                <div class="row justify-content-around">
-                    <div class="form-group required col-6 form-cell">
-                        <label class="control-label" for="first_name">First Name*</label>
-                        {{
-                        form.first_name(class="form-control",id="first_name",required="required",type="text",value="",
-                        placeholder="First Name") }}
-                    </div>
-                    <div class="form-group required col-6 form-cell">
-                        <label class="control-label" for="last_name">Last Name*</label>
-                        {{ form.last_name(class="form-control",id="last_name",required="required",type="text",value="",
-                        placeholder="Last Name") }}
-                    </div>
-                    <div class="form-group required col-6 form-cell">
-                        <label class="control-label" for="company_name">Company Name</label>
-                        {{ form.company_name(class="form-control",id="company_name", type="text",value="",
-                        placeholder="Company Name") }}
-                    </div>
-                </div>
-
-                <div class="row justify-content-around">
-                    <div class="col-6 form-cell">
-                        <div class="row m-0">
-                            <div class="form-group required col-4">
-                                <label class="control-label" for="start_time">Duration*</label>
-                                {{ form.duration(class="form-control",id="duration", type="Time",value="") }}
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row justify-content-around">
-                    <div class="form-group required col-6 form-cell">
-                        <label class="control-label" for="client_email">Email*</label>
-                        {{
-                        form.client_email(class="form-control",id="client_email",required="required",type="text",value="",
-                        placeholder="Enter email") }}
-                    </div>
-                    <div class="form-group required col-6 form-cell">
-                        <label class="control-label" for="phone_num">Primary Contact*</label>
-                        {{ form.primary_contact(class="form-control",id="phone_num", required="required",
-                        type="text",value="", placeholder="Primary Contact") }}
-                    </div>
-                </div>
-
-                <div class="row justify-content-around">
-                    <div class="form-group required col-6 form-cell">
-                        <label class="control-label" for="secondary_contact1">Additional Contact</label>
-                        {{ form.secondary_contact1(class="form-control",id="secondary_contact1",type="text",value="",
-                        placeholder="Secondary Contact") }}
-                    </div>
-                    <div class="form-group required col-6 form-cell">
-                        <label class="control-label" for="contact_person1">Contact Person</label>
-                        {{ form.contact_person1(class="form-control",id="contact_person1", type="text",value="",
-                        placeholder="Contact Person") }}
-                    </div>
-                </div>
-
-                <div class="row justify-content-around">
-                    <div class="form-group required col-6 form-cell">
-                        <label class="control-label" for="secondary_contact2">Additional Contact</label>
-                        {{ form.secondary_contact2(class="form-control",id="secondary_contact2",type="text",value="",
-                        placeholder="Secondary Contact") }}
-                    </div>
-                    <div class="form-group required col-6 form-cell">
-                        <label class="control-label" for="contact_person2">Contact Person</label>
-                        {{ form.contact_person2(class="form-control",id="contact_person2", type="text",value="",
-                        placeholder="Contact Person") }}
-                    </div>
-                </div>
-
-                <div class="row justify-content-around">
-                    {{ ckeditor.load() }}
-                    {{ ckeditor.config(name='additional_information') }}
-                    {{ form.additional_information(class="form-control col-12",id="additional_information",
-                    type="text",value="", placeholder="Contact") }}
-                </div>
-
-                {{ form.submit(class="btn btn-success") }}
-            </form>
+        <div class="col-lg-10 col-md-10 col-xs-11 mx-auto float-left text-left">
+            {% include 'event-form.html' %}
         </div>
     </div>
 </div>
 {% endblock %}
 
+{% block side_bar %}{% include 'right-bar.html' %}{% endblock %}
+
+{% block custom_scripts %}
+<script type="text/javascript">
+$(function(){
+    $('[type="date"]').prop('min', function(){
+        return new Date().toJSON().split('T')[0];
+    });
+});
+
+
+    function checkAddContact(elem) {
+    if (elem.checked) {
+        document.getElementById("additional-contact").classList.remove("d-none");
+    }
+    else {
+        document.getElementById("additional-contact").classList.add("d-none");
+    }
+}
+
+function checkRefContact(elem) {
+    if (elem.checked) {
+        document.getElementById("referee-contact").classList.remove("d-none");
+    }
+    else {
+        document.getElementById("referee-contact").classList.add("d-none");
+    }
+}
+
+
+</script>
+{% endblock %}
 
 
 

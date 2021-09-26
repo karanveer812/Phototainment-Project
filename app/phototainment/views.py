@@ -234,7 +234,6 @@ def delete_event(booking_id):
         db.session.delete(phone)
         db.session.commit()
     db.session.delete(event)
-    db.session.delete(client)
     db.session.commit()
     if venue:
         db.session.delete(venue)
@@ -248,6 +247,8 @@ def delete_event(booking_id):
 def search_event():
     form = SearchForm()
     search_for = form.search.data
+    get_event = request.args.get('filtered_events')
+    print(get_event)
     
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client)
@@ -257,33 +258,33 @@ def search_event():
             if form.search.data != "":
                 if form.search_fname.data:
                     search_by = "client_first_name"
-                    events = events.filter(Client.__table__.c[search_by].like(search_for))
+                    events = events.filter(Client.__table__.c[search_by].like(search_for.lower()))
                 elif form.search_lname.data:
                     search_by = "client_last_name"
-                    events = events.filter(Client.__table__.c[search_by].like(search_for))
+                    events = events.filter(Client.__table__.c[search_by].like(search_for.lower()))
                 elif form.search_email.data:
                     search_by = "client_email"
-                    events = events.filter(Client.__table__.c[search_by].like(search_for))
+                    events = events.filter(Client.__table__.c[search_by].like(search_for.lower()))
                 elif form.search_contact.data:
                     search_by = "primary_contact"
-                    events = events.filter(Client.__table__.c[search_by].like(search_for))
+                    events = events.filter(Client.__table__.c[search_by].like(search_for.lower()))
                 elif form.search_evname.data:
                     search_by = "event_name"
-                    events = events.filter(Event.__table__.c[search_by].like(search_for))
+                    events = events.filter(Event.__table__.c[search_by].like(search_for.lower()))
                 elif form.search_evtype.data:
                     search_by = "type_id"
                     type_name = db.session.query(EventType).filter(
                         EventType.__table__.c['event_type'].like(search_for)).first()
                     if type_name:
                         search_for = type_name.type_id
-                    events = events.filter(Event.__table__.c[search_by].like(search_for))
+                    events = events.filter(Event.__table__.c[search_by].like(search_for.lower()))
                 elif form.search_staff.data:
                     search_by = "user_id"
                     user_name = db.session.query(User).filter(
                         User.__table__.c['username'].like(f"{search_for}%")).first()
                     if user_name:
                         search_for = user_name.id
-                    events = events.filter(Event.__table__.c[search_by].like(search_for))
+                    events = events.filter(Event.__table__.c[search_by].like(search_for.lower()))
         
         if events:
             if form.sort_register_date.data:
@@ -416,12 +417,97 @@ def upcoming_events():
     return render_template('upcoming-events.html', filtered_events=filtered_event)
 
 
-@custom_bp.route('/edit-event/<event_id>', methods=["GET", "POST"])
+@custom_bp.route('/edit-event/<booking_id>', methods=["GET", "POST"])
 @login_required
 @employee
-def edit_event(event_id):
-    current_event = db.session.query(Event).filter_by(booking_id=event_id).first()
-    print(current_event.client_fname)
-    edit_form = EventForm()
-    edit_form.first_name.data = current_event.client_fname
+def edit_event(booking_id):
+    current_event = db.session.query(Event).filter_by(booking_id=booking_id).first()
+    edit_form = EventForm(
+        first_name=current_event.client.client_first_name,
+        last_name=current_event.client.client_last_name,
+        company_name=current_event.client.company_name,
+        client_email=current_event.client.client_email,
+        primary_contact=current_event.client.primary_contact,
+        event_name=current_event.event_name,
+        event_date=current_event.event_date,
+        start_time=current_event.start_time,
+        duration=current_event.duration,
+        event_type=current_event.type_id,
+        additional_information=current_event.additional_information
+    )
+    print(current_event)
     return render_template('edit-event.html', form=edit_form)
+
+#
+# @custom_bp.route('/add-event', methods=["GET", "POST"])
+# @login_required
+# @employee
+# def add_event():
+#     form = EventForm()
+#     if request.method == "POST":
+#         new_client = Client(
+#             client_first_name=form.first_name.data.lower(),
+#             client_last_name=form.last_name.data.lower(),
+#             client_email=form.client_email.data.lower(),
+#             primary_contact=form.primary_contact.data,
+#             company_name=form.company_name.data.lower()
+#         )
+#         db.session.add(new_client)
+#         db.session.commit()
+#
+#         new_event = Event(
+#             event_name=form.event_name.data.lower(),
+#             status_id=1,
+#             lead_date=datetime.now(),
+#             event_date=datetime(
+#                 form.event_date.data.year,
+#                 form.event_date.data.month,
+#                 form.event_date.data.day,
+#                 form.start_time.data.hour,
+#                 form.start_time.data.minute),
+#             start_time=time(
+#                 form.start_time.data.hour,
+#                 form.start_time.data.minute),
+#             duration=time(
+#                 form.duration.data.hour,
+#                 form.duration.data.minute),
+#             client_id=new_client.client_id,
+#             user_id=current_user.id,
+#             type_id=form.event_type.data,
+#             additional_information=form.additional_information.data
+#         )
+#         db.session.add(new_event)
+#         db.session.commit()
+#
+#         if form.secondary_contact1.data and form.contact_person1.data:
+#             contact = ContactDetails(
+#                 mobile_number=form.secondary_contact1.data,
+#                 contact_name=form.contact_person1.data
+#             )
+#             db.session.add(contact)
+#             db.session.commit()
+#
+#             alt_contact = BookingContacts(
+#                 phone_id=contact.phone_id,
+#                 booking_id=new_event.booking_id
+#             )
+#             db.session.add(alt_contact)
+#             db.session.commit()
+#
+#         if form.secondary_contact2.data and form.contact_person2.data:
+#             contact = ContactDetails(
+#                 mobile_number=form.secondary_contact2.data,
+#                 contact_name=form.contact_person2.data
+#             )
+#             db.session.add(contact)
+#             db.session.commit()
+#
+#             alt_contact = BookingContacts(
+#                 phone_id=contact.phone_id,
+#                 booking_id=new_event.booking_id
+#             )
+#             db.session.add(alt_contact)
+#             db.session.commit()
+#
+#         return redirect(url_for('phototainment.view_booking', booking_id=new_event.booking_id))
+#     return render_template('add_event.html', form=form)

@@ -25,6 +25,7 @@
 <p><b>Event Name: </b>{{event.event_name.title()}}</p>
 <p><b>Event Date: </b>{{event.event_date.strftime("<span>%d-%m-%y</span>")|safe}}</p>
 <p><b>Event Time: </b>{{event.start_time.strftime("%I:%M %p")|safe}}</p>
+<p><b>Event Duration: </b>{{event.duration.strftime("%I:%M")|safe}} hrs</p>
 <p><b>Client Email: </b><a href="mailto:{{event.client.client_email}}">{{event.client.client_email}}</a></p>
 {% if event.client.company_name != "" %}
     <p><b>Company Name: </b>{{ event.client.company_name }}</p>
@@ -83,7 +84,7 @@ Venue Details:
     {% if comment.comment_reason != None %}
         <p><b>reason: {{ comment.comment_reason }}</b></p>
     {% endif %}
-    {% if current_user.role == 1 %}
+    {% if current_user.role.role_id == 1 %}
         <p><a href="{{ url_for('phototainment.delete_comment', comment_id=comment.comment_id) }}">delete</a></p>
     {% endif %}
     <hr>

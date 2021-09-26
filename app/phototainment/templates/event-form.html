@@ -1,0 +1,122 @@
+<form action="" method="POST" role="form" class="event-form">
+    <h4 class="text-left">Event Details</h4>
+    <div class="row justify-content-around">
+        <div class="form-group required col-8 form-cell">
+            {{ form.event_name(class="form-control",id="event_name", required="required",
+            type="text", placeholder="Event Name") }}
+        </div>
+        <div class="form-group required col-4 form-cell">
+            {{ form.event_type(class="form-control",id="event_type", required="required",
+            type="Select",value="") }}
+        </div>
+    </div>
+    <div class="row justify-content-around">
+
+        <div class="form-group required col-4 form-cell">
+            {{ form.event_date(class="form-control datepicker",id="event_date", required="required",
+            type="Date") }}
+        </div>
+        <div class="form-group required col-4 form-cell">
+            {{ form.start_time(class="form-control",id="start_time", required="required",
+            type="Time") }}
+        </div>
+        <div class="form-group required col-4">
+            <label class="control-label" for="start_time">Duration in hrs*</label>
+            {{ form.duration(class="form-control",id="duration", min='2021-09-24', type="Time") }}
+        </div>
+    </div>
+
+    <h4 class="text-left">Primary Contact</h4>
+
+    <div class="row justify-content-around">
+        <div class="form-group required col-4 form-cell">
+            <label class="control-label" for="first_name">First Name*</label>
+            {{
+            form.first_name(class="form-control",id="first_name",required="required",type="text",
+            placeholder="First Name") }}
+        </div>
+        <div class="form-group required col-4 form-cell">
+            <label class="control-label" for="last_name">Last Name*</label>
+            {{ form.last_name(class="form-control",id="last_name",required="required",type="text",
+            placeholder="Last Name") }}
+        </div>
+        <div class="form-group required col-4 form-cell">
+            <label class="control-label" for="company_name">Company Name</label>
+            {{ form.company_name(class="form-control",id="company_name", type="text",
+            placeholder="Company Name") }}
+        </div>
+    </div>
+
+    <div class="row justify-content-around">
+        <div class="form-group required col-6 form-cell">
+            <label class="control-label" for="client_email">Email*</label>
+            {{
+            form.client_email(class="form-control",id="client_email",required="required",type="text",
+            placeholder="Enter email") }}
+        </div>
+        <div class="form-group required col-6 form-cell">
+            <label class="control-label" for="phone_num">Primary Contact*</label>
+            {{ form.primary_contact(class="form-control",id="phone_num", required="required",
+            type="text", placeholder="Primary Contact") }}
+        </div>
+    </div>
+
+    <div class="col-12 px-0 py-3 text-left ck-box">
+        <input type="checkbox" id="check-additional-contact" name="check-additional-contact"
+               onchange="checkAddContact(this);">
+        <label for="check-additional-contact">Add Secondary Contact</label>
+    </div>
+
+    <div class="col-12 p-0 d-none" id="additional-contact">
+        <h4 class="text-left">Primary Contact</h4>
+        <div class="row justify-content-around">
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="secondary_contact1">Additional Contact</label>
+                {{
+                form.secondary_contact1(class="form-control",id="secondary_contact1",type="text",
+                placeholder="Secondary Contact") }}
+            </div>
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="contact_person1">Contact Person</label>
+                {{ form.contact_person1(class="form-control",id="contact_person1", type="text",
+                placeholder="Contact Person") }}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12 px-0 py-3 text-left ck-box">
+        <input type="checkbox" id="check-referee-contact" name="check-referee-contact"
+               onchange="checkRefContact(this);">
+        <label for="check-referee-contact">Add referral details</label>
+    </div>
+
+    <div class="col-12 p-0 d-none" id="referee-contact">
+        <h4 class="text-left">Referred by Contact</h4>
+        <div class="row justify-content-around">
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="secondary_contact2">Additional Contact</label>
+                {{
+                form.secondary_contact2(class="form-control",id="secondary_contact2",type="text",
+                placeholder="Secondary Contact") }}
+            </div>
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="contact_person2">Referred By</label>
+                {{ form.contact_person2(class="form-control",id="contact_person2", type="text",
+                placeholder="Contact Person") }}
+            </div>
+        </div>
+    </div>
+
+    <h4 class="text-left mt-4">Additional Information</h4>
+    <div class="row justify-content-around">
+        <div class="col-12">
+            {{ ckeditor.load() }}
+            {{ ckeditor.config(name='additional_information') }}
+            {{ form.additional_information(class="form-control col-12",id="additional_information",
+            type="text", placeholder="Contact") }}
+        </div>
+    </div>
+
+    {{ form.submit(class="btn btn-success add-event-btn") }}
+</form>

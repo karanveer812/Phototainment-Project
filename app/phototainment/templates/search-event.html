@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Add User{% endblock %}
+{% block title %}Manage Events{% endblock %}
 
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
@@ -8,7 +8,7 @@
 <div class="row m-0 pb-4">
     <div class="text-center search-outer">
         <div class="form-group required">
-            <form action="" method="POST" role="search" class="event-form">
+            <form action="" method="POST" role="search" class="search-form">
                 {{ form.search(class="form-control search-field",id="search",type="text") }}
                 <div class="btn-group ml-4">
                     {{ form.search_fname(class="btn search-btn") }}
@@ -28,20 +28,20 @@
                     </div>
                 </div>
 
-                <div class="btn-group ml-4">
-                    <button type="button" class="btn dropdown-toggle sort-dropdown-toggle dropdown-toggle-split"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Sort By<span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu sort-dropdown-menu">
-                        {{ form.sort_register_date(class="btn search-btn dropdown-btn") }}
-                        {{ form.sort_start_date(class="btn search-btn dropdown-btn") }}
-                        {{ form.sort_end_date(class="btn search-btn dropdown-btn") }}
-                    </div>
-                    <a href="{{ url_for('phototainment.add_event') }}" class="btn btn-success ml-4">Add New Eent</a>
-                </div>
+<!--                <div class="btn-group ml-4">-->
+<!--                    <button type="button" class="btn dropdown-toggle sort-dropdown-toggle dropdown-toggle-split"-->
+<!--                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                        Sort By<span class="sr-only">Toggle Dropdown</span>-->
+<!--                    </button>-->
+<!--                    <div class="dropdown-menu sort-dropdown-menu">-->
+<!--                        {{ form.sort_register_date(class="btn search-btn dropdown-btn") }}-->
+<!--                        {{ form.sort_start_date(class="btn search-btn dropdown-btn") }}-->
+<!--                        {{ form.sort_end_date(class="btn search-btn dropdown-btn") }}-->
+<!--                    </div>-->
 
+<!--                </div>-->
             </form>
+            <a href="{{ url_for('phototainment.add_event') }}" class="add-btn btn btn-success ml-4">Add New Eent</a>
         </div>
     </div>
 </div>

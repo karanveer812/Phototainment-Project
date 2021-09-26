@@ -428,10 +428,24 @@ select.form-control:not([size]):not([multiple]) {
 .event-form .form-cell{
     padding: 0 10px;
 }
+.event-form h4 {
+    margin: 0 -4px;
+    padding: 0 0 14px 0;
+    color: #FFA101;
+}
+.add-event-btn {
+    float: right;
+    margin: 30px 0 0 0;
+    padding: 3px 36px;
+    border-radius: 50px;
+}
+#duration::-webkit-datetime-edit-ampm-field {
+   display: none;
+ }
 
 .search-outer{
     padding: 0 25px;
-    width: 60%;
+    width: 100%;
     float: left;
 }
 .search-field {
@@ -446,6 +460,13 @@ select.form-control:not([size]):not([multiple]) {
     width: 100%;
     float: left;
     border-radius: 0;
+}
+.search-form {
+    width: 60%;
+    float: left;
+}
+.add-btn {
+    float: right;
 }
 .events {
     width: 100%;

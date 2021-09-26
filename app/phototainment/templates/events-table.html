@@ -22,7 +22,7 @@
                     <li class="table-item">{{event[0].status.status.title()}}</li>
                     <li class="table-item manage-table-data">
                         <a class="btn btn-dark edit-btn"
-                           href="{{ url_for('phototainment.edit_event', event_id=event.id) }}">
+                           href="{{ url_for('phototainment.edit_event', booking_id=event[0].booking_id) }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="17.846" height="17.849"
                                  viewBox="0 0 17.846 17.849">
                                 <path id="edit_baseline"
@@ -100,7 +100,7 @@
 <!--                        onclick="deleteEvent('{{ url_for('phototainment.delete_event', booking_id=event.booking_id) }}')">-->
 <!--                    Delete-->
 <!--                </button>-->
-<!--                <a class="btn btn-dark" href="{{ url_for('phototainment.edit_event', event_id=event.id) }}">Edit</a>-->
+<!--                <a class="btn btn-dark" href="{{ url_for('phototainment.edit_event', booking_id=event.id) }}">Edit</a>-->
 <!--            </td>-->
 <!--        </tr>-->
 <!--        {% endfor %}-->

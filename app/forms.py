@@ -4,6 +4,7 @@ from app import app
 from wtforms import StringField, SubmitField, PasswordField, validators, SelectField
 from wtforms.fields.html5 import EmailField, DateField, TimeField, IntegerField
 from flask_ckeditor import CKEditor, CKEditorField
+from datetime import datetime
 
 ck_editor = CKEditor()
 
@@ -59,20 +60,20 @@ class EventForm(FlaskForm):
     primary_contact = IntegerField("Primary Contact*")
 
     secondary_contact1 = IntegerField("Secondary Contact")
-    contact_person1 = StringField("Last Name",)
+    contact_person1 = StringField("Contact Name")
     
     secondary_contact2 = IntegerField("Secondary Contact")
-    contact_person2 = StringField("Last Name")
+    contact_person2 = StringField("Contact Name")
     
     event_name = StringField("Event Name*", validators=[validators.DataRequired("Please Enter")])
 
     event_date = DateField("Start Date*", validators=[validators.DataRequired("Please Enter")])
     start_time = TimeField(validators=[validators.DataRequired("Please Enter")])
-    duration = TimeField(validators=[validators.DataRequired("Please Enter")])
+    duration = TimeField(validators=[validators.DataRequired("Please Enter")], format='%H:%M')
     event_type = SelectField('Event Type*',
                              choices=[(type.type_id, type.event_type) for type in EventType.query.order_by('event_type')],
                              validators=[validators.DataRequired("Please Enter")])
-    additional_information = CKEditorField("Comment", validators=[validators.DataRequired()])
+    additional_information = CKEditorField("Additional Information", validators=[validators.DataRequired()])
     submit = SubmitField("Submit")
 
 

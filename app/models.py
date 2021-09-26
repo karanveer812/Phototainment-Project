@@ -6,10 +6,13 @@ from sqlalchemy.orm import relationship
 
 from werkzeug.security import generate_password_hash
 from flask_login import LoginManager
+from datetime import timedelta
 
 #################### Login Manager #####################
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.session_protection = "strong"
+# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
 
 
 @login_manager.user_loader
@@ -181,24 +184,36 @@ if not db.session.query(User).filter_by(id=1).first():
 
 #################### Insert to Type table #####################
 if not EventType.query.all():
-    w_event, b_event, o_event, e_event = (
+    w_event, e_event, cp_event, b_event, cm_event, f_event, s_event = (
         EventType(
             event_type="Wedding"
+        ),
+        EventType(
+            event_type="Engagement"
+        ),
+        EventType(
+            event_type="Corporate"
         ),
         EventType(
             event_type="Birthday"
         ),
         EventType(
-            event_type="Other"
+            event_type="Community"
         ),
         EventType(
-            event_type="E-type"
+            event_type="Festival"
+        ),
+        EventType(
+            event_type="School"
         )
     )
     db.session.add(w_event)
-    db.session.add(b_event)
-    db.session.add(o_event)
     db.session.add(e_event)
+    db.session.add(cp_event)
+    db.session.add(b_event)
+    db.session.add(cm_event)
+    db.session.add(f_event)
+    db.session.add(s_event)
     db.session.commit()
 
 #################### Insert to Status table #####################
