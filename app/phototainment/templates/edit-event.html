@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Add User{% endblock %}
+{% block title %}Edit Event{% endblock %}
 
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
@@ -25,14 +25,14 @@ $(function(){
 });
 
 document.getElementById("additional-contact").classList.remove("d-none");
+document.getElementById("additional-contact").classList.add("mt-4");
 document.getElementById("referee-contact").classList.remove("d-none");
+document.getElementById("referee-contact").classList.add("mt-4");
 var checkBox = document.getElementsByClassName("ck-box");
-for(int i; i=0; i=checkBox.length()) {
-checkBox[i].classList.add("d-none");
-}
 checkBox[0].classList.add("d-none");
 checkBox[1].classList.add("d-none");
 
 
 </script>
 {% endblock %}
+{% block side_bar %}{% include 'right-bar.html' %}{% endblock %}

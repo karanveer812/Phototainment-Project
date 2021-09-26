@@ -1,4 +1,5 @@
 from flask import render_template, request, redirect, url_for, flash, Blueprint
+from collections import Counter
 
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
@@ -437,6 +438,20 @@ def edit_event(booking_id):
     )
     print(current_event)
     return render_template('edit-event.html', form=edit_form)
+
+
+@custom_bp.route('/charts', methods=["GET", "POST"])
+@login_required
+@employee
+def charts():
+    events = db.session.query(Event)
+    filtered_event = [event for event in events if datetime.now() - event.lead_date < timedelta(days=30)]
+
+    type_names = [event.type.event_type for event in filtered_event]
+    graph_data = dict(Counter(type_names))
+
+    
+    return render_template('charts.html', graph_data=graph_data)
 
 #
 # @custom_bp.route('/add-event', methods=["GET", "POST"])
