@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}Manage Events{% endblock %}
+{% block page_head %}Manage Events{% endblock %}
 
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
@@ -20,10 +21,8 @@
                         {{ form.search_lname(class="btn search-btn dropdown-btn") }}
                         {{ form.search_email(class="btn search-btn dropdown-btn") }}
                         {{ form.search_contact(class="btn search-btn dropdown-btn") }}
-                        <div class="dropdown-divider"></div>
                         {{ form.search_evname(class="btn search-btn dropdown-btn") }}
                         {{ form.search_evtype(class="btn search-btn dropdown-btn") }}
-                        <div class="dropdown-divider"></div>
                         {{ form.search_staff(class="btn search-btn dropdown-btn") }}
                     </div>
                 </div>

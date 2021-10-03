@@ -2,6 +2,8 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}Edit Event{% endblock %}
+{% block page_head %}Charts{% endblock %}
+
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
@@ -16,7 +18,7 @@ google.charts.load("current", {packages:['corechart']});
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
       var data = google.visualization.arrayToDataTable([
-         ['Element', 'Density', { role: 'style' }],
+         ['Number', 'Events', { role: 'style' }],
             {%for data in graph_data %}
             ['{{ data }}', {{graph_data[data]}}, 'color: #e5e4e2' ], // CSS-style declaration
             {% endfor %}
@@ -31,11 +33,11 @@ google.charts.load("current", {packages:['corechart']});
                        2]);
 
       var options = {
-        title: "Density of Precious Metals, in g/cm^3",
+        title: "Monthly progress report",
         width: 800,
         height: 800,
         bar: {groupWidth: "95%"},
-        legend: { position: "none" },
+        legend: { position: "" },
       };
       var chart = new google.visualization.ColumnChart(document.getElementById("piechart"));
       chart.draw(view, options);

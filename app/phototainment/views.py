@@ -70,10 +70,11 @@ def home():
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client)
     
-    recent_bookings = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=7)]
+    recent_bookings = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=30)]
     
-    pending_events = events.filter(Event.__table__.c['status_id'].like(1))
-    completed_events = events.filter(Event.__table__.c['status_id'].like(4))
+    
+    pending_events = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=30) and event[0].status_id == 1]
+    completed_events = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=30) and event[0].status_id == 4]
     return render_template(
         "index.html",
         all_bookings=recent_bookings,
@@ -219,13 +220,11 @@ def add_event():
 @admin
 def delete_event(booking_id):
     event = db.session.query(Event).filter_by(booking_id=booking_id).first()
-    client = event.client
     venue = event.venue
     contact = db.session.query(BookingContacts).filter_by(booking_id=booking_id).first()
     comments = db.session.query(Comment).filter_by(booking_id=booking_id).all()
     
     if comments:
-        print("true")
         for comment in comments:
             db.session.delete(comment)
         db.session.commit()
@@ -278,14 +277,14 @@ def search_event():
                         EventType.__table__.c['event_type'].like(search_for)).first()
                     if type_name:
                         search_for = type_name.type_id
-                    events = events.filter(Event.__table__.c[search_by].like(search_for.lower()))
+                    events = events.filter(Event.__table__.c[search_by].like(search_for))
                 elif form.search_staff.data:
                     search_by = "user_id"
                     user_name = db.session.query(User).filter(
                         User.__table__.c['username'].like(f"{search_for}%")).first()
                     if user_name:
                         search_for = user_name.id
-                    events = events.filter(Event.__table__.c[search_by].like(search_for.lower()))
+                    events = events.filter(Event.__table__.c[search_by].like(search_for))
         
         if events:
             if form.sort_register_date.data:
@@ -307,6 +306,8 @@ def view_booking(booking_id):
     venue = ""
     if event.venue:
         venue = event.venue
+        
+    print(list(event.comment))
     
     return render_template('event-view.html',
                            event=event,
@@ -452,6 +453,13 @@ def charts():
 
     
     return render_template('charts.html', graph_data=graph_data)
+
+
+@custom_bp.route('/forgot_password', methods=["GET", "POST"])
+@login_required
+@employee
+def forgot_password():
+    return render_template('forgot-password.html')
 
 #
 # @custom_bp.route('/add-event', methods=["GET", "POST"])

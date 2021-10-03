@@ -101,18 +101,6 @@
                 </svg>
             </a>
         </li>
-
-
-        <!--                    <li>-->
-        <!--                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Events</a>-->
-        <!--                        <ul class="collapse list-unstyled" id="homeSubmenu">-->
-        <!--                            {% if current_user.role_id == 1 or current_user.role_id == 2 %}-->
-        <!--                                <li><a href="{{ url_for('phototainment.add_event') }}">Add</a></li>-->
-        <!--                            {% endif %}-->
-        <!--                            <li><a href="{{ url_for('phototainment.search_event') }}">Search</a></li>-->
-        <!--                            <li><a href="{{ url_for('phototainment.upcoming_events') }}">Upcoming</a></li>-->
-        <!--                        </ul>-->
-        <!--                    </li>-->
         {% if current_user.role.role_id == 1 %}
 
         <li><a href="{{ url_for('phototainment.register') }}">
@@ -129,25 +117,6 @@
                       fill="#fff"/>
             </svg>
         </a></li>
-
-        <!--                    <li>-->
-        <!--                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="15.461" height="15.461" viewBox="0 0 15.461 15.461">-->
-        <!--                          <path id="Icon_awesome-user-alt" data-name="Icon awesome-user-alt" d="M7.73,8.7A4.348,4.348,0,1,0,3.382,4.348,4.35,4.35,0,0,0,7.73,8.7Zm3.865.966H9.932a5.257,5.257,0,0,1-4.4,0H3.865A3.865,3.865,0,0,0,0,13.528v.483a1.45,1.45,0,0,0,1.449,1.449H14.011a1.45,1.45,0,0,0,1.449-1.449v-.483A3.865,3.865,0,0,0,11.6,9.663Z" fill="#fff"/>-->
-        <!--                        </svg>-->
-        <!--                        </a>-->
-        <!--                        <ul class="collapse list-unstyled" id="pageSubmenu">-->
-        <!--                            <li><a href="{{ url_for('phototainment.register') }}">-->
-        <!--                                <svg xmlns="http://www.w3.org/2000/svg" width="17.008" height="13.606" viewBox="0 0 17.008 13.606">-->
-        <!--                                    <path id="Icon_awesome-user-plus" data-name="Icon awesome-user-plus" d="M16.583,5.528h-1.7v-1.7a.426.426,0,0,0-.425-.425h-.85a.426.426,0,0,0-.425.425v1.7h-1.7a.426.426,0,0,0-.425.425V6.8a.426.426,0,0,0,.425.425h1.7v1.7a.426.426,0,0,0,.425.425h.85a.426.426,0,0,0,.425-.425v-1.7h1.7a.426.426,0,0,0,.425-.425v-.85A.426.426,0,0,0,16.583,5.528ZM5.953,6.8a3.4,3.4,0,1,0-3.4-3.4A3.4,3.4,0,0,0,5.953,6.8Zm2.381.85H7.89a4.626,4.626,0,0,1-3.875,0H3.572A3.573,3.573,0,0,0,0,11.225v1.106a1.276,1.276,0,0,0,1.276,1.276H10.63a1.276,1.276,0,0,0,1.276-1.276V11.225A3.573,3.573,0,0,0,8.334,7.654Z" fill="#fff"/>-->
-        <!--                                </svg>-->
-        <!--                            </a></li>-->
-        <!--                            <li><a href="{{ url_for('phototainment.manage_user') }}">-->
-        <!--                                <svg xmlns="http://www.w3.org/2000/svg" width="17.529" height="14.024" viewBox="0 0 17.529 14.024">-->
-        <!--                                    <path id="Icon_awesome-user-edit" data-name="Icon awesome-user-edit" d="M6.135,7.012A3.506,3.506,0,1,0,2.629,3.506,3.506,3.506,0,0,0,6.135,7.012Zm2.454.876H8.132a4.768,4.768,0,0,1-3.994,0H3.681A3.682,3.682,0,0,0,0,11.57v1.139a1.315,1.315,0,0,0,1.315,1.315h7.53a1.315,1.315,0,0,1-.071-.583l.186-1.668.033-.3.216-.216,2.117-2.117A3.644,3.644,0,0,0,8.59,7.888Zm1.241,3.98-.186,1.671a.436.436,0,0,0,.482.482l1.668-.186,3.777-3.777L13.608,8.094Zm7.508-4.5L16.3,6.327a.656.656,0,0,0-.926,0L14.339,7.363l-.112.112,1.967,1.964,1.145-1.145a.66.66,0,0,0,0-.929Z" fill="#fff"/>-->
-        <!--                                </svg>-->
-        <!--                            </a></li>-->
-        <!--                        </ul>-->
-        <!--                    </li>-->
         {% endif %}
         <li><a href="{{ url_for('phototainment.change_password') }}" class="article">P</a></li>
     </ul>

@@ -17,12 +17,12 @@
             type="Date") }}
         </div>
         <div class="form-group required col-4 form-cell">
-            {{ form.start_time(class="form-control",id="start_time", required="required",
+            {{ form.start_time(class="form-control", id="start_time", required="required",
             type="Time") }}
         </div>
         <div class="form-group required col-4">
             <label class="control-label" for="start_time">Duration in hrs*</label>
-            {{ form.duration(class="form-control",id="duration", min='2021-09-24', type="Time") }}
+            {{ form.duration(class="form-control",id="duration", min='2021-09-24', type="Time", value="09:00") }}
         </div>
     </div>
 

@@ -12,7 +12,7 @@ from datetime import timedelta
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.session_protection = "strong"
-# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=20)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)
 
 
 @login_manager.user_loader

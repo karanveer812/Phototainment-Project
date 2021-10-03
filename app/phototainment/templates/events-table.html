@@ -40,6 +40,7 @@
                         </a>
 
 
+                        {% if current_user.role.role_id == 1 %}
                         <button class="btn btn-primary delete-btn"
                                 onclick="deleteEvent('{{ url_for('phototainment.delete_event', booking_id=event.booking_id) }}')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14.737" height="17.849"
@@ -50,6 +51,7 @@
                             </svg>
 
                         </button>
+                        {% endif %}
 
                     </li>
                 </ul>
@@ -57,53 +59,3 @@
             </li>
         </ul>
     </div>
-
-
-
-
-
-<!--<div class="row m-0">-->
-<!--    <table class="styled-table col-12">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th>Id</th>-->
-<!--            <th>Client Name</th>-->
-<!--            <th>Event Name</th>-->
-<!--            <th>Event Type</th>-->
-<!--            <th>Date Added</th>-->
-<!--            <th>Event Date</th>-->
-<!--            <th>Email</th>-->
-<!--            <th>Contact</th>-->
-<!--            <th>Staff</th>-->
-<!--            <th>Status</th>-->
-<!--            <th>Manage</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        {% for event in filtered_events %}-->
-<!--        <tr>-->
-<!--            <td><a href="{{url_for('phototainment.view_booking', booking_id = event[0].booking_id)}}">-->
-<!--                {{event[0].booking_id}}</a></td>-->
-<!--            <td>-->
-<!--                {{event.client_first_name.title()}} {{event.client_last_name.title()}}-->
-<!--            </td>-->
-<!--            <td>{{event[0].event_name.title()}}</td>-->
-<!--            <td>{{event[0].type.event_type.title()}}</td>-->
-<!--            <td>{{event[0].lead_date.strftime("<span>%d/%m/%y</span> | %I:%M %p")|safe}}</td>-->
-<!--            <td>{{event[0].event_date.strftime("<span>%d/%m/%y</span> | %I:%M %p")|safe}}</td>-->
-<!--            <td><a href="mailto:{{event.client_email}}">{{event.client_email}}</a></td>-->
-<!--            <td><a href="tel:{{event.client_email}}">{{event.primary_contact}}</a></td>-->
-<!--            <td>{{event[0].user.username.title()}}</td>-->
-<!--            <td>{{event[0].status.status.title()}}</td>-->
-<!--            <td>-->
-<!--                <button class="btn btn-primary"-->
-<!--                        onclick="deleteEvent('{{ url_for('phototainment.delete_event', booking_id=event.booking_id) }}')">-->
-<!--                    Delete-->
-<!--                </button>-->
-<!--                <a class="btn btn-dark" href="{{ url_for('phototainment.edit_event', booking_id=event.id) }}">Edit</a>-->
-<!--            </td>-->
-<!--        </tr>-->
-<!--        {% endfor %}-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--</div>-->

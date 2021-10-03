@@ -47,6 +47,12 @@ body {
     color: #fff;
 }
 
+.page-head h3 {
+    padding:0;
+    margin:25px 0 0 0;
+    font-size: 27px;
+}
+
 /* Navbar */
 .navbar {
     padding: 15px 10px;
@@ -167,6 +173,9 @@ a.article, a.article:hover {
     color: #fff !important;
 }
 
+input[type="time"]#duration::-webkit-calendar-picker-indicator {
+    display: none;
+}
 
 
 .right-bar {

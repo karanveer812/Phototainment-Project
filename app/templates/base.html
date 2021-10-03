@@ -16,12 +16,14 @@
 </head>
 <body>
 
+
 <div class="wrapper">
     {% block navbar %}{% endblock %}
     <div id="content">
         <header class="pb-5">
             <div class="col-3 p-0"><img class="w-100 p-0" src="{{ url_for('static', filename='img/logo.png') }}"
                                         alt="logo"/></div>
+            <div class="page-head col-12 p-0"><h3>{% block page_head %}{% endblock %}</h3></div>
         </header>
         {% block content %}{% endblock %}
     </div>
