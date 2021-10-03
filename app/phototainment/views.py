@@ -70,11 +70,11 @@ def home():
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client)
     
-    recent_bookings = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=30)]
+    recent_bookings = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=7)]
     
     
-    pending_events = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=30) and event[0].status_id == 1]
-    completed_events = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=30) and event[0].status_id == 4]
+    pending_events = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=7) and event[0].status_id == 1]
+    completed_events = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=7) and event[0].status_id == 4]
     return render_template(
         "index.html",
         all_bookings=recent_bookings,
