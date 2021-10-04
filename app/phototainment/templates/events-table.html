@@ -42,7 +42,7 @@
 
                         {% if current_user.role.role_id == 1 %}
                         <button class="btn btn-primary delete-btn"
-                                onclick="deleteEvent('{{ url_for('phototainment.delete_event', booking_id=event.booking_id) }}')">
+                                onclick="deleteEvent('{{ url_for('phototainment.delete_event', booking_id=event[0].booking_id) }}')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14.737" height="17.849"
                                  viewBox="0 0 14.737 17.849">
                                 <path id="delete_baseline"
