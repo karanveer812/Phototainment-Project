@@ -8,103 +8,109 @@
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
 
-<br>
-<br>
-<br>
-
 <a href="#" class="btn btn-success">Edit Event Details</a>
 {% if event.status.status_id == 1 and event.venue == None %}
-    <a href="{{ url_for('phototainment.add_address', booking_id=event.booking_id) }}" class="btn btn-success">Add Address Details</a>
+<a href="{{ url_for('phototainment.add_address', booking_id=event.booking_id) }}" class="btn btn-success">Add Address
+    Details</a>
 {% endif %}
 
-<br>
-<br>
+<div class="row">
+    <div class="col-6"><p>{{event.client.client_first_name}} {{event.client.client_last_name}}</p></div>
+    <div class="col-6">
+        <b class="float-left">Event Status:</b>
+        <form action="{{ url_for('phototainment.status_comment', booking_id = event.booking_id) }}" method="POST"
+              role="search" class="status-form">
+            <div class="float-left">
 
-
-
-<p><b>Client Name: </b>{{event.client.client_first_name}} {{event.client.client_last_name}}</p>
-<p><b>Event Name: </b>{{event.event_name.title()}}</p>
-<p><b>Event Date: </b>{{event.event_date.strftime("<span>%d-%m-%y</span>")|safe}}</p>
-<p><b>Event Time: </b>{{event.start_time.strftime("%I:%M %p")|safe}}</p>
-<p><b>Event Duration: </b>{{event.duration.strftime("%I:%M")|safe}} hrs</p>
-<p><b>Client Email: </b><a href="mailto:{{event.client.client_email}}">{{event.client.client_email}}</a></p>
-{% if event.client.company_name != "" %}
-    <p><b>Company Name: </b>{{ event.client.company_name }}</p>
-{% endif %}
-<p><b>Primary Contact: </b><a href="tel:{{event.client.primary_contact}}">{{event.client.primary_contact}}</a></p>
-    <p><b>Event Status:</b></p>
-<div class="col-12 py-4">
-<form action="{{ url_for('phototainment.status_comment', booking_id = event.booking_id) }}" method="POST" role="search" class="status-form">
-    <div class="btn-group ml-4">
-        {{ event.status.status }}
-        {% if event.venue %}
-        <button type="button" class="btn dropdown-toggle search-dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        {% endif %}
-        <div class="dropdown-menu search-dropdown-menu">
-            {% if event.venue == false %}
-                {{ status_form.status_processing(class="btn search-btn dropdown-btn") }}
-            {% endif %}
-            {{ status_form.status_approved(class="btn search-btn dropdown-btn") }}
-            {{ status_form.status_in_process(class="btn search-btn dropdown-btn") }}
-            {{ status_form.status_Completed(class="btn search-btn dropdown-btn") }}
-            {{ status_form.status_canceled(class="btn search-btn dropdown-btn") }}
-        </div>
+                <div class="dropdown">
+                    <span>{{ event.status.status }}</span>
+                    {% if event.venue %}
+                    <div class="dropdown-content">
+                        <p>{% if event.venue == false %}
+                            {{ status_form.status_processing(class="btn search-btn dropdown-btn") }}
+                            {% endif %}
+                            {{ status_form.status_approved(class="btn search-btn dropdown-btn") }}
+                            {{ status_form.status_in_process(class="btn search-btn dropdown-btn") }}
+                            {{ status_form.status_Completed(class="btn search-btn dropdown-btn") }}
+                            {{ status_form.status_canceled(class="btn search-btn dropdown-btn") }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
     </div>
-</form>
 </div>
-<hr>
 
-<p><b>Additional Information:</b> {{event.additional_information | safe}}</p>
+<div class="row">
+    <div class="col-3">{{event.event_name.title()}}</div>
+    <div class="col-3">{{event.event_date.strftime("<span>%d-%m-%y</span>")|safe}}</div>
+    <div class="col-3">{{event.start_time.strftime("%I:%M %p")|safe}}</div>
+    <div class="col-3">{{event.duration.strftime("%I:%M")|safe}} hrs</div>
+</div>
+
+<div class="row">
+    <div class="col-4"><b>Email:</b> <a href="mailto:{{event.client.client_email}}">{{event.client.client_email}}</a></div>
+    <div class="col-4"><b>Contact:</b> <a href="tel:{{event.client.primary_contact}}">{{event.client.primary_contact}}</a></div>
+    <div class="col-4"><b>Address:</b>
+        {% if event_venue: %}
+        {{event_venue.street_address}},
+        <p class="m-0">{{event_venue.suburb.title()}},</p>
+        <p class="m-0">{{event_venue.state.upper()}}, {{event_venue.post_code}}</p>
+        {% else %}
+        <p class="m-0"><b>Yet to be approved</b></p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 additional-information">{{event.additional_information | safe}}</div>
+</div>
 <hr>
 <p><b>Alternative Contacts:</b></p>
 {% if contacts: %}
-    {% for contact in contacts %}
-        <p><em>{{contact}}</em>: {{contacts[contact]}}</p>
-    {% endfor %}
+{% for contact in contacts %}
+<p><em>{{contact}}</em>: {{contacts[contact]}}</p>
+{% endfor %}
 {% else %}
-        <p><b>Secondary contacts not provided</b></p>
+<p><b>Secondary contacts not provided</b></p>
 {% endif %}
 <hr>
 
-Venue Details:
 
-{% if event_venue: %}
-<p>
-    <p>{{event_venue.street_address}}, {{event_venue.suburb.title()}}, {{event_venue.state.upper()}}, {{event_venue.post_code}}</p>
-</p>
-{% else %}
-    <p><b>Yet to be approved</b></p>
-{% endif %}
 <hr>
 <p><b>Comments</b></p>
 {% for comment in comments %}
-    <p><b>user: {{ comment.user.username }}</b></p>
-    <p><b>action: {{ comment.comment_action }}</b></p>
-    {% if comment.comment_reason != None %}
-        <p><b>reason: {{ comment.comment_reason }}</b></p>
-    {% endif %}
-    {% if current_user.role.role_id == 1 %}
-        <p><a href="{{ url_for('phototainment.delete_comment', comment_id=comment.comment_id) }}">delete</a></p>
-    {% endif %}
-    <hr>
+<p><b>user: {{ comment.user.username }}</b></p>
+<p><b>action: {{ comment.comment_action }}</b></p>
+{% if comment.comment_reason != None %}
+<p><b>reason: {{ comment.comment_reason }}</b></p>
+{% endif %}
+{% if current_user.role.role_id == 1 %}
+<p><a href="{{ url_for('phototainment.delete_comment', comment_id=comment.comment_id) }}">delete</a></p>
+{% endif %}
+<hr>
 {% endfor %}
 
 <p><b>Add Comments</b></p>
-<form action="{{ url_for('phototainment.add_comment', booking_id = event.booking_id) }}" method="POST" role="form" class="comment-form">
+<form action="{{ url_for('phototainment.add_comment', booking_id = event.booking_id) }}" method="POST" role="form"
+      class="comment-form">
     <div class="form-group required col-6 form-cell">
         <label class="control-label" for="comment_action"><em>Action Taken</em></label>
-        {{ comment_form.comment_action(class="form-control",id="comment_action",required="required",type="text",value="", placeholder="Last Name") }}
+        {{
+        comment_form.comment_action(class="form-control",id="comment_action",required="required",type="text",value="",
+        placeholder="Last Name") }}
     </div>
     <div class="form-group required col-6 form-cell">
         <label class="control-label" for="company_name"><em>Reason</em></label>
-        {{ comment_form.comment_reason(class="form-control",id="comment_reason",type="text",value="", placeholder="Company Name") }}
+        {{ comment_form.comment_reason(class="form-control",id="comment_reason",type="text",value="",
+        placeholder="Company Name") }}
     </div>
     {{ comment_form.add_comment(class="btn btn-success") }}
 </form>
 
 {% endblock %}
+
+{% block side_bar %}{% include 'right-bar.html' %}{% endblock %}
 
 {% block custom_scripts %}
 <script type="text/javascript">
@@ -118,6 +124,7 @@ Venue Details:
                      $('.sort-dropdown-menu').toggleClass('show');
                  });
              });
-    </script>
+
+</script>
 
 {% endblock %}

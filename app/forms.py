@@ -108,7 +108,7 @@ class EditEvent(FlaskForm):
 class AddressForm(FlaskForm):
     street_address = StringField("Street Address*", validators=[validators.DataRequired("Please Enter")])
     suburb = StringField("Suburb*", validators=[validators.DataRequired("Please Enter")])
-    state = StringField("State*", validators=[validators.DataRequired("Please Enter")])
+    state = SelectField("State*", choices=('Select', 'VIC', 'NSW', 'QLD', 'ACT', 'TAS', 'NT', 'WA', 'SA'), validators=[validators.DataRequired("Please Enter")])
     post_code = IntegerField("Post Code*")
     submit = SubmitField("Submit")
     

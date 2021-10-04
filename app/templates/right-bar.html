@@ -1,9 +1,9 @@
 <div class="right-bar col-xl-2 col-lg-3 col-md-3">
     <div class="row py-4 greeting-outer">
-        <div class="col-5 greeting-img">
+        <div class="col-lg-7 greeting-img">
             <img src="{{ url_for('static', filename='img/user.png') }}" alt="user"/>
         </div>
-        <div class="col-7 text-left greeting-txt">
+        <div class="col-lg-5 text-left greeting-txt">
             <p class="m-0">Hello</p>
             <p class="m-0">{{ current_user.username.title() }}</p>
         </div>

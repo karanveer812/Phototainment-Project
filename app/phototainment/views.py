@@ -74,7 +74,7 @@ def home():
     
     
     pending_events = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=7) and event[0].status_id == 1]
-    completed_events = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=7) and event[0].status_id == 4]
+    completed_events = [event for event in events if datetime.now() - event[0].event_date < timedelta(days=7) and event[0].status_id == 4]
     return render_template(
         "index.html",
         all_bookings=recent_bookings,
