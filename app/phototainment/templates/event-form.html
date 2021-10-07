@@ -25,8 +25,8 @@
             type="Time") }}
         </div>
         <div class="form-group required col-4">
-            <label class="control-label" for="start_time">Duration in hrs*</label>
-            {{ form.duration(class="form-control",id="duration", min='2021-09-24', type="Time", value="09:00") }}
+            <label class="control-label" for="duration">Duration in hrs*</label>
+            {{ form.duration(class="form-control",id="duration", type="Time", value="00:30") }}
         </div>
     </div>
 
@@ -61,7 +61,10 @@
         <div class="form-group required col-6 form-cell">
             <label class="control-label" for="phone_num">Primary Contact*</label>
             {{ form.primary_contact(class="form-control",id="phone_num", required="required",
-            type="text", placeholder="Primary Contact") }}
+            type="tel", oninvalid="this.setCustomValidity('Please enter a valid mobile number')",
+                oninput="this.setCustomValidity('')",
+                pattern="[0-9]{10}",
+                placeholder="0423314422", value="")}}
         </div>
     </div>
 
@@ -77,7 +80,10 @@
             <div class="form-group required col-6 form-cell">
                 <label class="control-label" for="secondary_contact1">Additional Contact</label>
                 {{
-                form.secondary_contact1(class="form-control",id="secondary_contact1",type="text",
+                form.secondary_contact1(class="form-control",id="secondary_contact1",type="tel",
+                oninput="this.setCustomValidity('')",
+                pattern="[0-9]{10}",
+                placeholder="0423314422", value="",
                 placeholder="Secondary Contact") }}
             </div>
             <div class="form-group required col-6 form-cell">
@@ -101,8 +107,10 @@
             <div class="form-group required col-6 form-cell">
                 <label class="control-label" for="secondary_contact2">Additional Contact</label>
                 {{
-                form.secondary_contact2(class="form-control",id="secondary_contact2",type="text",
-                placeholder="Secondary Contact") }}
+                form.secondary_contact2(class="form-control", id="secondary_contact2",type="tel",
+                oninput="this.setCustomValidity('')",
+                pattern="[0-9]{10}",
+                placeholder="0423314422", value="") }}
             </div>
             <div class="form-group required col-6 form-cell">
                 <label class="control-label" for="contact_person2">Referred By</label>
@@ -124,3 +132,4 @@
 
     {{ form.submit(class="btn btn-success add-event-btn") }}
 </form>
+

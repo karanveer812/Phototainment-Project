@@ -15,9 +15,9 @@
 
 
 <div class="tab">
-    <button class="tablinks active" onclick="openCity(event, 'Bookings')">Recent Bookings</button>
-    <button class="tablinks" onclick="openCity(event, 'Pending')">Pending</button>
-    <button class="tablinks" onclick="openCity(event, 'Completed')">Recently Completed</button>
+    <button class="tablinks active" onclick="switchTab(event, 'Bookings')">Recent Bookings</button>
+    <button class="tablinks" onclick="switchTab(event, 'Pending')">Pending</button>
+    <button class="tablinks" onclick="switchTab(event, 'Completed')">Recently Completed</button>
 </div>
 
 <div id="Bookings" class="tabcontent" style="display:block">
@@ -44,7 +44,7 @@
 
 {% block custom_scripts %}
 <script>
-function openCity(evt, cityName) {
+function switchTab(evt, filter) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
@@ -54,7 +54,7 @@ function openCity(evt, cityName) {
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
-  document.getElementById(cityName).style.display = "block";
+  document.getElementById(filter).style.display = "block";
   evt.currentTarget.className += " active";
 }
 </script>

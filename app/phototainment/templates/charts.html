@@ -1,47 +1,125 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Edit Event{% endblock %}
+{% block title %}Charts{% endblock %}
 {% block page_head %}Charts{% endblock %}
 
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
-<div id="piechart"></div>
+
+<div class="tab">
+    <button class="tablinks active" onclick="switchTab(event, 'Barchart')">Event Data</button>
+    <button class="tablinks" onclick="switchTab(event, 'Piechart')">Successful Events</button>
+    <button class="tablinks" onclick="switchTab(event, 'Linegraph')">Time Data</button>
+</div>
+
+<div id="Barchart" class="tabcontent" style="display:block">
+    <div id="event_data"></div>
+</div>
+
+<div id="Piechart" class="tabcontent">
+    <div id="successful_events"></div>
+</div>
+
+<div id="Linegraph" class="tabcontent">
+
+
+        <div id="chart_div3"></div>
+</div>
+
+
+
 {% endblock %}
 
 {% block custom_scripts %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
-google.charts.load("current", {packages:['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-         ['Number', 'Events', { role: 'style' }],
-            {%for data in graph_data %}
-            ['{{ data }}', {{graph_data[data]}}, 'color: #e5e4e2' ], // CSS-style declaration
-            {% endfor %}
-      ]);
-
-      var view = new google.visualization.DataView(data);
-      view.setColumns([0, 1,
-                       { calc: "stringify",
-                         sourceColumn: 1,
-                         type: "string",
-                         role: "annotation" },
-                       2]);
-
-      var options = {
-        title: "Monthly progress report",
-        width: 800,
-        height: 800,
-        bar: {groupWidth: "95%"},
-        legend: { position: "" },
-      };
-      var chart = new google.visualization.ColumnChart(document.getElementById("piechart"));
-      chart.draw(view, options);
+function switchTab(evt, filter) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(filter).style.display = "block";
+  evt.currentTarget.className += " active";
 }
+
+
+google.load('visualization', '1.0', {'packages':['corechart']});
+
+          google.setOnLoadCallback(drawChart);
+
+          function drawChart() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Status');
+            data.addColumn('number', 'Number');
+            data.addRows([
+            {% for data in pie_chart_data %}
+                ['{{data}}', {{pie_chart_data[data]}}],
+              {% endfor %}
+            ]);
+
+
+            // Create the data table.
+            var data2 = new google.visualization.DataTable();
+            data2.addColumn('string', 'Type');
+            data2.addColumn('number', 'Numbers');
+            data2.addRows([
+              {% for data in bar_graph_data %}
+                ['{{data}}', {{bar_graph_data[data]}}],
+              {% endfor %}
+            ]);
+
+            var data3 = new google.visualization.DataTable();
+            data3.addColumn('string', 'Year');
+            data3.addColumn('number', 'Sales');
+            data3.addRows([
+              ['2004', 1000],
+              ['2005', 1170],
+              ['2006',  860],
+              ['2007', 1030]
+            ]);
+
+            // Set chart options
+            var options = {'title':'Successful events',
+                           'width':400,
+                           'height':300,
+                           'backgroundColor':{
+                            'stroke': '#000'}
+                           }
+
+            // Set chart options
+            var options2 = {'title':'Event Data',
+                           'width':400,
+                           'height':300};
+            // Set chart options
+            var options3 = {'title':'Line chart',
+                           'width':400,
+                           'height':300};
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('successful_events'));
+            chart.draw(data, options);
+            var chart2 = new google.visualization.ColumnChart(document.getElementById('event_data'));
+            chart2.draw(data2, options2);
+            var chart3 = new google.visualization.LineChart(document.getElementById('chart_div3'));
+            chart3.draw(data3, options3);
+
+          }
+
+
+
+
+
+
 </script>
 {% endblock %}
 {% block side_bar %}{% include 'right-bar.html' %}{% endblock %}
