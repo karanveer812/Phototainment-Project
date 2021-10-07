@@ -460,8 +460,7 @@ def charts():
 
 
 @custom_bp.route('/get-report', methods=["GET", "POST"])
-def download():
-    report_data = []
+def download_report():
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
     
@@ -476,56 +475,8 @@ def download():
             'Status': event[0].status.status.title()
         }
         for event in events]
-    print(data)
-    print(type(data))
-    print()
     # return 'test'
     return flask_csv.send_csv(data, "report.csv", list(data[0].keys()))
-    
-    # output = io.StringIO()
-    # writer = csv.writer(output)
-    #
-    # line =
-    # writer.writerow(line)
-    #
-    # for event in events:
-    #     line = [
-    #          + ',' +
-    #
-    #     ]
-    #     writer.writerow(line)
-    #
-    # output.seek(0)
-    #
-    # return Response(output, mimetype="text/csv",
-    #                 headers={"Content-Disposition": "attachment;filename=employee_report.csv"})
-    
-    # events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
-    #                           Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
-    # excel.init_excel(app)
-    # extension_type = "csv"
-    # filename = "test123" + "." + extension_type
-    # d = {}
-    # for event in events:
-    #     d = {
-    
-    #     }
-    #
-    # # print(events)
-    # # return events
-    # return excel.make_response_from_dict(d, file_type=extension_type, file_name=filename)
-    #
-    #
-    #
-
-
-#             <li class="table-body">
-#                 {% for event in filtered_events %}
-#                 <ul class="table-row">
-#                     <li class="table-item">{{}} {{}}</li>
-#                     <li class="table-item">{{}}</li>
-#                     <li class="table-item">{{}}</li>
-#
 
 @custom_bp.route('/forgot_password', methods=["GET", "POST"])
 @login_required

@@ -13,11 +13,11 @@
         <div class="bar-quick-links col-12 p-0">
             <ul>
                 <li><a href="#">Search Customer</a></li>
+                <li><a href="{{ url_for('phototainment.download_report') }}">Download report</a></li>
                 {% if current_user.role.role_id == 1 %}
                 <li><a href="{{ url_for('phototainment.register') }}">Add User</a></li>
                 <li><a href="{{ url_for('phototainment.manage_user') }}">Manage User</a></li>
                 {% endif %}
-
             </ul>
         </div>
     </div>
