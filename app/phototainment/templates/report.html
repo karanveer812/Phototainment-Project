@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Add Address Details{% endblock %}
+
+{% block page_head %}Add Address{% endblock %}
+
+{% block navbar %}{% include 'sidebar.html' %}{% endblock %}
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+<form action="" method="POST" role="form">
+    <div class="col-12 pb-3">
+    <input type="submit" name="up_coming" id="up_coming" value="Up Coming">
+        </div>
+    <div class="col-12 pb-3">
+    <input type="submit" name="emp_report" id="emp_report" value="Employee Report">
+        </div>
+    <div class="col-12 pb-3">
+    <div class="col-12 pb-3 px-0">
+    <label for="from-date">From</label>
+    <input type='date' name="from-date" id="from-date" value="{{ start_date.strftime('%Y-%m-%d') }}">
+    <label for="to-date">To</label>
+    <input type='date' name="to-date" id="to-date" value="{{ today.strftime('%Y-%m-%d') }}">
+    <input type="submit" name="past_events" id="past_events" value="Past Events">
+        </div>
+</form>
+
+<a href="#">Upcoming events report</a>
+<a href="#">Employee report in time frame</a>
+<a href="#">Previous events report</a>
+time frame: last 7 days, 30 days, 3 months
+
+{% endblock %}
+
+
+
+{% block custom_scripts %}
+<script type="text/javascript">
+$(function(){
+    $('[type="Date"]#to-date, [type="Date"]#from-date').prop('max', function(){
+        return new Date().toJSON().split('T')[0];
+    });
+});
+</script>
+{% endblock %}
+

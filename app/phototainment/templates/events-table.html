@@ -14,7 +14,11 @@
             <li class="table-body">
                 {% for event in filtered_events %}
                 <ul class="table-row">
-                    <li class="table-item">{{event.client_first_name.title()}} {{event.client_last_name.title()}}</li>
+                    <li class="table-item">
+                        <a class="open-btn" href="{{url_for('phototainment.view_booking', booking_id = event[0].booking_id)}}">
+                            {{event.client_first_name.title()}} {{event.client_last_name.title()}}
+                        </a>
+                    </li>
                     <li class="table-item">{{event[0].type.event_type.title()}}</li>
                     <li class="table-item">{{event[0].event_name.title()}}</li>
                     <li class="table-item">{{event[0].event_date.strftime("%d/%m/%y")|safe}}</li>
@@ -59,3 +63,16 @@
             </li>
         </ul>
     </div>
+
+{% block custom_scripts %}
+<script>
+        function deleteEvent(redirect) {
+            var txt;
+            var isAdd = confirm("Do you want to delete the selected event?");
+            if (isAdd == true) {
+                window.location.href = redirect;
+            }
+        }
+
+</script>
+{% endblock %}

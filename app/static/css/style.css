@@ -600,3 +600,7 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 
+#successful_events g path {
+    stroke: white;
+    stroke-width: 15px;
+}

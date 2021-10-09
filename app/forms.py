@@ -76,35 +76,6 @@ class EventForm(FlaskForm):
     additional_information = CKEditorField("Additional Information", validators=[validators.DataRequired()])
     submit = SubmitField("Submit")
 
-
-class EditEvent(FlaskForm):
-    first_name = StringField("First Name*", validators=[validators.DataRequired("Please Enter")])
-    last_name = StringField("Last Name*", validators=[validators.DataRequired("Please Enter")])
-    company_name = StringField("Company Name*")
-    
-    client_email = EmailField("Email Address*",
-                              validators=[validators.DataRequired("Please Enter"), validators.Email()])
-    primary_contact = IntegerField("Primary Contact*")
-    
-    secondary_contact1 = IntegerField("Secondary Contact")
-    contact_person1 = StringField("Last Name", )
-    
-    secondary_contact2 = IntegerField("Secondary Contact")
-    contact_person2 = StringField("Last Name")
-    
-    event_name = StringField("Event Name*", validators=[validators.DataRequired("Please Enter")])
-    
-    event_date = DateField("Start Date*", validators=[validators.DataRequired("Please Enter")])
-    start_time = TimeField(validators=[validators.DataRequired("Please Enter")])
-    duration = TimeField(validators=[validators.DataRequired("Please Enter")])
-    event_type = SelectField('Event Type*',
-                             choices=[(type.type_id, type.event_type) for type in
-                                      EventType.query.order_by('event_type')],
-                             validators=[validators.DataRequired("Please Enter")])
-    additional_information = CKEditorField("Comment", validators=[validators.DataRequired()])
-    submit = SubmitField("Submit")
-    
-
 class AddressForm(FlaskForm):
     street_address = StringField("Street Address*", validators=[validators.DataRequired("Please Enter")])
     suburb = StringField("Suburb*", validators=[validators.DataRequired("Please Enter")])
@@ -158,3 +129,8 @@ class ChangePassword(FlaskForm):
                                      render_kw={"placeholder": "Confirm Password"}
                                      )
     submit = SubmitField("Update", render_kw={"class": "Confirm-Password"})
+    
+
+class DayRange(FlaskForm):
+    days = SelectField("Days", choices=('30', '15', '7'))
+    submit = SubmitField("Submit")

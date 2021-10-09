@@ -43,7 +43,7 @@
 
 <div class="row">
     <div class="col-3">{{event.event_name.title()}}</div>
-    <div class="col-3">{{event.event_date.strftime("<span>%d-%m-%y</span>")|safe}}</div>
+    <div class="col-3">{{event.event_date.strftime("<span>%d-%b-%y</span>")|safe}}</div>
     <div class="col-3">{{event.start_time.strftime("%I:%M %p")|safe}}</div>
     <div class="col-3">{{event.duration.strftime("%I:%M")|safe}} hrs</div>
 </div>

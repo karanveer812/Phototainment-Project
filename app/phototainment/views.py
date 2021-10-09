@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, Blueprint, Response
+from flask import render_template, request, redirect, url_for, flash, Blueprint
 from collections import Counter
 
 import flask_csv
@@ -8,8 +8,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app.privilege import admin, employee
 from datetime import datetime, timedelta, time
 from app.forms import LoginForm, RegisterForm, EventForm, EditUser, SearchForm, ChangeStatus, CommentForm, AddressForm, \
-    ChangePassword, EditEvent
-from app.models import db, User, Event, EventType, Client, ContactDetails, BookingContacts, Comment, EventVenue
+    ChangePassword, DayRange
+from app.models import db, User, Event, EventType, Client, ContactDetails, BookingContacts, Comment, EventVenue, login_manager
 
 custom_bp = Blueprint(
     'phototainment',
@@ -17,6 +17,11 @@ custom_bp = Blueprint(
     template_folder='templates',
     static_folder='static'
 )
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('phototainment.login'))
 
 
 @custom_bp.route('/login/', methods=["GET", "POST"])
@@ -405,15 +410,20 @@ def add_address(booking_id):
     return render_template("add-address.html", form=address_form)
 
 
-@custom_bp.route('/upcoming-events', )
+@custom_bp.route('/upcoming-events', methods=['GET', 'POST'])
 @login_required
 @employee
 def upcoming_events():
+    form = DayRange()
+    days = 30
+    if request.method == "POST":
+        days = int(form.days.data)
+    
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
-    filtered_event = [event for event in events if event[0].event_date - datetime.now() < timedelta(days=30) and event[
+    filtered_event = [event for event in events if event[0].event_date - datetime.now() < timedelta(days=days) and event[
         0].event_date - datetime.now() > timedelta(days=0, minutes=0, seconds=0)]
-    return render_template('upcoming-events.html', filtered_events=filtered_event)
+    return render_template('upcoming-events.html', filtered_events=filtered_event, days=days, form=form)
 
 
 @custom_bp.route('/edit-event/<booking_id>', methods=["GET", "POST"])
@@ -441,8 +451,15 @@ def edit_event(booking_id):
 @login_required
 @employee
 def charts():
+    form = DayRange()
+    days = 30
+    if request.method == "POST":
+        days = int(form.days.data)
+        
     events = db.session.query(Event)
-    filtered_event = [event for event in events if datetime.now() - event.lead_date < timedelta(days=30)]
+    filtered_event = [event for event in events if datetime.now() - event.lead_date < timedelta(days=days)]
+    for event in events:
+        print(datetime.now() - event.lead_date)
     
     type_names = [event.type.event_type for event in filtered_event]
     status_names = [event.status.status for event in filtered_event]
@@ -456,15 +473,64 @@ def charts():
     print()
     print(len(filtered_event))
     
-    return render_template('charts.html', bar_graph_data=bar_graph_data, pie_chart_data=pie_chart_data)
+    return render_template('charts.html', bar_graph_data=bar_graph_data, pie_chart_data=pie_chart_data, form=form)
 
 
 @custom_bp.route('/get-report', methods=["GET", "POST"])
+@login_required
+@admin
+def generate_report():
+    today = datetime.now()
+    start_date = today - timedelta(days=30)
+    events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
+                              Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
+    data = []
+    if request.method == "POST":
+        if request.form.get('up_coming'):
+            filtered_event = [event for event in events if
+                              event[0].event_date - datetime.now() < timedelta(days=30) and event[
+                                  0].event_date - datetime.now() > timedelta(days=0, minutes=0, seconds=0)]
+            data = [
+                {
+                    'Name': f"{event.client_first_name.title()} {event.client_last_name.title()}",
+                    'Type': event[0].type.event_type.title(),
+                    'Event Name': event[0].event_name.title(),
+                    'Date': event[0].event_date.strftime('%d/%m/%y'),
+                    'Time': event[0].event_date.strftime('%I:%M %p'),
+                    'Status': event[0].status.status.title()
+                }
+                for event in filtered_event]
+        
+        if request.form.get('past_events'):
+
+            completed_events = [event for event in events if
+                                datetime.strptime(request.form.get('from-date'), '%Y-%m-%d') < event[0].lead_date < datetime.strptime(request.form.get('to-date'), '%Y-%m-%d')]
+            print(completed_events)
+            for event in events:
+                print(datetime.strptime(request.form.get('from-date'), '%Y-%m-%d') < event[0].lead_date)
+                print(event[0].lead_date > datetime.strptime(request.form.get('to-date'), '%Y-%m-%d'))
+            data = [
+                {
+                    'Name': f"{event.client_first_name.title()} {event.client_last_name.title()}",
+                    'Type': event[0].type.event_type.title(),
+                    'Event Name': event[0].event_name.title(),
+                    'Date': event[0].event_date.strftime('%d/%m/%y'),
+                    'Time': event[0].event_date.strftime('%I:%M %p'),
+                    'Status': event[0].status.status.title()
+                }
+                for event in completed_events]
+        if data:
+            return flask_csv.send_csv(data, "report.csv", list(data[0].keys()))
+        else:
+            flash(message="Please select a valid date range")
+    return render_template('report.html', today=today, start_date=start_date)
+
+@custom_bp.route('/download-report', methods=["GET", "POST"])
+@login_required
+@admin
 def download_report():
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
-    
-    print(len(events.all()))
     data = [
         {
             'Name': f"{event.client_first_name.title()} {event.client_last_name.title()}",
@@ -475,7 +541,6 @@ def download_report():
             'Status': event[0].status.status.title()
         }
         for event in events]
-    # return 'test'
     return flask_csv.send_csv(data, "report.csv", list(data[0].keys()))
 
 @custom_bp.route('/forgot_password', methods=["GET", "POST"])

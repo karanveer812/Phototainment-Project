@@ -75,21 +75,21 @@
     </div>
 
     <div class="col-12 p-0 d-none" id="additional-contact">
-        <h4 class="text-left">Primary Contact</h4>
+        <h4 class="text-left">Secondary Contact</h4>
         <div class="row justify-content-around">
             <div class="form-group required col-6 form-cell">
-                <label class="control-label" for="secondary_contact1">Additional Contact</label>
+                <label class="control-label" for="contact_person1">Name</label>
+                {{ form.contact_person1(class="form-control",id="contact_person1", type="text",
+                placeholder="Contact Person") }}
+            </div>
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="secondary_contact1">Contact #2</label>
                 {{
                 form.secondary_contact1(class="form-control",id="secondary_contact1",type="tel",
                 oninput="this.setCustomValidity('')",
                 pattern="[0-9]{10}",
                 placeholder="0423314422", value="",
                 placeholder="Secondary Contact") }}
-            </div>
-            <div class="form-group required col-6 form-cell">
-                <label class="control-label" for="contact_person1">Contact Person</label>
-                {{ form.contact_person1(class="form-control",id="contact_person1", type="text",
-                placeholder="Contact Person") }}
             </div>
         </div>
     </div>
@@ -105,17 +105,17 @@
         <h4 class="text-left">Referred by Contact</h4>
         <div class="row justify-content-around">
             <div class="form-group required col-6 form-cell">
-                <label class="control-label" for="secondary_contact2">Additional Contact</label>
+                <label class="control-label" for="contact_person2">Referred By</label>
+                {{ form.contact_person2(class="form-control",id="contact_person2", type="text",
+                placeholder="Contact Person") }}
+            </div>
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="secondary_contact2">Contact</label>
                 {{
                 form.secondary_contact2(class="form-control", id="secondary_contact2",type="tel",
                 oninput="this.setCustomValidity('')",
                 pattern="[0-9]{10}",
                 placeholder="0423314422", value="") }}
-            </div>
-            <div class="form-group required col-6 form-cell">
-                <label class="control-label" for="contact_person2">Referred By</label>
-                {{ form.contact_person2(class="form-control",id="contact_person2", type="text",
-                placeholder="Contact Person") }}
             </div>
         </div>
     </div>
@@ -132,4 +132,35 @@
 
     {{ form.submit(class="btn btn-success add-event-btn") }}
 </form>
+
+{% block custom_scripts %}
+<script type="text/javascript">
+$(function(){
+    $('[type="date"]').prop('min', function(){
+        return new Date().toJSON().split('T')[0];
+    });
+});
+
+
+    function checkAddContact(elem) {
+    if (elem.checked) {
+        document.getElementById("additional-contact").classList.remove("d-none");
+    }
+    else {
+        document.getElementById("additional-contact").classList.add("d-none");
+    }
+}
+
+function checkRefContact(elem) {
+    if (elem.checked) {
+        document.getElementById("referee-contact").classList.remove("d-none");
+    }
+    else {
+        document.getElementById("referee-contact").classList.add("d-none");
+    }
+}
+
+
+</script>
+{% endblock %}
 

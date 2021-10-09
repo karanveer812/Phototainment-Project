@@ -7,7 +7,17 @@
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
-
+<div class="row">
+        <div class="col-4">
+            <form action="" method="POST" role="form">
+                <div class="row">
+                    <div class="col-8">{{ form.days(class="form-control",id="search_days", type="Select",value="") }}
+                    </div>
+                    <div class="col-4">{{ form.submit(class="btn btn-success add-event-btn m-0") }}</div>
+                </div>
+            </form>
+        </div>
+    </div>
 <div class="tab">
     <button class="tablinks active" onclick="switchTab(event, 'Barchart')">Event Data</button>
     <button class="tablinks" onclick="switchTab(event, 'Piechart')">Successful Events</button>
@@ -89,19 +99,22 @@ google.load('visualization', '1.0', {'packages':['corechart']});
             ]);
 
             // Set chart options
-            var options = {'title':'Successful events',
-                           'width':400,
-                           'height':300,
-                           'backgroundColor':{
-                            'stroke': '#000'}
+            var options = {
+                           'width':900,
+                           'height':800,
+                            'stroke': '#000',
+                            'pieSliceText': 'none',
+                            pieSliceBorderWidth: 8,
+                                slices: [{color: 'red'}, {color: 'LightGreen'}, {color: 'Yellow'}, {}]
                            }
 
             // Set chart options
-            var options2 = {'title':'Event Data',
-                           'width':400,
-                           'height':300};
+            var options2 = {
+                           'width':900,
+                           'height':800,
+                           };
             // Set chart options
-            var options3 = {'title':'Line chart',
+            var options3 = {
                            'width':400,
                            'height':300};
 
@@ -114,12 +127,6 @@ google.load('visualization', '1.0', {'packages':['corechart']});
             chart3.draw(data3, options3);
 
           }
-
-
-
-
-
-
 </script>
 {% endblock %}
 {% block side_bar %}{% include 'right-bar.html' %}{% endblock %}

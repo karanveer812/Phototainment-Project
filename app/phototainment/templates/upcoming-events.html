@@ -1,13 +1,26 @@
 {% extends 'base.html' %}
 
 {% block title %}Upcoming Events{% endblock %}
-{% block page_head %}Upcoming Events in 30 days{% endblock %}
+{% block page_head %}Upcoming Events in {{ days }} days{% endblock %}
 
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
 
 <div class="events">
+    <div class="row">
+        <div class="col-4">
+            <form action="" method="POST" role="form">
+                <div class="row">
+                    <div class="col-8">
+                        <label class="control-label" for="search_days">Time Frame</label>
+                        {{ form.days(class="form-control", id="search_days", type="Select",value="") }}
+                    </div>
+                    <div class="col-4">{{ form.submit(class="btn btn-success add-event-btn m-0") }}</div>
+                </div>
+            </form>
+        </div>
+    </div>
     {% include 'events-table.html' %}
 </div>
 
@@ -20,5 +33,9 @@
                      $('.dropdown-menu').toggleClass('show');
                  });
              });
+
+
+
+
 </script>
 {% endblock %}
