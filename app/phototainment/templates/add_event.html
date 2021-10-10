@@ -19,3 +19,34 @@
 {% endblock %}
 
 {% block side_bar %}{% include 'right-bar.html' %}{% endblock %}
+
+{% block custom_scripts %}
+<script type="text/javascript">
+$(function(){
+    $('[type="date"]').prop('min', function(){
+        return new Date().toJSON().split('T')[0];
+    });
+});
+
+
+    function checkAddContact(elem) {
+    if (elem.checked) {
+        document.getElementById("additional-contact").classList.remove("d-none");
+    }
+    else {
+        document.getElementById("additional-contact").classList.add("d-none");
+    }
+}
+
+function checkRefContact(elem) {
+    if (elem.checked) {
+        document.getElementById("referee-contact").classList.remove("d-none");
+    }
+    else {
+        document.getElementById("referee-contact").classList.add("d-none");
+    }
+}
+
+
+</script>
+{% endblock %}

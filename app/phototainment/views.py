@@ -9,7 +9,8 @@ from app.privilege import admin, employee
 from datetime import datetime, timedelta, time
 from app.forms import LoginForm, RegisterForm, EventForm, EditUser, SearchForm, ChangeStatus, CommentForm, AddressForm, \
     ChangePassword, DayRange
-from app.models import db, User, Event, EventType, Client, ContactDetails, BookingContacts, Comment, EventVenue, login_manager
+from app.models import db, User, Event, EventType, Client, AdditionalContact, ReferralContact, Comment, EventVenue, \
+    login_manager
 
 custom_bp = Blueprint(
     'phototainment',
@@ -163,6 +164,23 @@ def add_event():
         )
         db.session.add(new_client)
         db.session.commit()
+        alt_contact = ""
+        ref_contact = ""
+        if form.alt_contact.data and form.alt_contact_name.data:
+            alt_contact = AdditionalContact(
+                mobile_number=form.alt_contact.data,
+                contact_name=form.alt_contact_name.data
+            )
+            db.session.add(alt_contact)
+            db.session.commit()
+        
+        if form.referrer_contact.data and form.referrer_name.data:
+            ref_contact = ReferralContact(
+                mobile_number=form.referrer_contact.data,
+                contact_name=form.referrer_name.data
+            )
+            db.session.add(ref_contact)
+            db.session.commit()
         
         new_event = Event(
             event_name=form.event_name.data.lower(),
@@ -177,47 +195,21 @@ def add_event():
             start_time=time(
                 form.start_time.data.hour,
                 form.start_time.data.minute),
-            duration=time(
-                form.duration.data.hour,
-                form.duration.data.minute),
+            duration=form.duration.data,
             client_id=new_client.client_id,
+            
             user_id=current_user.id,
             type_id=form.event_type.data,
             additional_information=form.additional_information.data
         )
+        if alt_contact != "":
+            new_event.phone_id = alt_contact.phone_id
+        
+        if ref_contact != "":
+            new_event.referee_id = ref_contact.referee_id
+        
         db.session.add(new_event)
         db.session.commit()
-        
-        if form.secondary_contact1.data and form.contact_person1.data:
-            contact = ContactDetails(
-                mobile_number=form.secondary_contact1.data,
-                contact_name=form.contact_person1.data
-            )
-            db.session.add(contact)
-            db.session.commit()
-            
-            alt_contact = BookingContacts(
-                phone_id=contact.phone_id,
-                booking_id=new_event.booking_id
-            )
-            db.session.add(alt_contact)
-            db.session.commit()
-        
-        if form.secondary_contact2.data and form.contact_person2.data:
-            contact = ContactDetails(
-                mobile_number=form.secondary_contact2.data,
-                contact_name=form.contact_person2.data
-            )
-            db.session.add(contact)
-            db.session.commit()
-            
-            alt_contact = BookingContacts(
-                phone_id=contact.phone_id,
-                booking_id=new_event.booking_id
-            )
-            db.session.add(alt_contact)
-            db.session.commit()
-        
         return redirect(url_for('phototainment.view_booking', booking_id=new_event.booking_id))
     return render_template('add_event.html', form=form, today=date_today)
 
@@ -304,8 +296,15 @@ def search_event():
 @employee
 def view_booking(booking_id):
     event = db.session.query(Event).filter_by(booking_id=booking_id).first()
-    alt_contacts = db.session.query(BookingContacts).filter_by(booking_id=booking_id).all()
-    contacts = {contact.phone_numbers.contact_name: contact.phone_numbers.mobile_number for contact in alt_contacts}
+    if event.contacts:
+        alt_contacts = f'{event.contacts.contact_name}: {event.contacts.mobile_number}'
+    else:
+        alt_contacts = ""
+    
+    if event.referred_by:
+        ref_contact = f'{event.referred_by.contact_name}: {event.referred_by.mobile_number}'
+    else:
+        ref_contact = ""
     status_form = ChangeStatus()
     comment_form = CommentForm()
     venue = ""
@@ -314,7 +313,8 @@ def view_booking(booking_id):
     
     return render_template('event-view.html',
                            event=event,
-                           contacts=contacts,
+                           alt_contact=alt_contacts,
+                           ref_contact=ref_contact,
                            event_venue=venue,
                            status_form=status_form,
                            comment_form=comment_form,
@@ -410,6 +410,30 @@ def add_address(booking_id):
     return render_template("add-address.html", form=address_form)
 
 
+@custom_bp.route('view_booking/<booking_id>/edit_address', methods=["GET", "POST"])
+@login_required
+@employee
+def edit_address(booking_id):
+    event = db.session.query(Event).filter_by(booking_id=booking_id).first()
+    address_form = AddressForm(
+        street_address=event.venue.street_address,
+        suburb=event.venue.suburb,
+        state=event.venue.state,
+        post_code=event.venue.post_code
+    )
+    if request.method == "POST":
+        event.venue.street_address = address_form.street_address.data
+        event.venue.suburb = address_form.suburb.data
+        event.venue.state = address_form.state.data
+        event.venue.post_code = address_form.post_code.data
+        
+        db.session.commit()
+        
+        return redirect(url_for('phototainment.view_booking', booking_id=booking_id))
+    
+    return render_template("edit-address.html", form=address_form)
+
+
 @custom_bp.route('/upcoming-events', methods=['GET', 'POST'])
 @login_required
 @employee
@@ -421,8 +445,9 @@ def upcoming_events():
     
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
-    filtered_event = [event for event in events if event[0].event_date - datetime.now() < timedelta(days=days) and event[
-        0].event_date - datetime.now() > timedelta(days=0, minutes=0, seconds=0)]
+    filtered_event = [event for event in events if
+                      event[0].event_date - datetime.now() < timedelta(days=days) and event[
+                          0].event_date - datetime.now() > timedelta(days=0, minutes=0, seconds=0)]
     return render_template('upcoming-events.html', filtered_events=filtered_event, days=days, form=form)
 
 
@@ -431,7 +456,20 @@ def upcoming_events():
 @employee
 def edit_event(booking_id):
     current_event = db.session.query(Event).filter_by(booking_id=booking_id).first()
-    edit_form = EventForm(
+    
+    alt_contact = ""
+    alt_contact_name = ""
+    referrer_contact = ""
+    referrer_name = ""
+    
+    if current_event.contacts:
+        alt_contact = current_event.contacts.mobile_number
+        alt_contact_name = current_event.contacts.contact_name
+    if current_event.referred_by:
+        referrer_contact = current_event.contacts.mobile_number
+        referrer_name = current_event.contacts.contact_name
+    
+    form = EventForm(
         first_name=current_event.client.client_first_name,
         last_name=current_event.client.client_last_name,
         company_name=current_event.client.company_name,
@@ -442,9 +480,39 @@ def edit_event(booking_id):
         start_time=current_event.start_time,
         duration=current_event.duration,
         event_type=current_event.type_id,
-        additional_information=current_event.additional_information
+        
+        alt_contact=alt_contact,
+        alt_contact_name=alt_contact_name,
+        
+        referrer_contact=referrer_contact,
+        referrer_name=referrer_name,
+        
+        additional_information=current_event.additional_information,
     )
-    return render_template('edit-event.html', form=edit_form)
+    print(type(current_event.contacts.mobile_number))
+    
+    print(type(current_event.contacts.mobile_number))
+    
+    if request.method == "POST":
+        print(form.primary_contact.data)
+        current_event.client.client_first_name = form.first_name.data
+        current_event.client.client_last_name = form.last_name.data
+        current_event.client.company_name = form.company_name.data
+        current_event.client.primary_contact = form.primary_contact.data
+        current_event.event_name = form.event_name.data
+        current_event.event_date = form.event_date.data
+        current_event.start_time = form.start_time.data
+        current_event.duration = form.duration.data
+        current_event.type_id = form.event_type.data
+        current_event.additional_information = form.additional_information.data
+        current_event.contacts.mobile_number = form.alt_contact.data
+        current_event.contacts.contact_name = form.alt_contact_name.data
+        current_event.referred_by.mobile_number = form.referrer_contact.data
+        current_event.referred_by.contact_name = form.referrer_name.data
+        
+        db.session.commit()
+        return redirect(url_for('phototainment.view_booking', booking_id=current_event.booking_id))
+    return render_template('edit-event.html', form=form)
 
 
 @custom_bp.route('/charts', methods=["GET", "POST"])
@@ -455,7 +523,7 @@ def charts():
     days = 30
     if request.method == "POST":
         days = int(form.days.data)
-        
+    
     events = db.session.query(Event)
     filtered_event = [event for event in events if datetime.now() - event.lead_date < timedelta(days=days)]
     for event in events:
@@ -502,9 +570,10 @@ def generate_report():
                 for event in filtered_event]
         
         if request.form.get('past_events'):
-
+            
             completed_events = [event for event in events if
-                                datetime.strptime(request.form.get('from-date'), '%Y-%m-%d') < event[0].lead_date < datetime.strptime(request.form.get('to-date'), '%Y-%m-%d')]
+                                datetime.strptime(request.form.get('from-date'), '%Y-%m-%d') < event[
+                                    0].lead_date < datetime.strptime(request.form.get('to-date'), '%Y-%m-%d')]
             print(completed_events)
             for event in events:
                 print(datetime.strptime(request.form.get('from-date'), '%Y-%m-%d') < event[0].lead_date)
@@ -525,6 +594,7 @@ def generate_report():
             flash(message="Please select a valid date range")
     return render_template('report.html', today=today, start_date=start_date)
 
+
 @custom_bp.route('/download-report', methods=["GET", "POST"])
 @login_required
 @admin
@@ -542,6 +612,7 @@ def download_report():
         }
         for event in events]
     return flask_csv.send_csv(data, "report.csv", list(data[0].keys()))
+
 
 @custom_bp.route('/forgot_password', methods=["GET", "POST"])
 @login_required

@@ -6,37 +6,68 @@
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
-    <table class="styled-table col-12">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>User Name</th>
-                <th>Role</th>
-                <th>Job Description</th>
-                <th style="width:15%;">Manage</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
+
+<div class="row m-0">
+    <div class="col-12">
+        <ul class="table-main user-table">
+            <li class="table-head">
+                <ul class="table-row">
+                    <li class="table-item">Id</li>
+                    <li class="table-item">User Name</li>
+                    <li class="table-item">Role</li>
+                    <li class="table-item">Job Description</li>
+                    <li class="table-item" style="width:15%;">Manage</li>
+                </ul>
+            </li>
+            <li class="table-body">
+
+                {% for user in users %}
                 {% if not user.id == 1 %}
-                    <tr>
-                        <td>{{user.id}}</td>
-                        <td>{{user.username.title()}}</td>
-                        <td>{{user.role.role_name}}</td>
-                        <td>{{user.job_description}}</td>
-                        <td>
-                            <button  class="btn btn-primary" onclick="deleteUser('{{ url_for('phototainment.delete_user', user_id=user.id) }}')">Delete</button>
-                            <button class="btn btn-dark" onclick="editUser('{{ url_for('phototainment.edit_user', user_id=user.id) }}')">Edit</button>
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+                <ul class="table-row">
+                    <li class="table-item">
+                        {{user.id}}
+                    </li>
+                    <li class="table-item">{{user.username.title()}}</li>
+                    <li class="table-item">{{user.role.role_name}}</li>
+                    <li class="table-item">{{user.job_description}}</li>
+                    <li class="table-item">
+                        <a class="edit-btn"
+                           href="{{ url_for('phototainment.edit_user', user_id=user.id) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17.846" height="17.849"
+                                 viewBox="0 0 17.846 17.849">
+                                <path id="edit_baseline"
+                                      d="M4.5,18.627v3.718H8.217L19.181,11.38,15.464,7.662ZM22.056,8.5a.988.988,0,0,0,0-1.4l-2.32-2.32a.987.987,0,0,0-1.4,0L16.525,6.6l3.717,3.718L22.056,8.5Z"
+                                      transform="translate(-4.5 -4.496)" fill="#f39800"/>
+                            </svg>
+
+                        </a>
+
+                        <button class="delete-btn"
+                                onclick="deleteUser('{{ url_for('phototainment.delete_user', user_id=user.id) }}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14.737" height="17.849"
+                                 viewBox="0 0 14.737 17.849">
+                                <path id="delete_baseline"
+                                      d="M8.553,20.366a2.053,2.053,0,0,0,2.105,1.983h8.421a2.053,2.053,0,0,0,2.105-1.983V8.466H8.553ZM22.237,5.492H18.553L17.5,4.5H12.237l-1.053.992H7.5V7.475H22.237Z"
+                                      transform="translate(-7.5 -4.5)" fill="#f39800"/>
+                            </svg>
+
+                        </button>
+
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
 {% endblock %}
 
+{% block side_bar %}{% include 'right-bar.html' %}{% endblock %}
+
 {% block custom_scripts %}
-    <script>
+<script>
         function deleteUser(redirect) {
             var txt;
             var isAdd = confirm("Do you want to delete the selected user?");
@@ -47,5 +78,7 @@
         function editUser(redirect) {
             window.location.href = redirect;
         }
-    </script>
+
+
+</script>
 {% endblock %}

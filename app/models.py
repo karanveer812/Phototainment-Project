@@ -77,24 +77,22 @@ class Client(db.Model):
 
 
 #################### Contact Model #####################
-class ContactDetails(db.Model):
+class AdditionalContact(db.Model):
     __tablename__ = "phone_details"
     phone_id = db.Column(db.Integer, primary_key=True)
     contact_name = db.Column(db.String(50), nullable=False)
     mobile_number = db.Column(db.String(50), nullable=False)
     
-    contacts = relationship("BookingContacts", back_populates="phone_numbers")
-
-
-class BookingContacts(db.Model):
-    __tablename__ = "contacts"
-    contact_id = db.Column(db.Integer, primary_key=True)
-    
-    phone_id = db.Column(db.Integer, db.ForeignKey("phone_details.phone_id"), nullable=False)
-    phone_numbers = relationship("ContactDetails", back_populates="contacts")
-    
-    booking_id = db.Column(db.Integer, db.ForeignKey("event_booking.booking_id"), nullable=False)
     booking = relationship("Event", back_populates="contacts")
+
+
+class ReferralContact(db.Model):
+    __tablename__ = "referred_by"
+    referee_id = db.Column(db.Integer, primary_key=True)
+    contact_name = db.Column(db.String(50), nullable=False)
+    mobile_number = db.Column(db.String(50), nullable=False)
+
+    booking = relationship("Event", back_populates="referred_by")
 
 
 #################### Venue Model #####################
@@ -116,12 +114,17 @@ class Event(db.Model):
     event_name = db.Column(db.String(50), nullable=True)
     lead_date = db.Column(db.DateTime, nullable=False)
     event_date = db.Column(db.DateTime, nullable=False)
-    duration = db.Column(db.Time, nullable=False)
+    duration = db.Column(db.Text, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     additional_information = db.Column(db.String(200), nullable=True)
-    
-    contacts = relationship("BookingContacts", back_populates="booking")
+
     comment = relationship("Comment", back_populates="booking")
+
+    phone_id = db.Column(db.Integer, db.ForeignKey("phone_details.phone_id"), nullable=True)
+    contacts = relationship("AdditionalContact", back_populates="booking")
+
+    referee_id = db.Column(db.Integer, db.ForeignKey("referred_by.referee_id"), nullable=True)
+    referred_by = relationship("ReferralContact", back_populates="booking")
     
     venue_id = db.Column(db.Integer, db.ForeignKey("event_venue.venue_id"), nullable=True)
     venue = relationship("EventVenue", back_populates="booking")

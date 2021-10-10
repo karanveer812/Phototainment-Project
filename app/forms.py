@@ -59,17 +59,18 @@ class EventForm(FlaskForm):
                               validators=[validators.DataRequired("Please Enter"), validators.Email()])
     primary_contact = IntegerField("Primary Contact*")
 
-    secondary_contact1 = IntegerField("Secondary Contact")
-    contact_person1 = StringField("Contact Name")
+    alt_contact = IntegerField("Secondary Contact")
+    alt_contact_name = StringField("Contact Name")
     
-    secondary_contact2 = IntegerField("Secondary Contact")
-    contact_person2 = StringField("Contact Name")
+    referrer_contact = IntegerField("Secondary Contact")
+    referrer_name = StringField("Contact Name")
     
     event_name = StringField("Event Name*", validators=[validators.DataRequired("Please Enter")])
 
     event_date = DateField("Start Date*", validators=[validators.DataRequired("Please Enter")])
     start_time = TimeField(validators=[validators.DataRequired("Please Enter")])
-    duration = TimeField(validators=[validators.DataRequired("Please Enter")], format='%H:%M')
+    duration = StringField("Duration*", validators=[validators.DataRequired("Please Enter")])
+    # duration = TimeField(validators=[validators.DataRequired("Please Enter")], format='%H:%M')
     event_type = SelectField('Event Type*',
                              choices=[(type.type_id, type.event_type) for type in EventType.query.order_by('event_type')],
                              validators=[validators.DataRequired("Please Enter")])
