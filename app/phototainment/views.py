@@ -489,9 +489,6 @@ def edit_event(booking_id):
         
         additional_information=current_event.additional_information,
     )
-    print(type(current_event.contacts.mobile_number))
-    
-    print(type(current_event.contacts.mobile_number))
     
     if request.method == "POST":
         print(form.primary_contact.data)
