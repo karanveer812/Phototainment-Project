@@ -40,7 +40,6 @@
 
 
 {% endblock %}
-{% block side_bar %}{% include 'right-bar.html' %}{% endblock %}
 
 {% block custom_scripts %}
 <script>
@@ -57,5 +56,6 @@ function switchTab(evt, filter) {
   document.getElementById(filter).style.display = "block";
   evt.currentTarget.className += " active";
 }
+document.getElementById('dashboard-lnk').classList.add("active-link");
 </script>
 {% endblock %}

@@ -74,6 +74,14 @@ button:focus {
 /* ------------
        Navbar
 ---------------*/
+.logo-outer {
+    padding: 15px;
+    background: #fff;
+}
+#mobile-logo {
+    display: none;
+    width: 100%;
+}
 .navbar {
     padding: 15px 10px;
     background: #fff;
@@ -98,18 +106,27 @@ button:focus {
     display: flex;
     align-items: stretch;
 }
+#mobile-nav {
+    display: none;
+}
+.nav-toggle {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+}
 
 #sidebar {
-    min-width: 250px;
-    max-width: 250px;
     background: #000000;;
     color: #fff;
     transition: all 0.3s;
 }
+#sidebar #mobile-nav {
+    padding: 10px;
+}
 
 #sidebar.active {
-    min-width: 80px;
-    max-width: 80px;
+    width: 345px;
     text-align: center;
 }
 
@@ -134,6 +151,30 @@ button:focus {
     height: 60px;
     margin: auto;
     border-radius: 60px;
+    font-size: 15px !important;
+    display: block;
+}
+#sidebar.active #desktop-nav li a svg {
+    margin-right: 15px;
+}
+#sidebar.active #desktop-nav li {
+    float: left;
+    width:100%;
+    position: relative
+}
+#sidebar.active #desktop-nav li a {
+    width: 100%;
+    padding: 20px 25px;
+    text-align: left;
+    display: flex;
+    float: left;
+    align-items: center;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+}
+#sidebar.active #mobile-nav li a {
+    position: relative;
 }
 
 #sidebar.active ul li a i {
@@ -147,20 +188,13 @@ button:focus {
     padding: 10px !important;
 }
 .icon-settings {
-    margin: 8vh 0;
+    margin: 6vh 0;
 }
 
-#sidebar ul.components {
+#sidebar #mobile-nav.components {
     padding: 7vh 0;
 }
 
-#sidebar ul li a {
-    padding: 10px;
-    font-size: 15px !important;
-    display: block;
-    position: relative;
-    transition: all 1s ease;
-}
 #sidebar ul li a span {
     display: none;
     background: #FFA101;
@@ -172,6 +206,7 @@ button:focus {
     white-space: pre;
     z-index: 9;
 }
+
 #sidebar ul li a span::before {
     content: '';
     width: 10px;
@@ -190,34 +225,50 @@ button:focus {
     margin-right: 10px;
 }
 
-a[data-toggle="collapse"] {
-    position: relative;
-}
-ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: rgb(255, 127, 0, 0.7);
-    box-shadow: 0px 0px 14px rgb(52 52 52 / 20%) inset;
-}
-ul.CTAs {
-    padding: 20px;
-}
-ul.CTAs a {
-    text-align: center;
-    font-size: 0.9em !important;
-    display: block;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    padding-left: 20px !important;
-}
-a.download {
-    background: #fff;
-    color: #7386D5;
-}
-a.article, a.article:hover {
+a.article {
     background: #FFA101 !important;
     color: #fff !important;
 }
+.active-link {
+    border-radius: 0px !important;
+    background: #fff;
+    color: #000 !important;
+    overflow: hidden;
+}
+.active-link.fill-color svg rect, .active-link.fill-color svg path {
+    fill: #000;
+}
+.active-link.stroke-color svg line, .active-link.stroke-color svg g {
+    stroke: #000;
+}
+.active-link.stroke-fill-color svg path {
+    stroke: #000;
+}
+.active-link::after, .active-link::before {
+     content: "";
+    display: block;
+    width: 85px;
+    height: 85px;
+    position: absolute;
+    /* z-index: 9; */
+    border-radius: 50%;
+    bottom: 60px;
+    right: 0;
+    box-shadow: 40px 40px 0 0 white;
+}
+.active-link::after {
+     content: "";
+    display: block;
+    width: 85px;
+    height: 85px;
+    position: absolute;
+    /* z-index: 9; */
+    border-radius: 50%;
+    bottom: -85px;
+    right: 0;
+    box-shadow: 40px -40px 0 0 white;
+}
+
 
 input[type="time"]#duration::-webkit-calendar-picker-indicator {
     display: none;
@@ -268,6 +319,7 @@ input[type="time"]#duration::-webkit-calendar-picker-indicator {
     background: #fff;
     min-height: 100vh;
     width: 100% !important;
+    position: relative;
     transition: all 0.3s;
 }
 
@@ -435,51 +487,6 @@ input[type="time"]#duration::-webkit-calendar-picker-indicator {
 
 
 
-
-
-/*---------------------- Remove -----------------*/
-.styled-table {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-}
-.styled-table tbody {
-    background: #fff;
-}
-.styled-table thead tr {
-    color: #FFA101;
-    text-align: left;
-}
-
-.styled-table th,
-.styled-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid;
-}
-.styled-table td:last-child {
-    border-bottom: none;
-    padding-left: 50px;
-}
-.styled-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-.styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-.styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
-}
-.styled-table tbody tr.active-row {
-    font-weight: bold;
-    color: #009879;
-}
-
-
-
-
 .event-form .form-cell{
     padding: 0 10px;
 }
@@ -633,4 +640,10 @@ input[type="time"]#duration::-webkit-calendar-picker-indicator {
     stroke: white;
     stroke-width: 15px;
 }
+
+
+
+
+
+
 

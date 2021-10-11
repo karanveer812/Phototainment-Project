@@ -616,3 +616,7 @@ def download_report():
 @employee
 def forgot_password():
     return render_template('forgot-password.html')
+
+@custom_bp.route('/test')
+def test():
+    return render_template('test.html')
