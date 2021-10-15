@@ -13,30 +13,153 @@
 {% endif %}
 {% endwith %}
 
+<section class="pb-0">
+    <div class="container-fluid">
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row gx-5 bg-white">
+                    <!-- Item -->
+                    <a href="{{ url_for('phototainment.upcoming_events') }}"
+                       class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                        <div class="d-flex align-items-center">
+                            <div class="icon flex-shrink-0 bg-violet">
+                                <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                    <use xlink:href="#time-1"></use>
+                                </svg>
+                            </div>
+                            <div class="mx-3">
+                                <h6 class="h4 fw-light text-gray-600 mb-3">Upcoming<br>Events</h6>
+                            </div>
+                            <div class="number"><strong class="text-lg">25</strong></div>
+                        </div>
+                    </a>
+                    <!-- Item -->
+                    <a href="{{ url_for('phototainment.add_event') }}"
+                       class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                        <div class="d-flex align-items-center">
+                            <div class="icon flex-shrink-0 bg-red">
+                                <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                    <use xlink:href="#survey-1"></use>
+                                </svg>
+                            </div>
+                            <div class="mx-3">
+                                <h6 class="h4 fw-light text-gray-600 mb-3">Create<br>Bookings</h6>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Item -->
+                    <a href="{{ url_for('phototainment.search_event') }}"
+                       class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                        <div class="d-flex align-items-center">
+                            <div class="icon flex-shrink-0 bg-green">
+                                <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                    <use xlink:href="#find-1"></use>
+                                </svg>
+                            </div>
+                            <div class="mx-3">
+                                <h6 class="h4 fw-light text-gray-600 mb-3">Search<br>Bookings</h6>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Item -->
+                    <a href="#" class="col-xl-3 col-sm-6 py-4">
+                        <div class="d-flex align-items-center">
+                            <div class="icon flex-shrink-0 bg-orange">
+                                <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                    <use xlink:href="#user-1"></use>
+                                </svg>
+                            </div>
+                            <div class="mx-3">
+                                <h6 class="h4 fw-light text-gray-600 mb-3">Search<br>Client</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<div class="tab">
-    <button class="tablinks active" onclick="switchTab(event, 'Bookings')">Recent Bookings</button>
-    <button class="tablinks" onclick="switchTab(event, 'Pending')">Pending</button>
-    <button class="tablinks" onclick="switchTab(event, 'Completed')">Recently Completed</button>
-</div>
+{% if current_user.role.role_id == 1 %}
+<section class="pb-0">
+    <div class="container-fluid">
+        <div class="row align-items-stretch">
+            <!-- Statistics -->
+            <div class="col-lg-3 col-12">
+                <a href="{{ url_for('phototainment.register') }}" class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="icon flex-shrink-0 bg-red"><i class="fas fa-user-plus"></i></div>
+                            <div class="ms-3"><strong class="text-md d-block lh-1 mb-1">Add</strong><strong
+                                    class="text-md d-block lh-1 mb-1">New User</strong></div>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('phototainment.manage_user') }}" class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="icon flex-shrink-0 bg-green"><i class="far fa-calendar"></i></div>
+                            <div class="ms-3"><strong class="text-md d-block lh-1 mb-1">Manage</strong><strong
+                                    class="text-md d-block lh-1 mb-1">Existing User</strong></div>
+                        </div>
+                    </div>
+                </a>
+                <a href="{{ url_for('phototainment.generate_report') }}" class="card mb-0">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="icon flex-shrink-0 bg-orange"><i class="fas fa-download"></i></div>
+                            <div class="ms-3"><strong class="text-md d-block lh-1 mb-1">Download</strong><strong
+                                    class="text-md d-block lh-1 mb-1">Progress Reports</strong></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
-<div id="Bookings" class="tabcontent" style="display:block">
-    {% with filtered_events=all_bookings %}
-    {% include 'events-table.html' %}
-    {% endwith %}
-</div>
+            <!-- Line Chart            -->
+            <div class="col-lg-9 col-12">
+                <div class="card mb-0 h-100">
+                    <div class="card-body">
+                        <canvas id="lineChartExample"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div id="Pending" class="tabcontent">
-    {% with filtered_events=pending_bookings %}
-    {% include 'events-table.html' %}
-    {% endwith %}
-</div>
+</section>
 
-<div id="Completed" class="tabcontent">
-    {% with filtered_events=completed_bookings %}
-    {% include 'events-table.html' %}
-    {% endwith %}
-</div>
+
+
+
+{% endif %}
+
+
+<section class="index-tables">
+    <div class="tab">
+        <button class="tablinks active" onclick="switchTab(event, 'Bookings')">Recent Bookings</button>
+        <button class="tablinks" onclick="switchTab(event, 'Pending')">Pending</button>
+        <button class="tablinks" onclick="switchTab(event, 'Completed')">Recently Completed</button>
+    </div>
+
+
+    <div id="Bookings" class="tabcontent" style="display:block">
+        {% with filtered_events=all_bookings %}
+        {% include 'events-table.html' %}
+        {% endwith %}
+    </div>
+
+    <div id="Pending" class="tabcontent">
+        {% with filtered_events=pending_bookings %}
+        {% include 'events-table.html' %}
+        {% endwith %}
+    </div>
+
+    <div id="Completed" class="tabcontent">
+        {% with filtered_events=completed_bookings %}
+        {% include 'events-table.html' %}
+        {% endwith %}
+    </div>
+</section>
 
 
 {% endblock %}
@@ -56,6 +179,12 @@ function switchTab(evt, filter) {
   document.getElementById(filter).style.display = "block";
   evt.currentTarget.className += " active";
 }
-document.getElementById('dashboard-lnk').classList.add("active-link");
+    document.getElementById('dashboard-lnk').classList.add("active-link");
+
+let graph_data =  [30, 50, 40, 61, 42, 35, 40]
+
 </script>
+    <script src="{{ url_for('static', filename='js/charts/Chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/charts/chart-index.js') }}"></script>
+
 {% endblock %}

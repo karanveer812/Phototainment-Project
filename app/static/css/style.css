@@ -76,7 +76,7 @@ button:focus {
 ---------------*/
 .logo-outer {
     padding: 15px;
-    background: #fff;
+    background: #f7f7f7;
 }
 #mobile-logo {
     display: none;
@@ -103,7 +103,6 @@ button:focus {
     SIDE-NAV STYLE
 ----------------------------------------------------- */
 .wrapper {
-    display: flex;
     align-items: stretch;
 }
 #mobile-nav {
@@ -231,7 +230,7 @@ a.article {
 }
 .active-link {
     border-radius: 0px !important;
-    background: #fff;
+    background: #f7f7f7;
     color: #000 !important;
     overflow: hidden;
 }
@@ -243,30 +242,6 @@ a.article {
 }
 .active-link.stroke-fill-color svg path {
     stroke: #000;
-}
-.active-link::after, .active-link::before {
-     content: "";
-    display: block;
-    width: 85px;
-    height: 85px;
-    position: absolute;
-    /* z-index: 9; */
-    border-radius: 50%;
-    bottom: 60px;
-    right: 0;
-    box-shadow: 40px 40px 0 0 white;
-}
-.active-link::after {
-     content: "";
-    display: block;
-    width: 85px;
-    height: 85px;
-    position: absolute;
-    /* z-index: 9; */
-    border-radius: 50%;
-    bottom: -85px;
-    right: 0;
-    box-shadow: 40px -40px 0 0 white;
 }
 
 
@@ -316,7 +291,7 @@ input[type="time"]#duration::-webkit-calendar-picker-indicator {
 ----------------------------------------------------- */
 #content {
     padding: 30px 40px;
-    background: #fff;
+    background: #f7f7f7;
     min-height: 100vh;
     width: 100% !important;
     position: relative;
@@ -326,6 +301,62 @@ input[type="time"]#duration::-webkit-calendar-picker-indicator {
 .bg-none {
     background: none !important;
 }
+
+
+/*---------------
+        INDEX
+ ---------------*/
+
+.admin-control .card a {
+    width: 100%;
+    padding: 25px;
+    text-decoration: none;
+    color: #000;
+    transition: all 0.3s ease;
+}
+.admin-control .card a:hover {
+    background: #FFA101;
+    color: #fff;
+}
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border-bottom: 1px solid #E2E7EE;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  position: relative;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover::before, .tab button.active::before {
+    position: absolute;
+    bottom: 0;
+    content: '';
+    width: 90%;
+    height: 5px;
+    background: #FFA101;
+    border-radius: 20px;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+    margin: 35px 0 0 0;
+    border-top: none;
+}
+
 
 
 /* ---------------------------------------------------
@@ -586,60 +617,19 @@ input[type="time"]#duration::-webkit-calendar-picker-indicator {
     display:none;
 }
 
-
-
-.evt_details{
-}
-
-
-
-
-
-
-/* Style the tab */
-.tab {
-  overflow: hidden;
-  border-bottom: 1px solid #E2E7EE;
-}
-
-/* Style the buttons inside the tab */
-.tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-  font-size: 17px;
-  position: relative;
-}
-
-/* Change background color of buttons on hover */
-.tab button:hover::before, .tab button.active::before {
-    position: absolute;
-    bottom: 0;
-    content: '';
-    width: 90%;
-    height: 5px;
-    background: #FFA101;
-    border-radius: 20px;
-    left: 50%;
-    transform: translateX(-50%)
-}
-
-/* Style the tab content */
-.tabcontent {
-  display: none;
-    margin: 35px 0 0 0;
-    border-top: none;
-}
-
-
 #successful_events g path {
     stroke: white;
     stroke-width: 15px;
 }
+
+
+
+
+
+
+
+
+
 
 
 

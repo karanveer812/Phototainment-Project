@@ -8,16 +8,16 @@
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
 <div class="row">
-        <div class="col-4">
-            <form action="" method="POST" role="form">
-                <div class="row">
-                    <div class="col-8">{{ form.days(class="form-control",id="search_days", type="Select",value="") }}
-                    </div>
-                    <div class="col-4">{{ form.submit(class="btn btn-success add-event-btn m-0") }}</div>
+    <div class="col-4">
+        <form action="" method="POST" role="form">
+            <div class="row">
+                <div class="col-8">{{ form.days(class="form-control",id="search_days", type="Select",value="") }}
                 </div>
-            </form>
-        </div>
+                <div class="col-4">{{ form.submit(class="btn btn-success add-event-btn m-0") }}</div>
+            </div>
+        </form>
     </div>
+</div>
 <div class="tab">
     <button class="tablinks active" onclick="switchTab(event, 'Barchart')">Event Data</button>
     <button class="tablinks" onclick="switchTab(event, 'Piechart')">Successful Events</button>
@@ -26,6 +26,18 @@
 
 <div id="Barchart" class="tabcontent" style="display:block">
     <div id="event_data"></div>
+
+
+<div class="col-lg-8">
+
+
+                  <div class="card mb-0">
+
+                    <div class="card-body">
+                      <canvas id="barChartExample"></canvas>
+                    </div>
+                  </div>
+                </div>
 </div>
 
 <div id="Piechart" class="tabcontent">
@@ -35,9 +47,8 @@
 <div id="Linegraph" class="tabcontent">
 
 
-        <div id="chart_div3"></div>
+    <div id="chart_div3"></div>
 </div>
-
 
 
 {% endblock %}
@@ -58,6 +69,9 @@ function switchTab(evt, filter) {
   }
   document.getElementById(filter).style.display = "block";
   evt.currentTarget.className += " active";
+
+
+
 }
 
 
@@ -128,5 +142,17 @@ google.load('visualization', '1.0', {'packages':['corechart']});
 
           }
 document.getElementById('charts-lnk').classList.add("active-link");
+
+let bar_label =  [];
+let bar_data =  [];
+
+{% for data in bar_graph_data %}
+                bar_label.push('{{data}}')
+                bar_data.push('{{bar_graph_data[data]}}')
+              {% endfor %}
+
+
 </script>
+<script src="{{ url_for('static', filename='js/charts/Chart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts/charts-main.js') }}"></script>
 {% endblock %}

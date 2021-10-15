@@ -9,9 +9,30 @@
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
     <div class="row">
-        <div class="col-sm-12 login-main text-center">
+        <div class="col-sm-12 login-main">
             <div class="col-lg-5 col-md-7 col-xs-11 mx-auto float-none login-form">
                 {{ wtf.quick_form(form) }}
+
+
+                <div class="col-lg-12">
+                  <form action="" method="post" role="form">
+                        <div class="mb-3">
+                            <label class="control-label" for="event_name">Event Name*</label>
+
+
+
+
+                          <label class="form-label control-label" for="user_name">Email address</label>
+                          {{ form.username(class="form-control",id="username", required="required", type="text", placeholder="User Name") }}
+                          <div class="form-text" id="emailHelp">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label" for="exampleInputPassword1">Password</label>
+                          <input class="form-control" id="exampleInputPassword1" type="password">
+                        </div>
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                      </form>
+                </div>
             </div>
         </div>
     </div>
