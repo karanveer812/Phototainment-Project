@@ -39,7 +39,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    job_description = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=True)
     
     role_id = db.Column(db.Integer, db.ForeignKey("user_role.role_id"), nullable=False)
     role = relationship("Role", back_populates="user")
@@ -63,6 +63,14 @@ class EventStatus(db.Model):
     status = db.Column(db.String(50), unique=True, nullable=False)
     events = relationship("Event", back_populates="status")
 
+#################### Company Model #####################
+
+class Company(db.Model):
+    __tablename__ = "company"
+    company_id = db.Column(db.Integer, primary_key=True)
+    company_name = db.Column(db.String(50), unique=True, nullable=False)
+    
+    client = relationship("Client", back_populates="company")
 
 #################### Client Model #####################
 class Client(db.Model):
@@ -71,9 +79,12 @@ class Client(db.Model):
     client_first_name = db.Column(db.String(50), nullable=False)
     client_last_name = db.Column(db.String(50), nullable=False)
     client_email = db.Column(db.String(50), nullable=False)
-    company_name = db.Column(db.String(50), nullable=False)
     primary_contact = db.Column(db.String(10), nullable=False)
+    
     events = relationship("Event", back_populates="client")
+
+    company_id = db.Column(db.Integer, db.ForeignKey("company.company_id"), nullable=True)
+    company = relationship("Company", back_populates="client")
 
 
 #################### Contact Model #####################
@@ -81,7 +92,7 @@ class AdditionalContact(db.Model):
     __tablename__ = "phone_details"
     phone_id = db.Column(db.Integer, primary_key=True)
     contact_name = db.Column(db.String(50), nullable=False)
-    mobile_number = db.Column(db.String(50), nullable=False)
+    mobile_number = db.Column(db.String(10), nullable=False)
     
     booking = relationship("Event", back_populates="contacts")
 
@@ -90,7 +101,7 @@ class ReferralContact(db.Model):
     __tablename__ = "referred_by"
     referee_id = db.Column(db.Integer, primary_key=True)
     contact_name = db.Column(db.String(50), nullable=False)
-    mobile_number = db.Column(db.String(50), nullable=False)
+    mobile_number = db.Column(db.String(10), nullable=False)
 
     booking = relationship("Event", back_populates="referred_by")
 
@@ -179,8 +190,7 @@ if not db.session.query(User).filter_by(id=1).first():
     admin_user = User(
         username="Admin".lower(),
         role=db.session.query(Role).filter_by(role_name="Admin").first(),
-        password=generate_password_hash("123456", method='pbkdf2:sha256', salt_length=8),
-        job_description="Administrator/Owner"
+        password=generate_password_hash("123456", method='pbkdf2:sha256', salt_length=8)
     )
     db.session.add(admin_user)
     db.session.commit()

@@ -111,12 +111,12 @@
             <!-- Line Chart            -->
             <div class="col-lg-9 col-12">
                 <div class="card mb-0 h-100">
-                        <div class="card-header position-relative px-4">
-                            <h3 class="h4 mb-0">Monthly Events Report</h3>
-                            <div class="card-close">
-                                <a href="#" class=""></a>
-                                <button id="btnDownload" class="dropdown-toggle text-sm" type="button">Save</button>
-                            </div>
+                    <div class="card-header position-relative px-4">
+                        <h3 class="h4 mb-0">Monthly Events Report</h3>
+                        <div class="card-close">
+                            <a href="#" class=""></a>
+                            <button id="btnDownload" class="dropdown-toggle text-sm" type="button">Save</button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <canvas id="monthlyEventChart"></canvas>
@@ -126,11 +126,12 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <section class="py-6">
     <div class="container-fluid">
         <div class="row align-items-stretch">
-            <div class="col-lg-9">
+            <div class="col">
                 <div class="card mb-0">
                     <div class="card-header">
                         <h3 class="h4 mb-0">Events this week</h3>
@@ -163,6 +164,62 @@
                     </div>
                 </div>
             </div>
+            {% if current_user.role.role_id == 1 %}
+            <div class="col-lg-3 p-0">
+                <div class="col-lg-12">
+                    <div class="card mb-0">
+                        <div class="card-header position-relative px-4">
+                            <div class="card-close">
+                                <a href="#" class=""></a>
+                                <button class="dropdown-toggle text-sm" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#addCompany"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="modal fade text-start" id="addCompany" tabindex="-1"
+                                 aria-labelledby="addCompanyLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addCompanyLabel">Add New Type</h5>
+                                            <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ url_for('phototainment.add_company') }}">
+                                                <div class="mb-3">
+                                                    <label class="form-label control-label" for="type_name">Company
+                                                        Name</label>
+                                                    {{ company_form.company_name(class="form-control",id="type_name",
+                                                    required="required", type="text", placeholder="Company Name", autocomplete="off") }}
+                                                </div>
+
+                                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                {{ company_form.submit(class="btn btn-success") }}
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 class="h4 mb-0">Associated Companies</h3>
+                        </div>
+                        <ul class="card-body p-0">
+                            <!-- Item-->
+                            {% for company in associated_companies %}
+                            <li class="p-3 d-flex justify-content-between">
+                                <div class="d-flex">
+                                    <div class="ms-3">
+                                        <h5 class="font-weight-normal text-gray-600 mb-1">{{company}}</h5>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-3 p-0">
                 <div class="col-lg-12">
                     <div class="card mb-0">
@@ -182,24 +239,24 @@
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form method="post">
+                                            <form method="post" action="{{ url_for('phototainment.add_event_type') }}">
                                                 <div class="mb-3">
                                                     <label class="form-label control-label" for="type_name">Type
                                                         Name</label>
                                                     {{ type_form.type_name(class="form-control",id="type_name",
-                                                    required="required", type="text", placeholder="Type Name") }}
+                                                    required="required", type="text", placeholder="Type Name", autocomplete="off") }}
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label control-label" for="type_description">Type
-                                                        Name</label>
+                                                        Description</label>
                                                     {{
                                                     type_form.type_description(class="form-control",id="type_description",
-                                                    required="required", type="text", placeholder="Type Description") }}
+                                                    required="required", type="text", placeholder="Type Description", autocomplete="off") }}
                                                 </div>
                                                 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
                                                     Close
                                                 </button>
-                                                <button class="btn btn-primary" type="submit">Submit</button>
+                                                {{ type_form.submit(class="btn btn-primary") }}
 
                                             </form>
                                         </div>
@@ -223,10 +280,10 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </section>
-{% endif %}
 
 
 <section class="py-2">
@@ -289,12 +346,6 @@ function switchTab(evt, filter) {
 }
     document.getElementById('dashboard-lnk').classList.add("active-link");
 
-
-    function closeMessage() {
-        document.getElementById('message-out').classList.add("d-none");
-        }
-
-
         let graph_data =  [30, 50, 40, 61, 42, 35, 40]
 
  const monthlyEventChart = document.getElementById('monthlyEventChart');
@@ -310,6 +361,7 @@ function switchTab(evt, filter) {
         document.body.removeChild(a);
 
  });
+
 
 
 

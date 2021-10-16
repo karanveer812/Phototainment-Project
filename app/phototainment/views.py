@@ -1,4 +1,5 @@
-from flask import render_template, request, redirect, url_for, flash, Blueprint
+from flask import render_template, request, redirect, url_for, flash, Blueprint, Response
+import json
 from collections import Counter
 from sqlalchemy.exc import IntegrityError
 
@@ -9,9 +10,9 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app.privilege import admin, employee
 from datetime import datetime, timedelta, time
 from app.forms import LoginForm, RegisterForm, EventForm, EditUser, SearchForm, ChangeStatus, CommentForm, AddressForm, \
-    ChangePassword, DayRange, TypeForm
+    ChangePassword, DayRange, TypeForm, CompanyForm
 from app.models import db, User, Event, EventType, Client, AdditionalContact, ReferralContact, Comment, EventVenue, \
-    login_manager
+    login_manager, Company
 
 custom_bp = Blueprint(
     'phototainment',
@@ -74,6 +75,7 @@ def change_password():
 
 @custom_bp.route("/index", methods=["GET", "POST"])
 @login_required
+@employee
 def home():
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
@@ -90,21 +92,12 @@ def home():
     upcoming_events = [event for event in events if
                        event[0].event_date - datetime.now() < timedelta(days=7) and event[
                           0].event_date - datetime.now() > timedelta(days=0, minutes=0, seconds=0)]
-    type_form = TypeForm()
     
-    if request.method == 'POST':
-        if type_form.is_submitted():
-            new_type = EventType(
-                event_type=type_form.type_name.data
-            )
-            db.session.add(new_type)
+    associated_companies = [company.company_name.title() for company in db.session.query(Company).all()]
+    
+    type_form = TypeForm()
+    company_form = CompanyForm()
 
-            try:
-                db.session.commit()
-            except IntegrityError:
-                flash("Event type already exist")
-                db.session.rollback()
-        
     return render_template(
         "index.html",
         all_bookings=recent_bookings,
@@ -113,8 +106,48 @@ def home():
         event_types=event_types,
         upcoming_events=upcoming_events,
         type_form=type_form,
-        event_num=len(upcoming_events)
+        event_num=len(upcoming_events),
+        company_form=company_form,
+        associated_companies=associated_companies
     )
+
+@custom_bp.route("/add_event_type", methods=["POST"])
+@login_required
+@admin
+def add_event_type():
+    type_form = TypeForm()
+    new_type = EventType(
+        event_type=type_form.type_name.data
+    )
+    db.session.add(new_type)
+    
+    try:
+        db.session.commit()
+        flash("Event type has been added")
+    except IntegrityError:
+        flash("Event type already exist")
+        db.session.rollback()
+
+    return redirect(url_for('phototainment.home'))
+
+@custom_bp.route("/add-company", methods=["POST"])
+@login_required
+@admin
+def add_company():
+    company_form = CompanyForm()
+    new_company = Company(
+        company_name=company_form.company_name.data
+    )
+    db.session.add(new_company)
+    
+    try:
+        db.session.commit()
+        flash("New Company has been added")
+    except IntegrityError:
+        flash("Company already exist")
+        db.session.rollback()
+
+    return redirect(url_for('phototainment.home'))
 
 
 @custom_bp.route('/search-client', methods=["GET", "POST"])
@@ -133,7 +166,7 @@ def register():
         new_user = User(
             username=form.username.data.lower(),
             password=generate_password_hash(password=form.password.data, method='pbkdf2:sha256', salt_length=8),
-            job_description=form.job_description.data,
+            email=form.email.data,
             role_id=form.user_role.data
         )
         db.session.add(new_user)
@@ -160,6 +193,7 @@ def delete_user(user_id):
     return redirect(url_for('phototainment.manage_user'))
 
 
+
 @custom_bp.route('/edit-user/<user_id>', methods=["GET", "POST"])
 @login_required
 @admin
@@ -168,7 +202,7 @@ def edit_user(user_id):
     edit_form = EditUser(
         username=requested_user.username,
         user_role=requested_user.role_id,
-        job_description=requested_user.job_description
+        email=requested_user.email
     )
     
     if request.method == "POST":
@@ -182,6 +216,14 @@ def edit_user(user_id):
     return render_template('register.html', form=edit_form)
 
 
+@custom_bp.route('/_companies', methods=['GET'])
+@login_required
+@employee
+def get_companies():
+    
+    companies = [company.company_name.title() for company in db.session.query(Company).all()]
+    return Response(json.dumps(companies), mimetype='application/json')
+
 @custom_bp.route('/add-event', methods=["GET", "POST"])
 @login_required
 @employee
@@ -193,11 +235,20 @@ def add_event():
             client_first_name=form.first_name.data.lower(),
             client_last_name=form.last_name.data.lower(),
             client_email=form.client_email.data.lower(),
-            primary_contact=form.primary_contact.data,
-            company_name=form.company_name.data.lower()
+            primary_contact=form.primary_contact.data
         )
         db.session.add(new_client)
         db.session.commit()
+        if db.session.query(Company).filter_by(company_name=form.company.data.lower()).first():
+            new_client.company = db.session.query(Company).filter_by(company_name=form.company.data.lower()).first()
+        else:
+            if form.company.data:
+                new_company = Company(company_name=form.company.data.lower())
+                db.session.add(new_company)
+                db.session.commit()
+            
+                new_client.company = new_company
+                db.session.commit()
         alt_contact = ""
         ref_contact = ""
         if form.alt_contact.data and form.alt_contact_name.data:
@@ -256,7 +307,6 @@ def add_event():
 def delete_event(booking_id):
     event = db.session.query(Event).filter_by(booking_id=booking_id).first()
     venue = event.venue
-    contact = db.session.query(BookingContacts).filter_by(booking_id=booking_id).first()
     comments = db.session.query(Comment).filter_by(booking_id=booking_id).all()
     
     if comments:
@@ -508,7 +558,7 @@ def edit_event(booking_id):
     form = EventForm(
         first_name=current_event.client.client_first_name,
         last_name=current_event.client.client_last_name,
-        company_name=current_event.client.company_name,
+        company=current_event.client.company.company_name,
         client_email=current_event.client.client_email,
         primary_contact=current_event.client.primary_contact,
         event_name=current_event.event_name,
@@ -527,10 +577,16 @@ def edit_event(booking_id):
     )
     
     if request.method == "POST":
-        print(form.primary_contact.data)
         current_event.client.client_first_name = form.first_name.data
         current_event.client.client_last_name = form.last_name.data
-        current_event.client.company_name = form.company_name.data
+
+        if db.session.query(Company).filter_by(company_name=form.company.data.lower()).first():
+            current_event.client.company = db.session.query(Company).filter_by(company_name=form.company.data.lower()).first()
+        else:
+            new_company = Company(company_name=form.company.data.lower())
+            db.session.add(new_company)
+            current_event.client.company = new_company
+        
         current_event.client.primary_contact = form.primary_contact.data
         current_event.event_name = form.event_name.data
         current_event.event_date = form.event_date.data
@@ -538,13 +594,33 @@ def edit_event(booking_id):
         current_event.duration = form.duration.data
         current_event.type_id = form.event_type.data
         current_event.additional_information = form.additional_information.data
-        current_event.contacts.mobile_number = form.alt_contact.data
-        current_event.contacts.contact_name = form.alt_contact_name.data
-        current_event.referred_by.mobile_number = form.referrer_contact.data
-        current_event.referred_by.contact_name = form.referrer_name.data
-        
+
+        if current_event.contacts:
+            current_event.contacts.mobile_number = form.alt_contact.data
+            current_event.contacts.contact_name = form.alt_contact_name.data
+        else:
+            if form.alt_contact.data and form.alt_contact_name.data:
+                new_contact = AdditionalContact(contact_name=form.alt_contact_name.data, mobile_number=form.alt_contact.data)
+                db.session.add(new_contact)
+                db.session.commit()
+                current_event.contacts = new_contact
+                
+        if current_event.referred_by:
+            current_event.referred_by.mobile_number = form.referrer_contact.data
+            current_event.referred_by.contact_name = form.referrer_name.data
+        else:
+            if form.alt_contact.data and form.alt_contact_name.data:
+                new_contact = ReferralContact(contact_name=form.referrer_name.data, mobile_number=form.referrer_contact.data)
+                db.session.add(new_contact)
+                db.session.commit()
+                current_event.referred_by = new_contact
+                
         db.session.commit()
         return redirect(url_for('phototainment.view_booking', booking_id=current_event.booking_id))
+    if current_event.contacts:
+        print("true")
+    else:
+        print("false")
     return render_template('edit-event.html', form=form)
 
 

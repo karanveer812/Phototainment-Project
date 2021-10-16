@@ -45,9 +45,9 @@
             placeholder="Last Name") }}
         </div>
         <div class="form-group required col-4 form-cell">
-            <label class="control-label" for="company_name">Company Name</label>
-            {{ form.company_name(class="form-control",id="company_name", type="text",
-            placeholder="Company Name") }}
+            <label class="control-label" for="company">Company Name</label>
+            {{ form.company(class="form-control",id="company", type="text",
+            placeholder="Company", id="company_autocomplete") }}
         </div>
     </div>
 
@@ -133,5 +133,22 @@
     {{ form.submit(class="btn btn-success add-event-btn") }}
 </form>
 
+
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    $(function() {
+        $.ajax({
+            url: '{{ url_for("phototainment.get_companies") }}'
+            }).done(function (data){
+                $('#company_autocomplete').autocomplete({
+                    source: data,
+                    minLength: 2
+                });
+            });
+        });
+</script>
 
 

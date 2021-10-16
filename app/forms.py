@@ -31,9 +31,9 @@ class RegisterForm(FlaskForm):
                              validators=[validators.DataRequired("Please Enter")],
                              render_kw={"placeholder": "Password"}
                              )
-    job_description = StringField("Job Description",
+    email = StringField("Email",
                                   validators=[validators.DataRequired("Please Enter")],
-                                  render_kw={"placeholder": "Job Description"}
+                                  render_kw={"placeholder": "Email", "type": "email"}
                                   )
     user_role = SelectField('Roles',
                        choices=[(role.role_id, role.role_name) for role in Role.query.order_by('role_name')],
@@ -43,7 +43,7 @@ class RegisterForm(FlaskForm):
 
 class EditUser(FlaskForm):
     username = StringField("Username", validators=[validators.DataRequired("Please Enter")])
-    job_description = StringField("Job Description", validators=[validators.DataRequired("Please Enter")])
+    email = StringField("Email", validators=[validators.DataRequired("Please Enter")])
     user_role = SelectField('Roles',
                             choices=[(role.role_id, role.role_name) for role in Role.query.order_by('role_name')],
                             validators=[validators.DataRequired("Please Enter")])
@@ -53,7 +53,7 @@ class EditUser(FlaskForm):
 class EventForm(FlaskForm):
     first_name = StringField("First Name*", validators=[validators.DataRequired("Please Enter")])
     last_name = StringField("Last Name*", validators=[validators.DataRequired("Please Enter")])
-    company_name = StringField("Company Name")
+    company = StringField("Company Name", id='city_autocomplete')
 
     client_email = EmailField("Email Address*",
                               validators=[validators.DataRequired("Please Enter"), validators.Email()])
@@ -140,4 +140,8 @@ class DayRange(FlaskForm):
 class TypeForm(FlaskForm):
     type_name = StringField("Name", validators=[validators.DataRequired("Please Enter")])
     type_description = StringField("Description", validators=[validators.DataRequired("Please Enter")])
+    submit = SubmitField("Submit")
+    
+class CompanyForm(FlaskForm):
+    company_name = StringField("Company Name", validators=[validators.DataRequired("Please Enter")])
     submit = SubmitField("Submit")

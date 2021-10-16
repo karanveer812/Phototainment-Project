@@ -23,8 +23,13 @@
 </div>
 
 <div class="row">
-    <div class="col-6"><p>{{event.client.client_first_name}} {{event.client.client_last_name}}</p></div>
-    <div class="col-6">
+    <div class="col-4"><p>{{event.client.client_first_name.title()}} {{event.client.client_last_name.title()}}</p></div>
+    <div class="col-4"><p>
+        {% if event.client.company %}
+        {{event.client.company.company_name.title()}}</p>
+        {% endif %}
+    </div>
+    <div class="col-4">
         <b class="float-left">Event Status:</b>
         <form action="{{ url_for('phototainment.status_comment', booking_id = event.booking_id) }}" method="POST"
               role="search" class="status-form">
@@ -87,17 +92,17 @@
               class="comment-form">
             <div class="form-group required col-12 p-0 form-cell">
                 <div class="row">
-                    <label class="control-label col-4" for="comment_action"><em>Action Taken</em></label>
+                    <label class="control-label col-4" for="comment_action"><em>Action</em></label>
                     {{comment_form.comment_action(class="form-control
                     col-8",id="comment_action",required="required",type="text",value="",
-                    placeholder="Last Name") }}
+                    placeholder="Action") }}
                 </div>
             </div>
             <div class="form-group required col-12 p-0 form-cell">
                 <div class="row">
-                    <label class="control-label col-4" for="company_name"><em>Reason</em></label>
-                    {{ comment_form.comment_reason(class="form-control col-8",id="comment_reason",type="text",value="",
-                    placeholder="Company Name") }}
+                    <label class="control-label col-4" for="comment_reason"><em>Reason</em></label>
+                    {{ comment_form.comment_reason(class="form-control col-8", id="comment_reason",type="text",value="",
+                    placeholder="Reason") }}
                 </div>
             </div>
             {{ comment_form.add_comment(class="btn btn-success") }}
@@ -157,6 +162,7 @@
                      $('.sort-dropdown-menu').toggleClass('show');
                  });
              });
+
 
 
 

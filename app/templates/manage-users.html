@@ -16,7 +16,7 @@
                 <th>Id</th>
                 <th>User Name</th>
                 <th>Role</th>
-                <th>Job Description</th>
+                <th>Email</th>
                 <th></th>
             </tr>
             </thead>
@@ -27,7 +27,7 @@
                 <td>{{user.id}}</td>
                 <td>{{user.username.title()}}</td>
                 <td>{{user.role.role_name}}</td>
-                <td>{{user.job_description}}</td>
+                <td>{{user.email}}</td>
                 <td><a class="edit-btn"
                        href="{{ url_for('phototainment.edit_user', user_id=user.id) }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="17.846" height="17.849"
