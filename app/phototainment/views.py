@@ -117,7 +117,7 @@ def home():
 def add_event_type():
     type_form = TypeForm()
     new_type = EventType(
-        event_type=type_form.type_name.data
+        event_type=type_form.type_name.data.lower()
     )
     db.session.add(new_type)
     
@@ -136,7 +136,7 @@ def add_event_type():
 def add_company():
     company_form = CompanyForm()
     new_company = Company(
-        company_name=company_form.company_name.data
+        company_name=company_form.company_name.data.lower()
     )
     db.session.add(new_company)
     
