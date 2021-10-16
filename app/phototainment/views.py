@@ -1,7 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, Blueprint
 from collections import Counter
 from sqlalchemy.exc import IntegrityError
-from main import app
 
 import flask_csv
 
@@ -25,11 +24,6 @@ custom_bp = Blueprint(
 @login_manager.unauthorized_handler
 def unauthorized():
     return redirect(url_for('phototainment.login'))
-
-
-@app.errorhandler(404)
-def invalid_route(e):
-    return render_template('not-found.html')
 
 
 @custom_bp.route('/login/', methods=["GET", "POST"])
