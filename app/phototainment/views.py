@@ -89,7 +89,6 @@ def home():
     upcoming_events = [event for event in events if
                        event[0].event_date - datetime.now() < timedelta(days=7) and event[
                           0].event_date - datetime.now() > timedelta(days=0, minutes=0, seconds=0)]
-    
     type_form = TypeForm()
     
     if request.method == 'POST':
@@ -112,9 +111,17 @@ def home():
         completed_bookings=completed_events,
         event_types=event_types,
         upcoming_events=upcoming_events,
-        type_form=type_form
+        type_form=type_form,
+        event_num=len(upcoming_events)
     )
 
+
+@custom_bp.route('/search-client', methods=["GET", "POST"])
+@login_required
+@employee
+def client_table():
+    clients = db.session.query(Client).all()
+    return render_template('client-table.html', clients=clients)
 
 @custom_bp.route('/register-user', methods=["GET", "POST"])
 @login_required

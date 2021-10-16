@@ -170,7 +170,6 @@ button:focus {
 /* Style the tab */
 .tab {
   overflow: hidden;
-  border-bottom: 1px solid #E2E7EE;
 }
 
 /* Style the buttons inside the tab */
@@ -201,8 +200,7 @@ button:focus {
 
 /* Style the tab content */
 .tabcontent {
-  display: none;
-    margin: 35px 0 0 0;
+    display: none;
     border-top: none;
 }
 

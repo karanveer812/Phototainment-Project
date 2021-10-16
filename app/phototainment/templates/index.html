@@ -38,7 +38,7 @@
                             <div class="mx-3">
                                 <h6 class="h4 fw-light text-gray-600 mb-3">Upcoming<br>Events</h6>
                             </div>
-                            <div class="number"><strong class="text-lg">25</strong></div>
+                            <div class="number"><strong class="text-lg">{{event_num}}</strong></div>
                         </div>
                     </a>
                     <!-- Item -->
@@ -70,7 +70,7 @@
                         </div>
                     </a>
                     <!-- Item -->
-                    <a href="#" class="col-xl-3 col-sm-6 py-4">
+                    <a href="{{ url_for('phototainment.client_table') }}" class="col-xl-3 col-sm-6 py-4">
                         <div class="d-flex align-items-center">
                             <div class="icon flex-shrink-0 bg-orange">
                                 <svg class="svg-icon svg-icon-sm svg-icon-heavy">
@@ -98,7 +98,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="icon flex-shrink-0 bg-red"><i class="fas fa-user-plus"></i></div>
-                            <div class="ms-3"><strong class="text-md d-block lh-1 mb-1">Add</strong><strong
+                            <div class="ml-3"><strong class="text-md d-block line-height-1 mb-1">Add</strong><strong
                                     class="text-md d-block lh-1 mb-1">New User</strong></div>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="icon flex-shrink-0 bg-green"><i class="far fa-calendar"></i></div>
-                            <div class="ms-3"><strong class="text-md d-block lh-1 mb-1">Manage</strong><strong
+                            <div class="ml-3"><strong class="text-md d-block lh-1 mb-1">Manage</strong><strong
                                     class="text-md d-block lh-1 mb-1">Existing User</strong></div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="icon flex-shrink-0 bg-orange"><i class="fas fa-download"></i></div>
-                            <div class="ms-3"><strong class="text-md d-block lh-1 mb-1">Download</strong><strong
+                            <div class="ml-3"><strong class="text-md d-block lh-1 mb-1">Download</strong><strong
                                     class="text-md d-block lh-1 mb-1">Progress Reports</strong></div>
                         </div>
                     </div>
@@ -126,8 +126,15 @@
             <!-- Line Chart            -->
             <div class="col-lg-9 col-12">
                 <div class="card mb-0 h-100">
+                        <div class="card-header position-relative px-4">
+                            <h3 class="h4 mb-0">Monthly Events Report</h3>
+                            <div class="card-close">
+                                <a href="#" class=""></a>
+                                <button id="btnDownload" class="dropdown-toggle text-sm" type="button">Save</button>
+                            </div>
+                    </div>
                     <div class="card-body">
-                        <canvas id="lineChartExample"></canvas>
+                        <canvas id="monthlyEventChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -135,9 +142,42 @@
     </div>
 </section>
 
-<section class="py-2">
+<section class="py-6">
     <div class="container-fluid">
         <div class="row align-items-stretch">
+            <div class="col-lg-9">
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <h3 class="h4 mb-0">Events this week</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table mb-0 table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for event in upcoming_events %}
+                                <tr>
+                                    <td>
+                                        <a href="{{url_for('phototainment.view_booking', booking_id = event[0].booking_id)}}">{{event.client_first_name.title()}}
+                                            {{event.client_last_name.title()}}</a></td>
+                                    <td>{{event[0].event_name.title()}}</td>
+                                    <td>{{event[0].event_date.strftime("%d/%m/%y")|safe}}</td>
+                                    <td>{{event[0].event_date.strftime("%I:%M %p")|safe}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-3 p-0">
                 <div class="col-lg-12">
                     <div class="card mb-0">
@@ -189,48 +229,12 @@
                             <li class="p-3 d-flex justify-content-between">
                                 <div class="d-flex">
                                     <div class="ms-3">
-                                        <h5 class="fw-normal text-gray-600 mb-1">{{type.event_type}}</h5>
+                                        <h5 class="font-weight-normal text-gray-600 mb-1">{{type.event_type}}</h5>
                                     </div>
                                 </div>
                             </li>
                             {% endfor %}
                         </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="card mb-0">
-                    <div class="card-header">
-                        <h3 class="h4 mb-0">Events this week</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table mb-0 table-striped table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Event Name</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-
-                                {% for event in upcoming_events %}
-
-                                <tr>
-
-                                    <td><a href="{{url_for('phototainment.view_booking', booking_id = event[0].booking_id)}}">{{event.client_first_name.title()}} {{event.client_last_name.title()}}</a></td>
-                                    <td>{{event[0].event_name.title()}}</td>
-                                    <td>{{event[0].event_date.strftime("%d/%m/%y")|safe}}</td>
-                                    <td>{{event[0].event_date.strftime("%I:%M %p")|safe}}</td>
-                                </tr>
-
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -240,30 +244,43 @@
 {% endif %}
 
 
-<section class="index-tables">
-    <div class="tab">
-        <button class="tablinks active" onclick="switchTab(event, 'Bookings')">Recent Bookings</button>
-        <button class="tablinks" onclick="switchTab(event, 'Pending')">Pending</button>
-        <button class="tablinks" onclick="switchTab(event, 'Completed')">Recently Completed</button>
-    </div>
+<section class="py-2">
+    <div class="container-fluid">
+        <div class="col-lg-12 p-0">
+            <div class="card mb-0">
+                <div class="card-header">
+                    <h3 class="h4 mb-0">
+                        <div class="tab">
+                            <button class="tablinks active" onclick="switchTab(event, 'Bookings')">New Bookings
+                            </button>
+                            <button class="tablinks" onclick="switchTab(event, 'Pending')">Pending</button>
+                            <button class="tablinks" onclick="switchTab(event, 'Completed')">Recently Completed</button>
+                        </div>
+                    </h3>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <div id="Bookings" class="tabcontent" style="display:block">
+                            {% with filtered_events=all_bookings %}
+                            {% include 'events-table.html' %}
+                            {% endwith %}
+                        </div>
 
+                        <div id="Pending" class="tabcontent">
+                            {% with filtered_events=pending_bookings %}
+                            {% include 'events-table.html' %}
+                            {% endwith %}
+                        </div>
 
-    <div id="Bookings" class="tabcontent" style="display:block">
-        {% with filtered_events=all_bookings %}
-        {% include 'events-table.html' %}
-        {% endwith %}
-    </div>
-
-    <div id="Pending" class="tabcontent">
-        {% with filtered_events=pending_bookings %}
-        {% include 'events-table.html' %}
-        {% endwith %}
-    </div>
-
-    <div id="Completed" class="tabcontent">
-        {% with filtered_events=completed_bookings %}
-        {% include 'events-table.html' %}
-        {% endwith %}
+                        <div id="Completed" class="tabcontent">
+                            {% with filtered_events=completed_bookings %}
+                            {% include 'events-table.html' %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -295,6 +312,19 @@ function switchTab(evt, filter) {
 
         let graph_data =  [30, 50, 40, 61, 42, 35, 40]
 
+ const monthlyEventChart = document.getElementById('monthlyEventChart');
+ const btnDownload = document.getElementById('btnDownload');
+ btnDownload.addEventListener("click", function(){
+    const dataURI = monthlyEventChart.toDataURL("image/jpeg", 1)
+        const a = document.createElement("a");
+
+        document.body.appendChild(a);
+        a.href = dataURI;
+        a.download = "monthly-report.jpg";
+        a.click()
+        document.body.removeChild(a);
+
+ });
 
 
 

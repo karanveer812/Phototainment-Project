@@ -1,28 +1,33 @@
+{% extends 'base.html' %}
 
+{% block title %}Manage Events{% endblock %}
+{% block page_head %}Clients{% endblock %}
+
+
+{% block navbar %}{% include 'sidebar.html' %}{% endblock %}
+{% block content %}
 <table class="table mb-0 table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Event Name</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Status</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Company</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for event in filtered_events %}
+                                {% for client in clients %}
                                 <tr>
-                                    <td><a href="{{url_for('phototainment.view_booking', booking_id = event[0].booking_id)}}">{{event.client_first_name.title()}} {{event.client_last_name.title()}}</a></td>
-                                    <td>{{event[0].type.event_type.title()}}</td>
-                                    <td>{{event[0].event_name.title()}}</td>
-                                    <td>{{event[0].event_date.strftime("%d/%m/%y")|safe}}</td>
-                                    <td>{{event[0].event_date.strftime("%I:%M %p")|safe}}</td>
-                                    <td>{{event[0].status.status.title()}}</td>
+                                    <td><a href="#">{{client.client_first_name}}</a></td>
+                                    <td>{{client.client_last_name}}</td>
+                                    <td>{{client.client_email}}</td>
+                                    <td>{{client.primary_contact}}</td>
+                                    <td>{{client.company_name}}</td>
                                     <td>
                                         <a class="edit-btn"
-                           href="{{ url_for('phototainment.edit_event', booking_id=event[0].booking_id) }}">
+                           href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="17.846" height="17.849"
                                  viewBox="0 0 17.846 17.849">
                                 <path id="edit_baseline"
@@ -31,18 +36,9 @@
                             </svg>
 
                         </a>
-                        <a class="open-btn" target="_blank" href="{{url_for('phototainment.view_booking', booking_id = event[0].booking_id)}}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16.5" height="16.5" viewBox="0 0 16.5 16.5">
-                                <path id="Icon_material-open-in-new" data-name="Icon material-open-in-new"
-                                      d="M19.167,19.167H6.333V6.333H12.75V4.5H6.333A1.833,1.833,0,0,0,4.5,6.333V19.167A1.833,1.833,0,0,0,6.333,21H19.167A1.839,1.839,0,0,0,21,19.167V12.75H19.167ZM14.583,4.5V6.333h3.291L8.863,15.344l1.292,1.292,9.011-9.011v3.291H21V4.5Z"
-                                      transform="translate(-4.5 -4.5)" fill="#f39800"/>
-                            </svg>
-                        </a>
-
-
                         {% if current_user.role.role_id == 1 %}
                         <button class="delete-btn"
-                                onclick="deleteEvent('{{ url_for('phototainment.delete_event', booking_id=event[0].booking_id) }}')">
+                                onclick="deleteEvent('#')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14.737" height="17.849"
                                  viewBox="0 0 14.737 17.849">
                                 <path id="delete_baseline"
@@ -58,7 +54,7 @@
                                 </tbody>
                             </table>
 
-
+{% endblock %}
 {% block custom_scripts %}
 <script>
         function deleteEvent(redirect) {

@@ -2,39 +2,39 @@
           <!-- Sidebar Header-->
           <div class="sidebar-header d-flex align-items-center py-4 px-3"><img class="avatar shadow-0 img-fluid rounded-circle" src="{{ url_for('static', filename='img/user.png') }}" alt="...">
             <div class="ms-3 title">
-              <h1 class="h4 mb-2">{{ current_user.username.title() }}</h1>
+              <h1 class="h4 ml-2">{{ current_user.username.title() }}</h1>
 
             </div>
           </div>
           <ul class="list-unstyled py-4">
             <li class="sidebar-item"><a id="dashboard-lnk" class="sidebar-link" href="{{ url_for('phototainment.home') }}">
-                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy mr-xl-2">
                   <use xlink:href="#real-estate-1"> </use>
                 </svg>Home </a>
             </li>
               <li class="sidebar-item"><a id="charts-lnk" class="sidebar-link" href="{{ url_for('phototainment.charts') }}">
-                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy mr-xl-2">
                   <use xlink:href="#sales-up-1"> </use>
                 </svg>Charts </a>
             </li>
               <li class="sidebar-item"><a id="upcoming-lnk" class="sidebar-link" href="{{ url_for('phototainment.upcoming_events') }}">
-                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy mr-xl-2">
                   <use xlink:href="#time-1"> </use>
                 </svg>Upcoming Events </a>
             </li>
               <li class="sidebar-item"><a id="search-lnk" class="sidebar-link" href="{{ url_for('phototainment.search_event') }}">
-                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy mr-xl-2">
                   <use xlink:href="#find-1"> </use>
                 </svg>Search Events </a>
             </li>
               <li class="sidebar-item"><a id="add-lnk" class="sidebar-link" href="{{ url_for('phototainment.add_event') }}">
-                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy mr-xl-2">
                   <use xlink:href="#survey-1"> </use>
                 </svg>Create Booking</a>
             </li>
 
               <li class="sidebar-item"><a id="change-pass" class="sidebar-link" href="{{ url_for('phototainment.change_password') }}">
-                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy mr-xl-2">
                     <use xlink:href="#key-1"></use>
                 </svg>Change Password</a>
             </li>

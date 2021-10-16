@@ -20,9 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // ------------------------------------------------------- //
     // Line Chart
     // ------------------------------------------------------ //
-    var LINECHARTEXMPLE = document.getElementById("lineChartExample");
+    var EVENTCHART = document.getElementById("monthlyEventChart");
 
-    var lineChartExample = new Chart(LINECHARTEXMPLE, {
+    var EventChart = new Chart(EVENTCHART, {
         type: "line",
         options: {
             legend: { labels: { fontColor: "#777", fontSize: 12 } },

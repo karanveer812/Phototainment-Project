@@ -34,28 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    // ------------------------------------------------------- //
-    // Card Close dropdown
-    // ------------------------------------------------------ //
-    const cardSettingsToggle = document.querySelectorAll('.card-close .dropdown-toggle');
-    cardSettingsToggle.forEach((el) => {
-        el.addEventListener('click', () => {
-            if (el.classList.contains('show')) {
-                setTimeout(function () { el.nextElementSibling.classList.add('is-visible'); }, 100);
-            }
-        });
-    });
-
-    document.addEventListener('click', function (e) {
-        cardSettingsToggle.forEach((el) => {
-            if (e.target == el) {
-                setTimeout(function () { el.nextElementSibling.classList.add('is-visible'); }, 100);
-            } else {
-                el.nextElementSibling.classList.remove('is-visible');
-            }
-        });
-    });
-
 
 
 
