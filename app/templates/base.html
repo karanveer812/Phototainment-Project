@@ -12,7 +12,8 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}"
+            type="text/javascript"></script>
 
 </head>
 <body>
@@ -30,27 +31,28 @@
 
     </a>
     </div>
-    <div class="page-body row">
-    {% block navbar %}{% endblock %}
-    <div id="main-content" class="content-inner col-xs-12 col-xl-10">
-        <!-- Page Header-->
+    <div class="page-body row m-0">
+        {% block navbar %}{% endblock %}
+        <div id="main-content" class="content-inner col-xs-12 col-xl-10">
+            <!-- Page Header-->
 
-        <header class="bg-white shadow-sm px-4 py-3 z-index-20">
-            <div class="container-fluid px-0">
-                <h2 class="mb-0 p-1">{% block page_head %}{% endblock %}</h2>
-            </div>
-        </header>
-        {% block content %}{% endblock %}
-{% block side_bar %}{% endblock %}
+            <header class="bg-white shadow-sm px-4 py-3 z-index-20">
+                <div class="container-fluid px-0">
+                    <h2 class="mb-0 p-1">{% block page_head %}{% endblock %}</h2>
+                </div>
+            </header>
+            {% block content %}{% endblock %}
+            {% block side_bar %}{% endblock %}
 
-    </div>
         </div>
+    </div>
 
-        {% block custom_scripts %}{% endblock %}
+    {% block custom_scripts %}{% endblock %}
     <script type="text/javascript">
              {% if request.url_rule.endpoint == "login" %}
                 document.getElementById('content').classList.add("bg-none");
              {% endif %}
+
 
 
 
@@ -82,6 +84,7 @@
       // while using file:// protocol
       // pls don't forget to change to your domain :)
       injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
+
 
 
 

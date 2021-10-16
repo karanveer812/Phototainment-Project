@@ -99,157 +99,6 @@ button:focus {
 }
 
 
-/* ---------------------------------------------------
-    SIDE-NAV STYLE
------------------------------------------------------ */
-.wrapper {
-    align-items: stretch;
-}
-#mobile-nav {
-    display: none;
-}
-.nav-toggle {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-}
-
-#sidebar {
-    background: #000000;;
-    color: #fff;
-    transition: all 0.3s;
-}
-#sidebar #mobile-nav {
-    padding: 10px;
-}
-
-#sidebar.active {
-    width: 345px;
-    text-align: center;
-}
-
-#sidebar.active .sidebar-header h3, #sidebar.active .CTAs {
-    display: none;
-}
-
-#sidebar.active .sidebar-header strong {
-    display: block;
-}
-
-#sidebar ul li a {
-    text-align: left;
-    color: #fff;
-}
-
-#sidebar.active ul li a {
-    padding: 20px 10px;
-    text-align: center;
-    font-size: 0.85em;
-    width: 60px;
-    height: 60px;
-    margin: auto;
-    border-radius: 60px;
-    font-size: 15px !important;
-    display: block;
-}
-#sidebar.active #desktop-nav li a svg {
-    margin-right: 15px;
-}
-#sidebar.active #desktop-nav li {
-    float: left;
-    width:100%;
-    position: relative
-}
-#sidebar.active #desktop-nav li a {
-    width: 100%;
-    padding: 20px 25px;
-    text-align: left;
-    display: flex;
-    float: left;
-    align-items: center;
-    text-decoration: none;
-    white-space: nowrap;
-    overflow: hidden;
-}
-#sidebar.active #mobile-nav li a {
-    position: relative;
-}
-
-#sidebar.active ul li a i {
-    margin-right:  0;
-    display: block;
-    font-size: 1.8em;
-    margin-bottom: 5px;
-}
-
-#sidebar.active ul ul a {
-    padding: 10px !important;
-}
-.icon-settings {
-    margin: 6vh 0;
-}
-
-#sidebar #mobile-nav.components {
-    padding: 7vh 0;
-}
-
-#sidebar ul li a span {
-    display: none;
-    background: #FFA101;
-    padding: 5px 20px;
-    position: absolute;
-    top: 50%;
-    transform: translate(0, -50%);
-    left: 55px;
-    white-space: pre;
-    z-index: 9;
-}
-
-#sidebar ul li a span::before {
-    content: '';
-    width: 10px;
-    left: -4px;
-    top: 50%;
-    height: 10px;
-    background: #FFA101;
-    position: absolute;
-    transform: rotate(-45deg) translate(3px, -50%);
-}
-#sidebar ul li a:hover span {
-    display: block;
-}
-
-#sidebar ul li a i {
-    margin-right: 10px;
-}
-
-a.article {
-    background: #FFA101 !important;
-    color: #fff !important;
-}
-.active-link {
-    border-radius: 0px !important;
-    background: #f7f7f7;
-    color: #000 !important;
-    overflow: hidden;
-}
-.active-link.fill-color svg rect, .active-link.fill-color svg path {
-    fill: #000;
-}
-.active-link.stroke-color svg line, .active-link.stroke-color svg g {
-    stroke: #000;
-}
-.active-link.stroke-fill-color svg path {
-    stroke: #000;
-}
-
-
-input[type="time"]#duration::-webkit-calendar-picker-indicator {
-    display: none;
-}
-
-
 /* -----------------------
         RIGHT BAR
  -------------------------*/
@@ -446,14 +295,14 @@ input[type="time"]#duration::-webkit-calendar-picker-indicator {
 .table-head {
     width: 100%;
     float: left;
-    padding: 0 60px;
+    padding: 0 45px;
 }
 .table-body {
     width: 100%;
     float: left;
     background: #F5F5F5;
     box-shadow: 0 0 10px rgb(0 0 0 / 20%);
-    padding: 20px 60px;
+    padding: 20px 45px;
 }
 .table-item {
     float: left;
@@ -486,34 +335,6 @@ input[type="time"]#duration::-webkit-calendar-picker-indicator {
 .manage-table-data {
     text-align: right;
 }
-.styled-table tbody {
-    background: #fff;
-}
-.styled-table thead tr {
-    color: #FFA101;
-    text-align: left;
-}
-
-.styled-table th,
-.styled-table td {
-    padding: 12px 15px;
-}
-.styled-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-.styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-.styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
-}
-.styled-table tbody tr.active-row {
-    font-weight: bold;
-    color: #009879;
-}
-
 
 
 

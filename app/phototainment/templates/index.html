@@ -7,17 +7,15 @@
 {% block content %}
 
 
-
-
 <p>{{ message }}</p>
 
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {% for message in messages %}
-    <div id="message-out" class="alert alert-warning">
-        <button type="button" onclick="closeMessage()" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
-    </div>
+<div id="message-out" class="alert alert-warning">
+    <button type="button" onclick="closeMessage()" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+</div>
 {% endfor %}
 {% endif %}
 {% endwith %}
@@ -138,73 +136,105 @@
 </section>
 
 <section class="py-2">
-    <div class="row">
-        <div class="col-lg-3 col-12">
-            <div class="col-lg-12">
-                <div class="card mb-0">
-                    <div class="card-header position-relative px-4">
-                        <div class="card-close">
-                            <a href="#" class=""></a>
-                            <button class="dropdown-toggle text-sm" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#myModal"><i class="fas fa-plus"></i></button>
-                        </div>
+    <div class="container-fluid">
+        <div class="row align-items-stretch">
+            <div class="col-lg-3 p-0">
+                <div class="col-lg-12">
+                    <div class="card mb-0">
+                        <div class="card-header position-relative px-4">
+                            <div class="card-close">
+                                <a href="#" class=""></a>
+                                <button class="dropdown-toggle text-sm" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#myModal"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="modal fade text-start" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="myModalLabel">Add New Type</h5>
+                                            <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post">
+                                                <div class="mb-3">
+                                                    <label class="form-label control-label" for="type_name">Type
+                                                        Name</label>
+                                                    {{ type_form.type_name(class="form-control",id="type_name",
+                                                    required="required", type="text", placeholder="Type Name") }}
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label control-label" for="type_description">Type
+                                                        Name</label>
+                                                    {{
+                                                    type_form.type_description(class="form-control",id="type_description",
+                                                    required="required", type="text", placeholder="Type Description") }}
+                                                </div>
+                                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button class="btn btn-primary" type="submit">Submit</button>
 
-
-                        <div class="modal fade text-start" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="myModalLabel">Add New Type</h5>
-                                        <button class="btn-close" type="button" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form method="post">
-                                            <div class="mb-3">
-                                                <label class="form-label control-label" for="type_name">Type
-                                                    Name</label>
-                                                {{ type_form.type_name(class="form-control",id="type_name",
-                                                required="required", type="text", placeholder="Type Name") }}
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label control-label" for="type_description">Type
-                                                    Name</label>
-                                                {{
-                                                type_form.type_description(class="form-control",id="type_description",
-                                                required="required", type="text", placeholder="Type Description") }}
-                                            </div>
-                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
-                                                Close
-                                            </button>
-                                            <button class="btn btn-primary" type="submit">Submit</button>
-
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <h3 class="h4 mb-0">Event Types</h3>
                         </div>
-
-
-                        <h3 class="h4 mb-0">Event Types</h3>
+                        <ul class="card-body p-0">
+                            <!-- Item-->
+                            {% for type in event_types %}
+                            <li class="p-3 d-flex justify-content-between">
+                                <div class="d-flex">
+                                    <div class="ms-3">
+                                        <h5 class="fw-normal text-gray-600 mb-1">{{type.event_type}}</h5>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
                     </div>
-                    <ul class="card-body p-0">
-                        <!-- Item-->
-                        {% for type in event_types %}
-                        <li class="p-3 d-flex justify-content-between">
-                            <div class="d-flex">
-                                <div class="ms-3">
-                                    <h5 class="fw-normal text-gray-600 mb-1">{{type.event_type}}</h5>
-                                </div>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <h3 class="h4 mb-0">Events this week</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0 table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                {% for event in upcoming_events %}
+
+                                <tr>
+
+                                    <td><a href="{{url_for('phototainment.view_booking', booking_id = event[0].booking_id)}}">{{event.client_first_name.title()}} {{event.client_last_name.title()}}</a></td>
+                                    <td>{{event[0].event_name.title()}}</td>
+                                    <td>{{event[0].event_date.strftime("%d/%m/%y")|safe}}</td>
+                                    <td>{{event[0].event_date.strftime("%I:%M %p")|safe}}</td>
+                                </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-4">sadf</div>
-        <div class="col-5">sadf</div>
     </div>
 </section>
 {% endif %}
@@ -264,6 +294,8 @@ function switchTab(evt, filter) {
 
 
         let graph_data =  [30, 50, 40, 61, 42, 35, 40]
+
+
 
 
 </script>
