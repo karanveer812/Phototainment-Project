@@ -171,6 +171,7 @@ def register():
         )
         db.session.add(new_user)
         db.session.commit()
+        flash("New user has been created")
         return redirect(url_for('phototainment.manage_user'))
     return render_template('register.html', form=form)
 
@@ -190,6 +191,7 @@ def delete_user(user_id):
     requested_user = db.session.query(User).filter_by(id=user_id).first()
     db.session.delete(requested_user)
     db.session.commit()
+    flash("User has been deleted")
     return redirect(url_for('phototainment.manage_user'))
 
 
@@ -206,12 +208,11 @@ def edit_user(user_id):
     )
     
     if request.method == "POST":
-        if edit_form.validate_on_submit():
-            requested_user.username = edit_form.username.data
-            requested_user.role_id = edit_form.user_role.data
-            requested_user.job_description = edit_form.job_description.data
-            db.session.commit()
-            return redirect(url_for("manage_user"))
+        requested_user.username = edit_form.username.data
+        requested_user.role_id = edit_form.user_role.data
+        requested_user.email = edit_form.email.data
+        db.session.commit()
+        return redirect(url_for("phototainment.manage_user"))
     
     return render_template('register.html', form=edit_form)
 
@@ -307,6 +308,7 @@ def add_event():
 def delete_event(booking_id):
     event = db.session.query(Event).filter_by(booking_id=booking_id).first()
     venue = event.venue
+    contact = event.contacts
     comments = db.session.query(Comment).filter_by(booking_id=booking_id).all()
     
     if comments:
@@ -314,15 +316,14 @@ def delete_event(booking_id):
             db.session.delete(comment)
         db.session.commit()
     if contact:
-        phone = contact.phone_numbers
         db.session.delete(contact)
-        db.session.delete(phone)
         db.session.commit()
     db.session.delete(event)
     db.session.commit()
     if venue:
         db.session.delete(venue)
         db.session.commit()
+    flash("Event has been deleted")
     return redirect(url_for('phototainment.search_event'))
 
 
