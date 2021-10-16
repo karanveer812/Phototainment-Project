@@ -22,8 +22,8 @@ button:focus {
     padding: 10vh 0;
 }
 .login-form {
-    background: #f7f7f7;
-    padding: 45px 70px;
+    background: #fff;
+    padding: 25px 40px;
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgb(0 0 0 / 10%);
 }

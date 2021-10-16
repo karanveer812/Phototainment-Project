@@ -6,21 +6,6 @@
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
 
-
-<p>{{ message }}</p>
-
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-<div id="message-out" class="alert alert-warning">
-    <button type="button" onclick="closeMessage()" class="close" data-dismiss="alert">&times;</button>
-    {{ message }}
-</div>
-{% endfor %}
-{% endif %}
-{% endwith %}
-
-
 <section class="pb-0">
     <div class="container-fluid">
         <div class="card mb-0">

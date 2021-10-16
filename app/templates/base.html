@@ -36,16 +36,29 @@
         <div id="main-content" class="content-inner col-xs-12 col-xl-10">
             <!-- Page Header-->
 
-            <header class="bg-white shadow-sm px-4 py-3 z-index-20">
+            {% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div id="message-out" class="alert alert-warning mt-4">
+    <button type="button" onclick="closeMessage()" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+            <header class="bg-white shadow-sm mt-4 px-4 py-3 z-index-20">
                 <div class="container-fluid px-0">
                     <h2 class="mb-0 p-1">{% block page_head %}{% endblock %}</h2>
                 </div>
             </header>
+
             {% block content %}{% endblock %}
             {% block side_bar %}{% endblock %}
 
         </div>
     </div>
+</div>
 
     <script>
       // ------------------------------------------------------- //

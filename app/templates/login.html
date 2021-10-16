@@ -1,25 +1,73 @@
-{% extends 'base.html' %}
-{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 
-{% block title %}Login{% endblock %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}"
+            type="text/javascript"></script>
+
+</head>
+<body>
 
 
-{% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 login-main text-center">
-                <div class="col-lg-6 col-md-7 col-xs-11 mx-auto float-none login-form">
-                    {{ wtf.quick_form(form) }}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 login-main text-center">
+            <div class="col-lg-5 col-md-6 col-xs-11 mx-auto float-none login-form">
 
-                    {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            {% for message in messages %}
-                                <p>{{ message }}</p>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
+                <div class="col-lg-12 bg-white">
+                    <div class="d-flex align-items-center h-100">
+                        <form class="py-3 w-100" method="post">
+                            <div class="input-material-group mb-3">
+
+
+                                {{ form.username(class="input-material form-control",id="username",
+                                required="required", type="text", autocomplete="off", placeholder="") }}
+                                <label class="label-material form-label control-label " for="username">Username</label>
+
+                            </div>
+                            <div class="input-material-group mb-4">
+
+                                {{ form.password(class="input-material form-control",id="password",
+                                required="required", type="password", autocomplete="off", placeholder="") }}
+                                <label class="label-material form-label control-label " for="password">Password</label>
+
+
+                            </div>
+                            <button class="btn btn-primary mb-3 btn-sm" id="login" type="submit">Login</button>
+                            <br><a class="text-sm text-paleBlue" href="#">Forgot Password?</a><br>
+                        </form>
+                    </div>
                 </div>
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
             </div>
         </div>
     </div>
-{% endblock %}
+</div>
+
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}" type="text/javascript"></script>
+</body>
+</html>
+
+
+
+
+
+
+

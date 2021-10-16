@@ -29,6 +29,7 @@ def unauthorized():
 @custom_bp.route('/login/', methods=["GET", "POST"])
 def login():
     form = LoginForm()
+    
     if request.method == "POST":
         req_user = db.session.query(User).filter_by(username=form.username.data.lower()).first()
         if req_user:
@@ -243,6 +244,8 @@ def add_event():
         
         db.session.add(new_event)
         db.session.commit()
+
+        flash(message="New event has been created")
         return redirect(url_for('phototainment.view_booking', booking_id=new_event.booking_id))
     return render_template('add_event.html', form=form, today=date_today)
 
