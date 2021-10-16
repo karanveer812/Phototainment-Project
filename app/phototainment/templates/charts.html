@@ -11,7 +11,7 @@
     <div class="col-4">
         <form action="" method="POST" role="form">
             <div class="row">
-                <div class="col-8">{{ form.days(class="form-control",id="search_days", type="Select",value="") }}
+                <div class="col-8">{{ form.days(class="form-control",id="search_days", type="Select") }}
                 </div>
                 <div class="col-4">{{ form.submit(class="btn btn-success add-event-btn m-0") }}</div>
             </div>
@@ -25,22 +25,30 @@
 </div>
 
 <div id="Barchart" class="tabcontent" style="display:block">
+    <div class="col-lg-8">
+        <div class="card mb-0">
+            <div class="card-body">
+                <canvas id="barChartExample"></canvas>
+            </div>
+        </div>
+    </div>
     <div id="event_data"></div>
-
-
-<div class="col-lg-8">
-
-
-                  <div class="card mb-0">
-
-                    <div class="card-body">
-                      <canvas id="barChartExample"></canvas>
-                    </div>
-                  </div>
-                </div>
 </div>
 
+
 <div id="Piechart" class="tabcontent">
+
+    <div class="col-lg-6">
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-10 mx-auto">
+                        <canvas id="doughnutChartExample"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="successful_events"></div>
 </div>
 
@@ -143,6 +151,14 @@ google.load('visualization', '1.0', {'packages':['corechart']});
           }
 document.getElementById('charts-lnk').classList.add("active-link");
 
+let pie_label = [];
+let pie_data = [];
+
+{% for data in pie_chart_data %}
+                pie_label.push('{{data}}')
+                pie_data.push('{{pie_chart_data[data]}}')
+              {% endfor %}
+
 let bar_label =  [];
 let bar_data =  [];
 
@@ -150,6 +166,7 @@ let bar_data =  [];
                 bar_label.push('{{data}}')
                 bar_data.push('{{bar_graph_data[data]}}')
               {% endfor %}
+
 
 
 </script>

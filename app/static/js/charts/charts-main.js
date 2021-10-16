@@ -1,6 +1,6 @@
 "use strict";
 
-console.log(bar_data)
+console.log(pie_data)
 
 document.addEventListener("DOMContentLoaded", function () {
     // ------------------------------------------------------- //
@@ -57,4 +57,32 @@ document.addEventListener("DOMContentLoaded", function () {
             ],
         },
     });
+
+
+    // ------------------------------------------------------- //
+    // Doughnut Chart
+    // ------------------------------------------------------ //
+    var DOUGHNUTCHARTEXMPLE = document.getElementById("doughnutChartExample");
+    var pieChartExample = new Chart(DOUGHNUTCHARTEXMPLE, {
+        type: "doughnut",
+        options: {
+            cutoutPercentage: 70,
+        },
+        data: {
+            labels: pie_label,
+            datasets: [
+                {
+                    data: pie_data,
+                    borderWidth: 0,
+                    backgroundColor: ["#ff0000", "#49cd8b", "#54e69d", "#71e9ad"],
+                    hoverBackgroundColor: ["#ff4400", "#49cd8b", "#54e69d", "#71e9ad"],
+                },
+            ],
+        },
+    });
+
+    var pieChartExample = {
+        responsive: true,
+    };
+
 });

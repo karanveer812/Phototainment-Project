@@ -135,3 +135,9 @@ class ChangePassword(FlaskForm):
 class DayRange(FlaskForm):
     days = SelectField("Days", choices=('30', '15', '7'))
     submit = SubmitField("Submit")
+
+
+class TypeForm(FlaskForm):
+    type_name = StringField("Name", validators=[validators.DataRequired("Please Enter")])
+    type_description = StringField("Description", validators=[validators.DataRequired("Please Enter")])
+    submit = SubmitField("Submit")

@@ -5,13 +5,23 @@
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
+
+
+
+
+<p>{{ message }}</p>
+
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {% for message in messages %}
-<p>{{ message }}</p>
+    <div id="message-out" class="alert alert-warning">
+        <button type="button" onclick="closeMessage()" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
 {% endfor %}
 {% endif %}
 {% endwith %}
+
 
 <section class="pb-0">
     <div class="container-fluid">
@@ -125,12 +135,78 @@
             </div>
         </div>
     </div>
-
 </section>
 
+<section class="py-2">
+    <div class="row">
+        <div class="col-lg-3 col-12">
+            <div class="col-lg-12">
+                <div class="card mb-0">
+                    <div class="card-header position-relative px-4">
+                        <div class="card-close">
+                            <a href="#" class=""></a>
+                            <button class="dropdown-toggle text-sm" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#myModal"><i class="fas fa-plus"></i></button>
+                        </div>
 
 
+                        <div class="modal fade text-start" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Add New Type</h5>
+                                        <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post">
+                                            <div class="mb-3">
+                                                <label class="form-label control-label" for="type_name">Type
+                                                    Name</label>
+                                                {{ type_form.type_name(class="form-control",id="type_name",
+                                                required="required", type="text", placeholder="Type Name") }}
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label control-label" for="type_description">Type
+                                                    Name</label>
+                                                {{
+                                                type_form.type_description(class="form-control",id="type_description",
+                                                required="required", type="text", placeholder="Type Description") }}
+                                            </div>
+                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button class="btn btn-primary" type="submit">Submit</button>
 
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <h3 class="h4 mb-0">Event Types</h3>
+                    </div>
+                    <ul class="card-body p-0">
+                        <!-- Item-->
+                        {% for type in event_types %}
+                        <li class="p-3 d-flex justify-content-between">
+                            <div class="d-flex">
+                                <div class="ms-3">
+                                    <h5 class="fw-normal text-gray-600 mb-1">{{type.event_type}}</h5>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">sadf</div>
+        <div class="col-5">sadf</div>
+    </div>
+</section>
 {% endif %}
 
 
@@ -181,10 +257,17 @@ function switchTab(evt, filter) {
 }
     document.getElementById('dashboard-lnk').classList.add("active-link");
 
-let graph_data =  [30, 50, 40, 61, 42, 35, 40]
+
+    function closeMessage() {
+        document.getElementById('message-out').classList.add("d-none");
+        }
+
+
+        let graph_data =  [30, 50, 40, 61, 42, 35, 40]
+
 
 </script>
-    <script src="{{ url_for('static', filename='js/charts/Chart.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/charts/chart-index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts/Chart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts/chart-index.js') }}"></script>
 
 {% endblock %}

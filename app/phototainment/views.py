@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, Blueprint
 from collections import Counter
+from sqlalchemy.exc import IntegrityError
 
 import flask_csv
 
@@ -8,7 +9,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app.privilege import admin, employee
 from datetime import datetime, timedelta, time
 from app.forms import LoginForm, RegisterForm, EventForm, EditUser, SearchForm, ChangeStatus, CommentForm, AddressForm, \
-    ChangePassword, DayRange
+    ChangePassword, DayRange, TypeForm
 from app.models import db, User, Event, EventType, Client, AdditionalContact, ReferralContact, Comment, EventVenue, \
     login_manager
 
@@ -70,11 +71,13 @@ def change_password():
     return render_template('change-password.html', form=form)
 
 
-@custom_bp.route("/index")
+@custom_bp.route("/index", methods=["GET", "POST"])
 @login_required
 def home():
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
+    
+    event_types = db.session.query(EventType).all()
     
     recent_bookings = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=7)]
     
@@ -82,11 +85,29 @@ def home():
                       datetime.now() - event[0].lead_date < timedelta(days=7) and event[0].status_id == 1]
     completed_events = [event for event in events if
                         datetime.now() - event[0].event_date < timedelta(days=7) and event[0].status_id == 4]
+    
+    type_form = TypeForm()
+    
+    if request.method == 'POST':
+        if type_form.is_submitted():
+            new_type = EventType(
+                event_type=type_form.type_name.data
+            )
+            db.session.add(new_type)
+
+            try:
+                db.session.commit()
+            except IntegrityError:
+                flash("Event type already exist")
+                db.session.rollback()
+        
     return render_template(
         "index.html",
         all_bookings=recent_bookings,
         pending_bookings=pending_events,
-        completed_bookings=completed_events
+        completed_bookings=completed_events,
+        event_types=event_types,
+        type_form=type_form
     )
 
 

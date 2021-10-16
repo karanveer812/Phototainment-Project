@@ -18,10 +18,6 @@
                   <form action="" method="post" role="form">
                         <div class="mb-3">
                             <label class="control-label" for="event_name">Event Name*</label>
-
-
-
-
                           <label class="form-label control-label" for="user_name">Email address</label>
                           {{ form.username(class="form-control",id="username", required="required", type="text", placeholder="User Name") }}
                           <div class="form-text" id="emailHelp">We'll never share your email with anyone else.</div>
@@ -37,4 +33,3 @@
         </div>
     </div>
 {% endblock %}
-{% block side_bar %}{% include 'right-bar.html' %}{% endblock %}

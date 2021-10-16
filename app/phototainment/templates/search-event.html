@@ -26,20 +26,23 @@
                         {{ form.search_staff(class="btn search-btn dropdown-btn") }}
                     </div>
                 </div>
-
-<!--                <div class="btn-group ml-4">-->
-<!--                    <button type="button" class="btn dropdown-toggle sort-dropdown-toggle dropdown-toggle-split"-->
-<!--                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                        Sort By<span class="sr-only">Toggle Dropdown</span>-->
-<!--                    </button>-->
-<!--                    <div class="dropdown-menu sort-dropdown-menu">-->
-<!--                        {{ form.sort_register_date(class="btn search-btn dropdown-btn") }}-->
-<!--                        {{ form.sort_start_date(class="btn search-btn dropdown-btn") }}-->
-<!--                        {{ form.sort_end_date(class="btn search-btn dropdown-btn") }}-->
-<!--                    </div>-->
-
-<!--                </div>-->
             </form>
+
+            <div class="row">
+                          <label class="col-sm-3 form-label">With dropdowns</label>
+                          <div class="col-sm-9">
+                            <div class="input-group">
+                              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
+                              <ul class="dropdown-menu shadow-sm">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item" href="#">Separated link</a></li>
+                              </ul>
+                              <input class="form-control" type="text" aria-label="Text input with dropdown button">
+                            </div>
+                          </div>
+                        </div>
             <a href="{{ url_for('phototainment.add_event') }}" class="add-btn btn btn-success ml-4">Add New Eent</a>
         </div>
     </div>
