@@ -85,7 +85,7 @@
 
 
 <div class="row m-0">
-    <div class="col-5 pl-0">
+    <div class="col-6">
         <p><b>Add Comments</b></p>
         <form action="{{ url_for('phototainment.add_comment', booking_id = event.booking_id) }}" method="POST"
               role="form"
@@ -108,20 +108,33 @@
             {{ comment_form.add_comment(class="btn btn-success") }}
         </form>
     </div>
-    <div class="col-7 pr-0">
-        <p><b>Comments</b></p>
-        {% for comment in comments %}
-        <p><b>user: {{ comment.user.username }}</b></p>
-        <p><b>action: {{ comment.comment_action }}</b></p>
-        {% if comment.comment_reason != None %}
-        <p><b>reason: {{ comment.comment_reason }}</b></p>
-        {% endif %}
-        {% if current_user.role.role_id == 1 %}
-        <p><a href="{{ url_for('phototainment.delete_comment', comment_id=comment.comment_id) }}">delete</a></p>
-        {% endif %}
-        <hr>
-        {% endfor %}
-    </div>
+
+
+
+
+    <div class="col-lg-6">
+                  <div class="card mb-0">
+                    <div class="card-header position-relative">
+                      <h3 class="h4 mb-0">Comments</h3>
+                    </div>
+                    <div class="card-body p-0">
+                         {% for comment in comments %}
+                      <div class="row g-0">
+                        <div class="col-sm-4 col-3 text-center comment-user">
+                            {{ comment.user.username.title() }}
+                        </div>
+                        <div class="col-sm-8 col-9 border-start border-gray-200 p-3">
+                          <h5 class="fw-normal">{{ comment.comment_action }}</h5>
+                            {% if comment.comment_reason != None %}
+                          <p class="small mb-0 text-gray-600">{{ comment.comment_reason }}</p>
+                            {% endif %}
+                        </div>
+                      </div>
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
 </div>
 
 
@@ -148,7 +161,6 @@
 
 {% endblock %}
 
-{% block side_bar %}{% include 'right-bar.html' %}{% endblock %}
 
 {% block custom_scripts %}
 <script type="text/javascript">
@@ -162,12 +174,6 @@
                      $('.sort-dropdown-menu').toggleClass('show');
                  });
              });
-
-
-
-
-
-
 
 </script>
 

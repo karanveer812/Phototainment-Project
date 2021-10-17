@@ -3,43 +3,50 @@
 
 {% block title %}Add Address Details{% endblock %}
 
-{% block page_head %}Add Address{% endblock %}
+{% block page_head %}Generate Report{% endblock %}
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
 
-{% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            {% for message in messages %}
-                                <p>{{ message }}</p>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
 
-<form action="" method="POST" role="form">
-    <div class="col-12 pb-3">
-    <input type="submit" name="up_coming" id="up_coming" value="Up Coming">
+<form action="{{ url_for('phototainment.download_report') }}" method="post">
+    <div class="col-5 mx-auto pt-5">
+        <div class="row">
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="from_date">From Date</label>
+                {{form.from_date(class="form-control",id="from_date",type="Date", value=start_date.strftime('%Y-%m-%d'))
+                }}
+            </div>
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="to_date">To Date</label>
+                {{form.to_date(class="form-control",id="to_date",type="Date", value=today.strftime('%Y-%m-%d')) }}
+            </div>
         </div>
-    <div class="col-12 pb-3">
-    <input type="submit" name="emp_report" id="emp_report" value="Employee Report">
+        <div class="row">
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="user">User</label>
+                {{form.user_field(class="form-control",id="user",type="Select") }}
+            </div>
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="event_type">Event Type</label>
+                {{form.event_type(class="form-control",id="event_type",type="Select") }}
+            </div>
         </div>
-    <div class="col-12 pb-3">
-    <div class="col-12 pb-3 px-0">
-    <label for="from-date">From</label>
-    <input type='date' name="from-date" id="from-date" value="{{ start_date.strftime('%Y-%m-%d') }}">
-    <label for="to-date">To</label>
-    <input type='date' name="to-date" id="to-date" value="{{ today.strftime('%Y-%m-%d') }}">
-    <input type="submit" name="past_events" id="past_events" value="Past Events">
+        <div class="row">
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="status">Event Status</label>
+                {{form.status(class="form-control",id="status",type="Select") }}
+            </div>
+            <div class="form-group required col-6 form-cell">
+                <label class="control-label" for="company">Company</label>
+                {{form.company(class="form-control",id="company",type="Select") }}
+            </div>
         </div>
+        {{ form.submit(class="btn btn-success add-event-btn m-0 float-left") }}
+    </div>
 </form>
 
-<a href="#">Upcoming events report</a>
-<a href="#">Employee report in time frame</a>
-<a href="#">Previous events report</a>
-time frame: last 7 days, 30 days, 3 months
-
 {% endblock %}
-
 
 
 {% block custom_scripts %}
@@ -49,6 +56,8 @@ $(function(){
         return new Date().toJSON().split('T')[0];
     });
 });
+
+
 </script>
 {% endblock %}
 

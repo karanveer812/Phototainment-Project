@@ -20,7 +20,7 @@
                                 <tbody>
                                 {% for client in clients %}
                                 <tr>
-                                    <td><a href="#">{{client.client_first_name}}</a></td>
+                                    <td><a href="#">{{client.client_first_name.title()}}</a></td>
                                     <td>{{client.client_last_name}}</td>
                                     <td>{{client.client_email}}</td>
                                     <td>{{client.primary_contact}}</td>

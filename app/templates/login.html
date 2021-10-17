@@ -24,11 +24,12 @@
             <div class="col-lg-5 col-md-6 col-xs-11 mx-auto float-none login-form">
 
                 <div class="col-lg-12 bg-white">
+                    <img class="w-100"
+                src="{{ url_for('static', filename='img/logo.png') }}"
+                alt="logo"/>
                     <div class="d-flex align-items-center h-100">
                         <form class="py-3 w-100" method="post">
                             <div class="input-material-group mb-3">
-
-
                                 {{ form.username(class="input-material form-control",id="username",
                                 required="required", type="text", autocomplete="off", placeholder="") }}
                                 <label class="label-material form-label control-label " for="username">Username</label>
@@ -42,8 +43,8 @@
 
 
                             </div>
-                            <button class="btn btn-primary mb-3 btn-sm" id="login" type="submit">Login</button>
-                            <br><a class="text-sm text-paleBlue" href="#">Forgot Password?</a><br>
+                            {{ form.submit(class="btn btn-success mb-3 btn-sm",id="submit", type="submit", value="Login") }}
+<!--                            <br><a class="text-sm text-paleBlue" href="#">Forgot Password?</a><br>-->
                         </form>
                     </div>
                 </div>

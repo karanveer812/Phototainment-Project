@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from app.models import Role, EventType
+from app.models import Role, EventType, User
 from app import app
 from wtforms import StringField, SubmitField, PasswordField, validators, SelectField
 from wtforms.fields.html5 import EmailField, DateField, TimeField, IntegerField
@@ -133,7 +133,7 @@ class ChangePassword(FlaskForm):
     
 
 class DayRange(FlaskForm):
-    days = SelectField("Days", choices=('30', '15', '7'))
+    days = SelectField("Days", choices=('30 Days', '15 Days', '7 Days'))
     submit = SubmitField("Submit")
 
 
@@ -144,4 +144,13 @@ class TypeForm(FlaskForm):
     
 class CompanyForm(FlaskForm):
     company_name = StringField("Company Name", validators=[validators.DataRequired("Please Enter")])
+    submit = SubmitField("Submit")
+    
+class ReportForm(FlaskForm):
+    from_date = DateField("From Date")
+    to_date = DateField("From Date")
+    user_field = SelectField('User', choices=[(0, 'Please select')])
+    event_type = SelectField('Event Type', choices=[(0, 'Please select')])
+    status = SelectField('Event Status', choices=[(0, 'Please select')])
+    company = SelectField('Event Status', choices=[(0, 'Please select')])
     submit = SubmitField("Submit")

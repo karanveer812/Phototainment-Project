@@ -7,19 +7,23 @@
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
 
-<div class="events">
+<div class="events pt-4">
     <div class="row">
-        <div class="col-4">
-            <form action="" method="POST" role="form">
-                <div class="row">
-                    <div class="col-8">
-                        <label class="control-label" for="search_days">Time Frame</label>
-                        {{ form.days(class="form-control", id="search_days", type="Select",value="") }}
+
+        <div class="col-sm-4">
+            <form method="post" class="row g-3 align-items-center">
+                <div class="col-lg">
+                    <div class="input-group">
+                        {{ form.days(class="form-control", id="search_days", type="Select") }}
                     </div>
-                    <div class="col-4">{{ form.submit(class="btn btn-success add-event-btn m-0") }}</div>
+                </div>
+
+                <div class="col-lg">
+                    {{ form.submit(class="btn btn-success") }}
                 </div>
             </form>
         </div>
+
     </div>
     {% include 'events-table.html' %}
 </div>
@@ -34,5 +38,6 @@
                  });
              });
 document.getElementById('upcoming-lnk').classList.add("active-link");
+
 </script>
 {% endblock %}

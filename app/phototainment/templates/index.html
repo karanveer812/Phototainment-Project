@@ -21,7 +21,7 @@
                                 </svg>
                             </div>
                             <div class="mx-3">
-                                <h6 class="h4 fw-light text-gray-600 mb-3">Upcoming<br>Events</h6>
+                                <h6 class="h4 fw-light text-gray-600 mb-0">Upcoming<br>Events</h6>
                             </div>
                             <div class="number"><strong class="text-lg">{{event_num}}</strong></div>
                         </div>
@@ -36,7 +36,7 @@
                                 </svg>
                             </div>
                             <div class="mx-3">
-                                <h6 class="h4 fw-light text-gray-600 mb-3">Create<br>Bookings</h6>
+                                <h6 class="h4 fw-light text-gray-600 mb-0">Create<br>Bookings</h6>
                             </div>
                         </div>
                     </a>
@@ -50,7 +50,7 @@
                                 </svg>
                             </div>
                             <div class="mx-3">
-                                <h6 class="h4 fw-light text-gray-600 mb-3">Search<br>Bookings</h6>
+                                <h6 class="h4 fw-light text-gray-600 mb-0">Search<br>Bookings</h6>
                             </div>
                         </div>
                     </a>
@@ -63,7 +63,7 @@
                                 </svg>
                             </div>
                             <div class="mx-3">
-                                <h6 class="h4 fw-light text-gray-600 mb-3">Search<br>Client</h6>
+                                <h6 class="h4 fw-light text-gray-600 mb-0">Search<br>Client</h6>
                             </div>
                         </div>
                     </a>
@@ -77,7 +77,6 @@
 <section class="pb-0">
     <div class="container-fluid">
         <div class="row align-items-stretch">
-            <!-- Statistics -->
             <div class="col-lg-3 col-12">
                 <a href="{{ url_for('phototainment.register') }}" class="card mb-3">
                     <div class="card-body">
@@ -106,6 +105,24 @@
                         </div>
                     </div>
                 </a>
+                <div class="col-lg-12 pt-3 p-0">
+                    <div class="card mb-0">
+                        <div class="card-header position-relative px-4">
+                            <h3 class="h4 mb-0">Event Types</h3>
+                        </div>
+                        <ul class="card-body h-400-scroll p-0">
+                            {% for type in event_types %}
+                            <li class="p-3 d-flex justify-content-between">
+                                <div class="d-flex">
+                                    <div class="ms-3">
+                                        <h5 class="font-weight-normal text-gray-600 mb-1">{{type.event_type}}</h5>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <!-- Line Chart            -->
@@ -136,7 +153,7 @@
                     <div class="card-header">
                         <h3 class="h4 mb-0">Events this week</h3>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="card-body h-400-scroll p-0">
                         <div class="table-responsive">
                             <table class="table mb-0 table-striped table-hover">
                                 <thead>
@@ -164,7 +181,7 @@
                     </div>
                 </div>
             </div>
-            {% if current_user.role.role_id == 1 %}
+
             <div class="col-lg-3 p-0">
                 <div class="col-lg-12">
                     <div class="card mb-0">
@@ -205,7 +222,7 @@
                             </div>
                             <h3 class="h4 mb-0">Associated Companies</h3>
                         </div>
-                        <ul class="card-body p-0">
+                        <ul class="card-body h-400-scroll p-0">
                             <!-- Item-->
                             {% for company in associated_companies %}
                             <li class="p-3 d-flex justify-content-between">
@@ -220,6 +237,7 @@
                     </div>
                 </div>
             </div>
+            {% if current_user.role.role_id == 1 %}
             <div class="col-lg-3 p-0">
                 <div class="col-lg-12">
                     <div class="card mb-0">
@@ -265,7 +283,7 @@
                             </div>
                             <h3 class="h4 mb-0">Event Types</h3>
                         </div>
-                        <ul class="card-body p-0">
+                        <ul class="card-body h-400-scroll p-0">
                             <!-- Item-->
                             {% for type in event_types %}
                             <li class="p-3 d-flex justify-content-between">

@@ -7,7 +7,7 @@
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
-<div class="row">
+<div class="row pt-4">
     <div class="col-4">
         <form action="" method="POST" role="form">
             <div class="row">
@@ -24,7 +24,7 @@
     <button class="tablinks" onclick="switchTab(event, 'Linegraph')">Time Data</button>
 </div>
 
-<div id="Barchart" class="tabcontent" style="display:block">
+<div id="Barchart" class="tabcontent pt-4" style="display:block">
     <div class="col-lg-8">
         <div class="card mb-0">
             <div class="card-body">
@@ -36,7 +36,7 @@
 </div>
 
 
-<div id="Piechart" class="tabcontent">
+<div id="Piechart" class="tabcontent pt-4">
 
     <div class="col-lg-6">
         <div class="card mb-0">
@@ -52,9 +52,7 @@
     <div id="successful_events"></div>
 </div>
 
-<div id="Linegraph" class="tabcontent">
-
-
+<div id="Linegraph" class="tabcontent pt-4">
     <div id="chart_div3"></div>
 </div>
 
@@ -166,6 +164,7 @@ let bar_data =  [];
                 bar_label.push('{{data}}')
                 bar_data.push('{{bar_graph_data[data]}}')
               {% endfor %}
+
 
 
 
