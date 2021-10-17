@@ -1,6 +1,7 @@
 "use strict";
 
 console.log(pie_data)
+bar_data.push(0)
 
 document.addEventListener("DOMContentLoaded", function () {
     // ------------------------------------------------------- //
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             labels: bar_label,
             datasets: [
                 {
-                    label: "Data Set 1",
+                    label: "Events",
                     backgroundColor: [gradient1, gradient1, gradient1, gradient1, gradient1, gradient1, gradient1],
                     hoverBackgroundColor: [gradient1, gradient1, gradient1, gradient1, gradient1, gradient1, gradient1],
                     borderColor: [gradient1, gradient1, gradient1, gradient1, gradient1, gradient1, gradient1],

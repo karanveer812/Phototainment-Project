@@ -21,24 +21,22 @@
 <div class="tab">
     <button class="tablinks active" onclick="switchTab(event, 'Barchart')">Event Data</button>
     <button class="tablinks" onclick="switchTab(event, 'Piechart')">Successful Events</button>
-    <button class="tablinks" onclick="switchTab(event, 'Linegraph')">Time Data</button>
 </div>
 
 <div id="Barchart" class="tabcontent pt-4" style="display:block">
-    <div class="col-lg-8">
+    <div class="col-lg-7 mx-auto">
         <div class="card mb-0">
             <div class="card-body">
                 <canvas id="barChartExample"></canvas>
             </div>
         </div>
     </div>
-    <div id="event_data"></div>
 </div>
 
 
 <div id="Piechart" class="tabcontent pt-4">
 
-    <div class="col-lg-6">
+    <div class="col-lg-7 mx-auto">
         <div class="card mb-0">
             <div class="card-body">
                 <div class="row">
@@ -49,12 +47,8 @@
             </div>
         </div>
     </div>
-    <div id="successful_events"></div>
 </div>
 
-<div id="Linegraph" class="tabcontent pt-4">
-    <div id="chart_div3"></div>
-</div>
 
 
 {% endblock %}
@@ -75,78 +69,9 @@ function switchTab(evt, filter) {
   }
   document.getElementById(filter).style.display = "block";
   evt.currentTarget.className += " active";
-
-
-
 }
 
 
-google.load('visualization', '1.0', {'packages':['corechart']});
-
-          google.setOnLoadCallback(drawChart);
-
-          function drawChart() {
-
-            // Create the data table.
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Status');
-            data.addColumn('number', 'Number');
-            data.addRows([
-            {% for data in pie_chart_data %}
-                ['{{data}}', {{pie_chart_data[data]}}],
-              {% endfor %}
-            ]);
-
-
-            // Create the data table.
-            var data2 = new google.visualization.DataTable();
-            data2.addColumn('string', 'Type');
-            data2.addColumn('number', 'Numbers');
-            data2.addRows([
-              {% for data in bar_graph_data %}
-                ['{{data}}', {{bar_graph_data[data]}}],
-              {% endfor %}
-            ]);
-
-            var data3 = new google.visualization.DataTable();
-            data3.addColumn('string', 'Year');
-            data3.addColumn('number', 'Sales');
-            data3.addRows([
-              ['2004', 1000],
-              ['2005', 1170],
-              ['2006',  860],
-              ['2007', 1030]
-            ]);
-
-            // Set chart options
-            var options = {
-                           'width':900,
-                           'height':800,
-                            'stroke': '#000',
-                            'pieSliceText': 'none',
-                            pieSliceBorderWidth: 8,
-                                slices: [{color: 'red'}, {color: 'LightGreen'}, {color: 'Yellow'}, {}]
-                           }
-
-            // Set chart options
-            var options2 = {
-                           'width':900,
-                           'height':800,
-                           };
-            // Set chart options
-            var options3 = {
-                           'width':400,
-                           'height':300};
-
-            // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.PieChart(document.getElementById('successful_events'));
-            chart.draw(data, options);
-            var chart2 = new google.visualization.ColumnChart(document.getElementById('event_data'));
-            chart2.draw(data2, options2);
-            var chart3 = new google.visualization.LineChart(document.getElementById('chart_div3'));
-            chart3.draw(data3, options3);
-
-          }
 document.getElementById('charts-lnk').classList.add("active-link");
 
 let pie_label = [];
