@@ -10,27 +10,35 @@
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
     <div class="row">
+
+
+
+
+
+
+
+
         <div class="col-sm-12 login-main text-center">
             <div class="col-lg-7 col-md-7 col-xs-11 mx-auto float-none login-form">
                 <form action="" method="POST" role="form" class="event-form">
                     <div class="row justify-content-around">
                         <div class="form-group required col-6 form-cell">
                             <label class="control-label" for="street_address">Street Address*</label>
-                            {{ form.street_address(class="form-control",id="street_address",required="required",type="text",value="", placeholder="Street Address") }}
+                            {{ form.street_address(class="form-control",id="street_address",required="required",type="text", placeholder="Street Address") }}
                         </div>
                         <div class="form-group required col-6 form-cell">
                             <label class="control-label" for="suburb">Suburb*</label>
-                            {{ form.suburb(class="form-control",id="suburb",required="required",type="text",value="", placeholder="Suburb") }}
+                            {{ form.suburb(class="form-control",id="suburb",required="required",type="text", placeholder="Suburb") }}
                         </div>
                     </div>
                     <div class="row justify-content-around">
                         <div class="form-group required col-6 form-cell">
                             <label class="control-label" for="state">State*</label>
-                            {{ form.state(class="form-control",id="state",required="required",type="text",value="", placeholder="State") }}
+                            {{ form.state(class="form-control",id="state",required="required",type="text", placeholder="State") }}
                         </div>
                         <div class="form-group required col-6 form-cell">
                             <label class="control-label" for="post_code">Post Code*</label>
-                            {{ form.post_code(class="form-control",id="post_code",type="text",value="", placeholder="Post Code") }}
+                            {{ form.post_code(class="form-control",id="post_code",type="text", placeholder="Post Code") }}
                         </div>
                     </div>
                     {{ form.submit(class="btn btn-success") }}

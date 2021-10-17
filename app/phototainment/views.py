@@ -401,7 +401,7 @@ def view_booking(booking_id):
     venue = ""
     if event.venue:
         venue = event.venue
-    
+
     return render_template('event-view.html',
                            event=event,
                            alt_contact=alt_contacts,
@@ -522,7 +522,7 @@ def edit_address(booking_id):
         
         return redirect(url_for('phototainment.view_booking', booking_id=booking_id))
     
-    return render_template("edit-address.html", form=address_form)
+    return render_template("add-address.html", form=address_form)
 
 
 @custom_bp.route('/upcoming-events', methods=['GET', 'POST'])

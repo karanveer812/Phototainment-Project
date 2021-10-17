@@ -8,156 +8,215 @@
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
 
-<div class="pb-5">
-    <a href="{{ url_for('phototainment.edit_event', booking_id=event.booking_id) }}" class="btn btn-success">Edit Event
-        Details</a>
-    {% if event.status.status_id == 1 and event.venue == None %}
-    <a href="{{ url_for('phototainment.add_address', booking_id=event.booking_id) }}" class="btn btn-success">Add
-        Address
-        Details</a>
-    {% else: %}
-    <a href="{{ url_for('phototainment.edit_address', booking_id=event.booking_id) }}" class="btn btn-success">Edit
-        Address
-        Details</a>
-    {% endif %}
-</div>
 
-<div class="row">
-    <div class="col-4"><p>{{event.client.client_first_name.title()}} {{event.client.client_last_name.title()}}</p></div>
-    <div class="col-4"><p>
-        {% if event.client.company %}
-        {{event.client.company.company_name.title()}}</p>
-        {% endif %}
-    </div>
-    <div class="col-4">
-        <b class="float-left">Event Status:</b>
-        <form action="{{ url_for('phototainment.status_comment', booking_id = event.booking_id) }}" method="POST"
-              role="search" class="status-form">
-            <div class="float-left">
-
-                <div class="dropdown">
-                    <span>{{ event.status.status }}</span>
-                    {% if event.venue %}
-                    <div class="dropdown-content">
-                        <p>{% if event.venue == false %}
-                            {{ status_form.status_processing(class="btn search-btn dropdown-btn") }}
-                            {% endif %}
-                            {{ status_form.status_approved(class="btn search-btn dropdown-btn") }}
-                            {{ status_form.status_in_process(class="btn search-btn dropdown-btn") }}
-                            {{ status_form.status_Completed(class="btn search-btn dropdown-btn") }}
-                            {{ status_form.status_canceled(class="btn search-btn dropdown-btn") }}</p>
-                    </div>
-                    {% endif %}
-                </div>
+<section class="pb-0">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col pb-3">
+                <a href="{{ url_for('phototainment.edit_event', booking_id=event.booking_id) }}"
+                   class="btn btn-success">Edit
+                    Event
+                    Details</a>
+                {% if event.status.status_id == 1 and event.venue == None %}
+                <a href="{{ url_for('phototainment.add_address', booking_id=event.booking_id) }}"
+                   class="btn btn-success">Add
+                    Address
+                    Details</a>
+                {% else: %}
+                <a href="{{ url_for('phototainment.edit_address', booking_id=event.booking_id) }}"
+                   class="btn btn-success">Edit
+                    Address
+                    Details</a>
+                {% endif %}
             </div>
-        </form>
-    </div>
-</div>
+            <div class="col float-right">
+                <b class="float-left">Event Status:</b>
+                <form action="{{ url_for('phototainment.status_comment', booking_id = event.booking_id) }}"
+                      method="POST"
+                      role="search" class="status-form">
+                    <div class="float-left">
 
-<div class="row evt_details">
-    <div class="col-3">{{event.event_name.title()}}</div>
-    <div class="col-3">{{event.event_date.strftime("<span>%d-%b-%y</span>")|safe}}</div>
-    <div class="col-3">{{event.start_time.strftime("%I:%M %p")|safe}}</div>
-    <div class="col-3">{{event.duration}}</div>
-</div>
-
-<div class="row">
-    <div class="col-4"><b>Email:</b> <a href="mailto:{{event.client.client_email}}">{{event.client.client_email}}</a>
-    </div>
-    <div class="col-4"><b>Contact:</b> <a
-            href="tel:{{event.client.primary_contact}}">{{event.client.primary_contact}}</a></div>
-    <div class="col-4"><b>Address:</b>
-        {% if event_venue: %}
-        {{event_venue.street_address}},
-        <p class="m-0">{{event_venue.suburb.title()}},</p>
-        <p class="m-0">{{event_venue.state.upper()}}, {{event_venue.post_code}}</p>
-        {% else %}
-        <p class="m-0"><b>Yet to be approved</b></p>
-        {% endif %}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12 additional-information">
-        {{event.additional_information | safe}}
-    </div>
-</div>
-
-
-<div class="row m-0">
-    <div class="col-6">
-        <p><b>Add Comments</b></p>
-        <form action="{{ url_for('phototainment.add_comment', booking_id = event.booking_id) }}" method="POST"
-              role="form"
-              class="comment-form">
-            <div class="form-group required col-12 p-0 form-cell">
-                <div class="row">
-                    <label class="control-label col-4" for="comment_action"><em>Action</em></label>
-                    {{comment_form.comment_action(class="form-control
-                    col-8",id="comment_action",required="required",type="text",value="",
-                    placeholder="Action") }}
-                </div>
-            </div>
-            <div class="form-group required col-12 p-0 form-cell">
-                <div class="row">
-                    <label class="control-label col-4" for="comment_reason"><em>Reason</em></label>
-                    {{ comment_form.comment_reason(class="form-control col-8", id="comment_reason",type="text",value="",
-                    placeholder="Reason") }}
-                </div>
-            </div>
-            {{ comment_form.add_comment(class="btn btn-success") }}
-        </form>
-    </div>
-
-
-
-
-    <div class="col-lg-6">
-                  <div class="card mb-0">
-                    <div class="card-header position-relative">
-                      <h3 class="h4 mb-0">Comments</h3>
-                    </div>
-                    <div class="card-body p-0">
-                         {% for comment in comments %}
-                      <div class="row g-0">
-                        <div class="col-sm-4 col-3 text-center comment-user">
-                            {{ comment.user.username.title() }}
-                        </div>
-                        <div class="col-sm-8 col-9 border-start border-gray-200 p-3">
-                          <h5 class="fw-normal">{{ comment.comment_action }}</h5>
-                            {% if comment.comment_reason != None %}
-                          <p class="small mb-0 text-gray-600">{{ comment.comment_reason }}</p>
+                        <div class="dropdown">
+                            <span>{{ event.status.status }}</span>
+                            {% if event.venue %}
+                            <div class="dropdown-content">
+                                <p>{% if event.venue == false %}
+                                    {{ status_form.status_processing(class="btn search-btn dropdown-btn") }}
+                                    {% endif %}
+                                    {{ status_form.status_approved(class="btn search-btn dropdown-btn") }}
+                                    {{ status_form.status_in_process(class="btn search-btn dropdown-btn") }}
+                                    {{ status_form.status_Completed(class="btn search-btn dropdown-btn") }}
+                                    {{ status_form.status_canceled(class="btn search-btn dropdown-btn") }}</p>
+                            </div>
                             {% endif %}
                         </div>
-                      </div>
-                        {% endfor %}
                     </div>
-                  </div>
+                </form>
+            </div>
+        </div>
+        <div class="row align-items-stretch">
+            <div class="col-lg-3 col-12">
+                <div class="card mb-0 py-3 h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="col-12 p-0">
+                                <p class="border-bottom pb-3">Full Name<strong class="text-md d-block lh-1 mt-2">{{event.client.client_first_name.title()}}
+                                    {{event.client.client_last_name.title()}}</strong></p>
+
+                                {% if event.client.company %}
+                                <p class="border-bottom pb-3">Company Name<strong class="text-md d-block lh-1 mt-2">{{event.client.company.company_name.title()}}</strong>
+                                </p>
+                                {% endif %}
+
+                                {% if event.event_name %}
+                                <p class="border-bottom pb-3">Event Name<strong class="text-md d-block lh-1 mt-2">{{event.event_name.title()}}</strong>
+                                </p>
+                                {% endif %}
+
+                                <p class="border-bottom pb-3">Event Type<strong class="text-md d-block lh-1 mt-2">{{event.type.event_type.title()}}</strong>
+                                </p>
+
+                                <p class="border-bottom pb-3">Mobile number<strong class="text-md d-block lh-1 mt-2"><a
+                                        href="{{event.client.primary_contact}}">{{event.client.primary_contact}}</a></strong>
+                                </p>
+
+                                <p>Email address<strong class="text-md d-block lh-1 mt-2"><a
+                                        href="{{event.client.client_email}}">{{event.client.client_email}}</a></strong>
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-</div>
-
-
-<hr>
-<div class="col-12 p-0">
-    <p><b>Alternative Contact:</b></p>
-    {% if alt_contact != "": %}
-    <p><em>{{alt_contact}}</em></p>
-    {% else %}
-    <p><b>Secondary contact not provided</b></p>
-    {% endif %}
-</div>
+            </div>
 
 
-<div class="col-12 p-0">
-    <p><b>Referrer Contact:</b></p>
-    {% if event.referred_by %}
-    <p><em>{{ref_contact}}</em></p>
-    {% else %}
-    <p><b>Referrer contact not provided</b></p>
-    {% endif %}
-</div>
+            <div class="col-lg-6 col-12">
+                <div class="card mb-3 py-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <p class="border-bottom pb-3"><strong class="text-md d-block lh-1 mb-2">Event
+                                    Date</strong>
+                                    {{event.event_date.strftime("<span>%d-%b-%y</span>")|safe}}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p class="border-bottom pb-3"><strong class="text-md d-block lh-1 mb-2">Event
+                                    Time</strong>
+                                    {{event.start_time.strftime("%I:%M %p")|safe}}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p class="border-bottom pb-3"><strong class="text-md d-block lh-1 mb-2">Event
+                                    Duration</strong>
+                                    {{event.duration}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-12 p-0">
 
+                            <div class="pb-3 border-bottom"><strong
+                                    class="text-md d-block lh-1 mb-2">Address</strong>
+                                {% if event_venue: %}
+                                <p class="mb-0">{{event_venue.street_address}}, {{event_venue.suburb.title()}},
+                                    {{event_venue.state.upper()}}, {{event_venue.post_code}}</p>
+                                {% else %}
+                                <p class="mb-1"><b>Please approve the address details</b></p>
+                                {% endif %}
+                            </div>
+                            <div class="row pt-3">
+                                <div class="col">
+                                    <p><strong class="text-md d-block lh-1 mb-2">Alternative
+                                        Contact</strong>
+
+                                        {% if alt_contact != "": %}
+                                        {{alt_contact}}
+                                        {% else %}
+                                        Secondary contact not provided
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <p><strong class="text-md d-block lh-1 mb-2">Referrer
+                                        Contact:</strong>
+                                        {% if event.referred_by %}
+                                        {{ref_contact}}
+                                        {% else %}
+                                        Referrer contact not provided
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-0 py-3">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong class="text-md d-block lh-1 mb-2">Additional information</strong>{{event.additional_information
+                            | safe}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-3 col-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="col-12 p-0">
+                            <h4>
+                                <form action="{{ url_for('phototainment.add_comment', booking_id = event.booking_id) }}"
+                                      class="py-0 w-100" method="post">
+                                    <div class="input-material-group mb-3">
+                                        {{ comment_form.comment_action(class="input-material
+                                        form-control",id="comment_action",required="required",type="text",value="",
+                                        placeholder="", autocomplete="off") }}
+                                        <label class="label-material form-label control-label " for="comment_action">Action</label>
+
+                                    </div>
+                                    <div class="input-material-group mb-4">
+
+                                        {{ comment_form.comment_reason(class="input-material form-control",
+                                        id="comment_reason",type="text",value="", placeholder="", autocomplete="off") }}
+                                        <label class="label-material form-label control-label " for="comment_reason">Reason</label>
+
+
+                                    </div>
+                                    {{ comment_form.add_comment(class="btn btn-success mb-3 btn-sm",id="submit",
+                                    type="submit", value="Comment") }}
+                                    <!--                            <br><a class="text-sm text-paleBlue" href="#">Forgot Password?</a><br>-->
+                                </form>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-0">
+                    <div class="card-body h-400-scroll ">
+                        <div class="col-12 p-0">
+                            <div class="card-body p-0">
+                                {% for comment in comments %}
+                                <div class="row g-0">
+                                    <div class="col-md-3 col-12 text-center comment-user">
+                                        {{ comment.user.username.title() }}
+                                    </div>
+                                    <div class="col-md-8 col-12 border-start border-gray-200 p-3">
+                                        <h5 class="fw-normal">{{ comment.comment_action }}</h5>
+                                        {% if comment.comment_reason != None %}
+                                        <p class="small mb-0 text-gray-600">{{ comment.comment_reason }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}
 
@@ -174,6 +233,22 @@
                      $('.sort-dropdown-menu').toggleClass('show');
                  });
              });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 
