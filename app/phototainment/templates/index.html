@@ -15,15 +15,12 @@
                     <a href="{{ url_for('phototainment.upcoming_events') }}"
                        class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
                         <div class="d-flex align-items-center">
-                            <div class="icon flex-shrink-0 bg-violet">
-                                <svg class="svg-icon svg-icon-sm svg-icon-heavy">
-                                    <use xlink:href="#time-1"></use>
-                                </svg>
+                            <div class="number">
+                                <strong class="text-lg">{{event_num}}</strong>
                             </div>
                             <div class="mx-3">
                                 <h6 class="h4 fw-light text-gray-600 mb-0">Upcoming<br>Events</h6>
                             </div>
-                            <div class="number"><strong class="text-lg">{{event_num}}</strong></div>
                         </div>
                     </a>
                     <!-- Item -->
@@ -108,14 +105,14 @@
                 <div class="col-lg-12 pt-3 p-0">
                     <div class="card mb-0">
                         <div class="card-header position-relative px-4">
-                            <h3 class="h4 mb-0">Event Types</h3>
+                            <h3 class="h4 mb-0">Users</h3>
                         </div>
-                        <ul class="card-body h-400-scroll p-0">
-                            {% for type in event_types %}
+                        <ul class="card-body h-400-scroll h-250-scroll p-0">
+                            {% for user in users %}
                             <li class="p-3 d-flex justify-content-between">
                                 <div class="d-flex">
                                     <div class="ms-3">
-                                        <h5 class="font-weight-normal text-gray-600 mb-1">{{type.event_type}}</h5>
+                                        <h5 class="font-weight-normal text-gray-600 mb-1">{{user.username.title()}}</h5>
                                     </div>
                                 </div>
                             </li>
@@ -129,10 +126,10 @@
             <div class="col-lg-9 col-12">
                 <div class="card mb-0 h-100">
                     <div class="card-header position-relative px-4">
-                        <h3 class="h4 mb-0">Monthly Events Report</h3>
+                        <h3 class="h4 mb-0">Monthly Events</h3>
                         <div class="card-close">
                             <a href="#" class=""></a>
-                            <button id="btnDownload" class="dropdown-toggle text-sm" type="button">Save</button>
+                            <button id="btnDownload" class="dropdown-toggle save-btn text-sm" type="button">Save</button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -365,6 +362,7 @@ function switchTab(evt, filter) {
     document.getElementById('dashboard-lnk').classList.add("active-link");
 
         let graph_data =  [30, 50, 40, 61, 42, 35, 40]
+
 
  const monthlyEventChart = document.getElementById('monthlyEventChart');
  const btnDownload = document.getElementById('btnDownload');

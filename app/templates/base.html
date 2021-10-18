@@ -23,9 +23,11 @@
     <div class="navbar-header">
         <!-- Navbar Brand --><a class="navbar-brand d-none d-sm-inline-block" href="index.html">
         <a class="menu-btn active" id="toggle-btn" href="#"><span></span><span></span><span></span></a>
-        <div class="brand-img d-none d-lg-inline-block"><img
+        <div class="brand-img d-none d-lg-inline-block">
+            <a href="{{ url_for('phototainment.home') }}"> <img
                 src="{{ url_for('static', filename='img/logo.png') }}"
                 alt="logo"/>
+                </a>
         </div>
 
 

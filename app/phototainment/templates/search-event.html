@@ -7,9 +7,8 @@
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
 <div class="row m-0 pt-4">
-    <div class="text-center search-outer">
+    <div class="text-center search-outer p-0">
         <div class="form-group required">
-
 
             <div class="col-sm-9 p-0">
                 <form action="" method="POST" role="search" class="search-form">
@@ -32,7 +31,7 @@
                 </form>
             </div>
 
-            <a href="{{ url_for('phototainment.add_event') }}" class="add-btn btn btn-success ml-4">Add New Eent</a>
+            <a href="{{ url_for('phototainment.add_event') }}" class="add-btn btn btn-success ml-4">Add New Booking</a>
         </div>
     </div>
 </div>
@@ -56,5 +55,15 @@
 document.getElementById('search-lnk').classList.add("active-link");
 
 </script>
+
+<script type="text/javascript">
+   $(function() {
+    $("#table1").dataTable({
+        "iDisplayLength": 5,
+        "aLengthMenu": [[5, 10, 25, 50,  -1], [5, 10, 25, 50, "All"]]
+       });
+   });
+   table.destroy();
+  </script>
 
 {% endblock %}

@@ -314,8 +314,14 @@ button:focus {
   background-color: rgba(0, 0, 0, 0.08);    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
   border: 2px solid rgba(0, 0, 0, 0.02);  /* creates padding around scroll thumb */
-
 }
+
+.h-250-scroll {
+    max-height: 250px;
+    overflow-y: scroll;
+    padding-bottom: 0;
+}
+
 
 .add-btn {
     float: right;
@@ -347,6 +353,48 @@ button:focus {
     stroke-width: 15px;
 }
 
+
+#table1 th {
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+#table1 th:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+#table1_wrapper {
+    display: block;
+    padding-top: 25px;
+}
+#table1_info {
+    display: none;
+}
+#table1_filter {
+    display: none;
+}
+#table1_length label {
+    display: block;
+}
+#table1_length .form-control {
+    margin-right: 10px;
+}
+#table1_next, #table1_previous {
+    display:none;
+}
+.pagination {
+    margin-top: 10px;
+}
+.paginate_button {
+    margin: 0 2px;
+}
+.pagination .paginate_button a {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-item: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 5px;
+}
 
 
 

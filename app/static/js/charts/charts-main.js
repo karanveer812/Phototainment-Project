@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // ------------------------------------------------------- //
     // Bar Chart
     // ------------------------------------------------------ //
-    var BARCHARTEXMPLE = document.getElementById("barChartExample");
-    var barChartExample = new Chart(BARCHARTEXMPLE, {
+    var SUCCESSFULEVENTS = document.getElementById("successfulEvent");
+    var successfulEvent = new Chart(SUCCESSFULEVENTS, {
         type: "bar",
         options: {
             scales: {

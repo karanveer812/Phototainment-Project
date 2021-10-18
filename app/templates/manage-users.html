@@ -6,9 +6,10 @@
 
 {% block navbar %}{% include 'sidebar.html' %}{% endblock %}
 {% block content %}
-
+<div class="row d-flex justify-content-end">
+    <div class="col-3"><a href="{{ url_for('phototainment.register') }}" class="add-btn btn btn-success my-3">Add New User</a></div>
+</div>
 <div class="row m-0">
-
     <div class="table-responsive">
         <table class="table mb-0 table-striped table-hover">
             <thead>

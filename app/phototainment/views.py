@@ -81,6 +81,8 @@ def home():
                               Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
     
     event_types = db.session.query(EventType).order_by("event_type")
+
+    users = db.session.query(User).order_by("username")
     
     recent_bookings = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=7)]
     
@@ -110,6 +112,7 @@ def home():
         type_form=type_form,
         event_num=len(upcoming_events),
         company_form=company_form,
+        users=users,
         associated_companies=associated_companies
     )
 

@@ -40,4 +40,13 @@
 document.getElementById('upcoming-lnk').classList.add("active-link");
 
 </script>
+<script type="text/javascript">
+   $(function() {
+    $("#table1").dataTable({
+        "iDisplayLength": 5,
+        "aLengthMenu": [[5, 10, 25, 50,  -1], [5, 10, 25, 50, "All"]]
+       });
+   });
+   table.destroy();
+  </script>
 {% endblock %}

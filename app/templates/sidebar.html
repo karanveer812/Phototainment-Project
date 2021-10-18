@@ -12,10 +12,12 @@
                   <use xlink:href="#real-estate-1"> </use>
                 </svg>Home </a>
             </li>
+              {% if current_user.role.role_id == 1 %}
               <li class="sidebar-item"><a id="charts-lnk" class="sidebar-link" href="{{ url_for('phototainment.charts') }}">
                 <svg class="svg-icon svg-icon-sm svg-icon-heavy mr-xl-2">
                   <use xlink:href="#sales-up-1"> </use>
                 </svg>Charts </a>
+                  {% endif %}
             </li>
               <li class="sidebar-item"><a id="upcoming-lnk" class="sidebar-link" href="{{ url_for('phototainment.upcoming_events') }}">
                 <svg class="svg-icon svg-icon-sm svg-icon-heavy mr-xl-2">
