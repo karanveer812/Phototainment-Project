@@ -16,7 +16,7 @@
                     <div class="input-group">
                         {{ form.search(class="form-control search-field",id="search",type="text") }}
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">Dropdown
+                                data-bs-toggle="dropdown" aria-expanded="false">Search By
                         </button>
                         <ul class="dropdown-menu shadow-sm text-left">
                             <li>{{ form.search_fname(class="btn search-btn dropdown-btn") }}</li>
@@ -26,6 +26,7 @@
                             <li>{{ form.search_evname(class="btn search-btn dropdown-btn") }}</li>
                             <li>{{ form.search_evtype(class="btn search-btn dropdown-btn") }}</li>
                             <li>{{ form.search_staff(class="btn search-btn dropdown-btn") }}</li>
+                            <li>{{ form.search_status(class="btn search-btn dropdown-btn") }}</li>
                         </ul>
                     </div>
                 </form>

@@ -97,9 +97,7 @@ class SearchForm(FlaskForm):
     search_evtype = SubmitField("Event Type")
     search_staff = SubmitField("Staff Name")
     
-    sort_start_date = SubmitField("Start Date")
-    sort_register_date = SubmitField("Register Date")
-    sort_end_date = SubmitField("End Date")
+    search_status = SubmitField("Status")
     
     
 class ChangeStatus(FlaskForm):

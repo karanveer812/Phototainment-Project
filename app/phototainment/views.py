@@ -360,25 +360,25 @@ def search_event():
                     search_by = "event_name"
                     events = events.filter(Event.__table__.c[search_by].like(search_for.lower()))
                 elif form.search_evtype.data:
-                    search_by = "type_id"
                     type_name = db.session.query(EventType).filter(
                         EventType.__table__.c['event_type'].like(search_for)).first()
                     if type_name:
                         search_for = type_name.type_id
-                    events = events.filter(Event.__table__.c[search_by].like(search_for))
+                    events = [event for event in events if event[0].type_id == search_for]
                 elif form.search_staff.data:
-                    search_by = "user_id"
                     user_name = db.session.query(User).filter(
                         User.__table__.c['username'].like(f"{search_for}%")).first()
                     if user_name:
                         search_for = user_name.id
-                    events = events.filter(Event.__table__.c[search_by].like(search_for))
-        
-        if events:
-            if form.sort_register_date.data:
-                events = events.order_by("register_date")
-            elif form.sort_start_date.data:
-                events = events.order_by("event_date")
+                    events = [event for event in events if event[0].user_id == search_for]
+                    
+                elif form.search_status.data:
+                    status = db.session.query(EventStatus).filter(
+                        EventStatus.__table__.c['status'].like(f"{search_for}%")).first()
+                    if status:
+                        search_for = status.status_id
+                    events = [event for event in events if event[0].status_id == search_for]
+
     return render_template('search-event.html', form=form, filtered_events=events)
 
 
