@@ -37,7 +37,7 @@
 
         <div class="card col-12 mt-3">
             <div class="card-header">
-                <h3 class="h4 mb-0">Filter Events</h3>
+                <h3 class="h4 mb-0">Filter Report By</h3>
             </div>
             <div class="card-body p-0">
                 <div class="col-12 mx-auto pt-3">
@@ -69,8 +69,8 @@
             </div>
         </div>
         <div class="col-12 p-0 d-flex justify-content-center">
-        {{ form.submit(class="btn btn-success m-0 float-right") }}
-            </div>
+            {{ form.submit(class="btn btn-success m-0 float-right") }}
+        </div>
     </div>
 </form>
 
@@ -85,6 +85,7 @@ $(function(){
         return new Date().toJSON().split('T')[0];
     });
 });
+
 
 
 
