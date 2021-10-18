@@ -77,6 +77,7 @@ def change_password():
 @login_required
 @employee
 def home():
+    
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
     
@@ -164,6 +165,18 @@ def client_table():
     clients = db.session.query(Client).all()
     return render_template('client-table.html', clients=clients)
 
+@custom_bp.route('/delete-client/<client_id>')
+@login_required
+@admin
+def delete_client(client_id):
+    requested_client = db.session.query(Client).filter_by(client_id=client_id).first()
+    if requested_client.events or requested_client.company:
+        flash("Client can not be deleted")
+    else:
+        db.session.delete(requested_client)
+        db.session.commit()
+        flash("Client has been deleted")
+    return redirect(url_for('phototainment.client_table'))
 
 @custom_bp.route('/register-user', methods=["GET", "POST"])
 @login_required
@@ -197,9 +210,12 @@ def manage_user():
 @admin
 def delete_user(user_id):
     requested_user = db.session.query(User).filter_by(id=user_id).first()
-    db.session.delete(requested_user)
-    db.session.commit()
-    flash("User has been deleted")
+    if requested_user.events or requested_user.comment:
+        flash("User can not be deleted")
+    else:
+        db.session.delete(requested_user)
+        db.session.commit()
+        flash("User has been deleted")
     return redirect(url_for('phototainment.manage_user'))
 
 

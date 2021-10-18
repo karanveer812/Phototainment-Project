@@ -354,30 +354,33 @@ button:focus {
 }
 
 
-#table1 th {
+#table1 th, #table2 th {
     cursor: pointer;
     transition: background 0.3s ease;
 }
-#table1 th:hover {
+#table1 th:hover, #table2 th:hover {
     background: rgba(0, 0, 0, 0.02);
 }
-#table1_wrapper {
+#table1_wrapper, #table2_wrapper {
     display: block;
     padding-top: 25px;
 }
-#table1_info {
+#table1_info, #table2_info {
     display: none;
 }
 #table1_filter {
     display: none;
 }
-#table1_length label {
+#table1_length label, #table2_length label {
     display: block;
 }
-#table1_length .form-control {
+#table2_length label {
+    display: block;
+}
+#table1_length .form-control , #table2_length .form_control{
     margin-right: 10px;
 }
-#table1_next, #table1_previous {
+#table1_next, #table1_previous, #table2_next, #table2_previous {
     display:none;
 }
 .pagination {
