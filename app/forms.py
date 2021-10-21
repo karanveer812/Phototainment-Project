@@ -75,6 +75,8 @@ class EventForm(FlaskForm):
                              choices=[(type.type_id, type.event_type) for type in EventType.query.order_by('event_type')],
                              validators=[validators.DataRequired("Please Enter")])
     additional_information = CKEditorField("Additional Information", validators=[validators.DataRequired()])
+    
+    estimated_cost = StringField("Estimated Cost")
     submit = SubmitField("Submit")
 
 class AddressForm(FlaskForm):

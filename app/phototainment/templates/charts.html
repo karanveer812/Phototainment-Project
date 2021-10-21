@@ -21,13 +21,14 @@
 <div class="tab">
     <button class="tablinks active" onclick="switchTab(event, 'Barchart')">Event Data</button>
     <button class="tablinks" onclick="switchTab(event, 'Piechart')">Successful Events</button>
+    <button class="tablinks" onclick="switchTab(event, 'CostChart')">Cost Charts</button>
 </div>
 
 <div id="Barchart" class="tabcontent pt-4" style="display:block">
     <div class="col-lg-7 mx-auto">
         <div class="card mb-0">
             <div class="card-body">
-                <canvas id="successfulEvent"></canvas>
+                <canvas id="EventChart"></canvas>
             </div>
         </div>
     </div>
@@ -35,13 +36,12 @@
 
 
 <div id="Piechart" class="tabcontent pt-4">
-
     <div class="col-lg-7 mx-auto">
         <div class="card mb-0">
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-10 mx-auto">
-                        <canvas id="doughnutChartExample"></canvas>
+                        <canvas id="SuccessfulEvents"></canvas>
                     </div>
                 </div>
             </div>
@@ -49,6 +49,33 @@
     </div>
 </div>
 
+<div id="CostChart" class="tabcontent pt-4">
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card mb-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-10 mx-auto">
+                            <canvas id="barChart1"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mx-auto">
+            <div class="card mb-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-10 mx-auto">
+                            <canvas id="pieChartExample"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 
 {% endblock %}
@@ -77,9 +104,9 @@ document.getElementById('charts-lnk').classList.add("active-link");
 let pie_label = [];
 let pie_data = [];
 
-{% for data in pie_chart_data %}
+{% for data in doughnut_chart_data %}
                 pie_label.push('{{data}}')
-                pie_data.push('{{pie_chart_data[data]}}')
+                pie_data.push('{{doughnut_chart_data[data]}}')
               {% endfor %}
 
 let bar_label =  [];
@@ -89,6 +116,17 @@ let bar_data =  [];
                 bar_label.push('{{data}}')
                 bar_data.push('{{bar_graph_data[data]}}')
               {% endfor %}
+
+
+var months = {{ months|tojson }}
+        let graph_labels = months;
+        let graph_data2 = {{ graph_data2 }};
+
+
+var event_type = {{ available_types|tojson }}
+        let cost_chart_label = event_type;
+        let cost_chart_data = {{ events_revenue }};
+
 
 
 

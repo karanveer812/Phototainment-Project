@@ -6900,6 +6900,7 @@ a:hover, a:focus,
 span:hover,
 span:focus {
   text-decoration: none;
+  background: rgba(0, 0, 0, 0.02)
 }
 
 section {
@@ -7127,6 +7128,9 @@ nav.side-navbar.shrinked .sidebar-header .title {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+}
+.sidebar-link.active-link {
+  background: rgba(0, 0, 0, 0.02)
 }
 
 @media (max-width: 1199.98px) {

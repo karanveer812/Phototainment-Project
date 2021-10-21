@@ -341,7 +341,6 @@
     </div>
 </section>
 
-
 {% endblock %}
 
 {% block custom_scripts %}
@@ -359,9 +358,17 @@ function switchTab(evt, filter) {
   document.getElementById(filter).style.display = "block";
   evt.currentTarget.className += " active";
 }
+
     document.getElementById('dashboard-lnk').classList.add("active-link");
 
-        let graph_data =  [30, 50, 40, 61, 42, 35, 40]
+
+
+        var months = {{ months|tojson }}
+        let graph_data1 = [30, 50, 40, 61, 42, 35, 40];
+
+
+        let graph_labels = months;
+        let graph_data2 = [50, 20, 35];;
 
 
  const monthlyEventChart = document.getElementById('monthlyEventChart');

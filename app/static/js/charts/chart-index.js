@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
         },
         data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            labels: graph_labels,
             datasets: [
                 {
                     label: "Data Set One",
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 10,
-                    data: graph_data,
+                    data: graph_data1,
                     spanGaps: false,
                 },
                 {
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 10,
-                    data: [50, 40, 50, 40, 45, 40, 30],
+                    data: graph_data2,
                     spanGaps: false,
                 },
             ],

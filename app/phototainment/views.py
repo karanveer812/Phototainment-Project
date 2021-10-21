@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash, Blueprint, Response
 import json
 from collections import Counter
+from sqlalchemy import desc, func
 from sqlalchemy.exc import IntegrityError
 
 import flask_csv
@@ -77,12 +78,11 @@ def change_password():
 @login_required
 @employee
 def home():
-    
     events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
                               Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
     
     event_types = db.session.query(EventType).order_by("event_type")
-
+    
     users = db.session.query(User).order_by("username")
     
     recent_bookings = [event for event in events if datetime.now() - event[0].lead_date < timedelta(days=7)]
@@ -98,7 +98,21 @@ def home():
     
     associated_companies = [company.company_name for company in
                             db.session.query(Company).order_by('company_name').all()]
-    print(db.session.query(Company).order_by('company_name').all())
+    months = []
+    graph_data2 = []
+    
+    for event in events:
+        if event[0].lead_date.strftime("%b") in months:
+            continue
+        else:
+            months.append(event[0].lead_date.strftime("%b"))
+    
+    for month in months:
+        monthly_revenue = 0
+        for event in events:
+            if event[0].lead_date.strftime("%b") == month and event[0].estimated_cost:
+                monthly_revenue += int(event[0].estimated_cost)
+        graph_data2.append(monthly_revenue)
     
     type_form = TypeForm()
     company_form = CompanyForm()
@@ -111,6 +125,8 @@ def home():
         event_types=event_types,
         upcoming_events=upcoming_events,
         type_form=type_form,
+        months=months,
+        graph_data2=graph_data2,
         event_num=len(upcoming_events),
         company_form=company_form,
         users=users,
@@ -165,6 +181,7 @@ def client_table():
     clients = db.session.query(Client).all()
     return render_template('client-table.html', clients=clients)
 
+
 @custom_bp.route('/delete-client/<client_id>')
 @login_required
 @admin
@@ -177,6 +194,7 @@ def delete_client(client_id):
         db.session.commit()
         flash("Client has been deleted")
     return redirect(url_for('phototainment.client_table'))
+
 
 @custom_bp.route('/register-user', methods=["GET", "POST"])
 @login_required
@@ -311,6 +329,10 @@ def add_event():
             type_id=form.event_type.data,
             additional_information=form.additional_information.data
         )
+        
+        if form.estimated_cost.data:
+            new_event.estimated_cost = int(form.estimated_cost.data),
+        
         if alt_contact != "":
             new_event.phone_id = alt_contact.phone_id
         
@@ -390,14 +412,14 @@ def search_event():
                     if user_name:
                         search_for = user_name.id
                     events = [event for event in events if event[0].user_id == search_for]
-                    
+                
                 elif form.search_status.data:
                     status = db.session.query(EventStatus).filter(
                         EventStatus.__table__.c['status'].like(f"{search_for}%")).first()
                     if status:
                         search_for = status.status_id
                     events = [event for event in events if event[0].status_id == search_for]
-
+    
     return render_template('search-event.html', form=form, filtered_events=events)
 
 
@@ -420,7 +442,9 @@ def view_booking(booking_id):
     venue = ""
     if event.venue:
         venue = event.venue
-
+    
+    print(type(list(event.comment)))
+    
     return render_template('event-view.html',
                            event=event,
                            alt_contact=alt_contacts,
@@ -428,7 +452,7 @@ def view_booking(booking_id):
                            event_venue=venue,
                            status_form=status_form,
                            comment_form=comment_form,
-                           comments=event.comment)
+                           comments=db.session.query(Comment).order_by(desc('comment_time')))
 
 
 @custom_bp.route('/add_status_comment/<booking_id>', methods=["POST"])
@@ -453,7 +477,8 @@ def status_comment(booking_id):
         status_comment = Comment(
             user_id=current_user.id,
             booking_id=booking_id,
-            comment_action=f"Changed status to {event.status.status}"
+            comment_action=f"Changed status to {event.status.status}",
+            comment_time=datetime.now()
         )
         db.session.add(status_comment)
         db.session.commit()
@@ -469,6 +494,7 @@ def add_comment(booking_id):
         new_comment = Comment(
             user_id=current_user.id,
             booking_id=booking_id,
+            comment_time=datetime.now(),
             comment_action=comment_form.comment_action.data,
             comment_reason=comment_form.comment_reason.data
         )
@@ -594,6 +620,7 @@ def edit_event(booking_id):
         start_time=current_event.start_time,
         duration=current_event.duration,
         event_type=current_event.type_id,
+        estimated_cost=current_event.estimated_cost,
         
         alt_contact=alt_contact,
         alt_contact_name=alt_contact_name,
@@ -604,7 +631,6 @@ def edit_event(booking_id):
         additional_information=current_event.additional_information,
     )
     
-    print(type(form.company))
     if request.method == "POST":
         current_event.client.client_first_name = form.first_name.data.lower()
         current_event.client.client_last_name = form.last_name.data.lower()
@@ -613,15 +639,17 @@ def edit_event(booking_id):
             current_event.client.company = db.session.query(Company).filter_by(
                 company_name=form.company.data.lower()).first()
         else:
-            new_company = Company(company_name=form.company.data.lower())
-            db.session.add(new_company)
-            current_event.client.company = new_company
+            if form.company.data:
+                new_company = Company(company_name=form.company.data.lower())
+                db.session.add(new_company)
+                current_event.client.company = new_company
         
         current_event.client.primary_contact = form.primary_contact.data
         current_event.event_name = form.event_name.data
         current_event.event_date = form.event_date.data
         current_event.start_time = form.start_time.data
         current_event.duration = form.duration.data
+        current_event.estimated_cost = int(form.estimated_cost.data)
         current_event.type_id = form.event_type.data
         current_event.additional_information = form.additional_information.data
         
@@ -661,24 +689,59 @@ def charts():
     if request.method == "POST":
         days = int(form.days.data.split()[0])
     
-    events = db.session.query(Event)
+    events = db.session.query(Event).order_by('lead_date')
     filtered_event = [event for event in events if datetime.now() - event.lead_date < timedelta(days=days)]
-    for event in events:
-        print(datetime.now() - event.lead_date)
     
     type_names = [event.type.event_type for event in filtered_event]
     status_names = [event.status.status for event in filtered_event]
     
-    pie_chart_data = dict(Counter(status_names))
-    bar_graph_data = dict(Counter(type_names))
-    # line_graph_data = dict(Counter([event.status.status for event in filtered_event]))
+    months = []
+    graph_data2 = []
     
     for event in events:
-        print(event.event_date.strftime("%b"))
-    print()
-    print(len(filtered_event))
+        if event.lead_date.strftime("%b") in months:
+            continue
+        else:
+            months.append(event.lead_date.strftime("%b"))
     
-    return render_template('charts.html', bar_graph_data=bar_graph_data, pie_chart_data=pie_chart_data, form=form)
+    for month in months:
+        monthly_revenue = 0
+        for event in events:
+            if event.lead_date.strftime("%b") == month and event.estimated_cost:
+                monthly_revenue += int(event.estimated_cost)
+        graph_data2.append(monthly_revenue)
+    
+    available_types = []
+    events_revenue = []
+    for event in events:
+        if event.type.event_type in available_types:
+            continue
+        else:
+            available_types.append(event.type.event_type)
+
+    for event_type in available_types:
+        event_revenue = 0
+        for event in events:
+            if event.type.event_type == event_type and event.estimated_cost:
+                event_revenue += int(event.estimated_cost)
+        events_revenue.append(event_revenue)
+        
+    print(events_revenue)
+    
+
+    
+    doughnut_chart_data = dict(Counter(status_names))
+    bar_graph_data = dict(Counter(type_names))
+    
+    return render_template('charts.html',
+                           bar_graph_data=bar_graph_data,
+                           doughnut_chart_data=doughnut_chart_data,
+                           months=months,
+                           graph_data2=graph_data2,
+                           form=form,
+                           available_types=available_types,
+                           events_revenue=events_revenue
+                           )
 
 
 @custom_bp.route('/get-report', methods=["GET", "POST"])
@@ -687,23 +750,21 @@ def charts():
 def generate_report():
     today = datetime.now()
     start_date = today - timedelta(days=30)
-    events = db.session.query(Event, Client.client_first_name, Client.client_last_name, Client.client_email,
-                              Client.primary_contact, ).select_from(Event, Client).join(Client).order_by('event_date')
     
     report_form = ReportForm()
     
     for user in User.query.order_by('username'):
         report_form.user_field.choices.append((user.id, user.username))
-
+    
     for event_type in EventType.query.order_by('event_type'):
         report_form.event_type.choices.append((event_type.type_id, event_type.event_type))
     
     for status in EventStatus.query.order_by('status'):
         report_form.status.choices.append((status.status_id, status.status))
-        
+    
     for company in Company.query.order_by('company_name'):
         report_form.company.choices.append((company.company_id, company.company_name))
-        
+    
     return render_template('report.html', today=today, start_date=start_date, form=report_form)
 
 
@@ -723,7 +784,7 @@ def download_report():
     
     if int(report_form.user_field.data) != 0:
         filtered_event = [event for event in filtered_event if event.user.id == int(report_form.user_field.data)]
-        
+    
     if int(report_form.status.data) != 0:
         filtered_event = [event for event in filtered_event if event.status.status_id == int(report_form.status.data)]
     
@@ -734,7 +795,7 @@ def download_report():
                 if event.client.company.company_id == int(report_form.company.data):
                     company_events.append(event)
         filtered_event = company_events
-
+    
     data = []
     
     for event in filtered_event:
@@ -749,11 +810,11 @@ def download_report():
         if event.contacts:
             alt_contact = event.contacts.mobile_number
             alt_contact_name = event.contacts.contact_name.title()
-            
+        
         if event.referred_by:
             ref_contact = event.referred_by.mobile_number
             ref_contact_name = event.referred_by.contact_name.title()
-
+        
         if event.venue:
             street_address = event.venue.street_address.title()
             suburb = event.venue.suburb.title()
@@ -775,6 +836,7 @@ def download_report():
             'Referee Contact Name': ref_contact_name,
             'Venue': address,
             'User': event.user.username.title(),
+            'Estimated Cost': event.estimated_cost,
             'Status': event.status.status.title()
         })
     if data:

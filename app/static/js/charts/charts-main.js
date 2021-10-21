@@ -19,10 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
     gradient2.addColorStop(1, "rgba(76, 162, 205, 0.85)");
 
     // ------------------------------------------------------- //
-    // Bar Chart
+    // Events Chart
     // ------------------------------------------------------ //
-    var SUCCESSFULEVENTS = document.getElementById("successfulEvent");
-    var successfulEvent = new Chart(SUCCESSFULEVENTS, {
+    var EVENTCHART = document.getElementById("EventChart");
+    var successfulEvent = new Chart(EVENTCHART, {
         type: "bar",
         options: {
             scales: {
@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                 ],
             },
+            legend: {
+                display: false,
+            },
         },
         data: {
             labels: bar_label,
@@ -61,10 +64,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ------------------------------------------------------- //
-    // Doughnut Chart
+    // Successful Events Chart
     // ------------------------------------------------------ //
-    var DOUGHNUTCHARTEXMPLE = document.getElementById("doughnutChartExample");
-    var pieChartExample = new Chart(DOUGHNUTCHARTEXMPLE, {
+    var SUCCESSFULEVENTS = document.getElementById("SuccessfulEvents");
+    var pieChartExample = new Chart(SUCCESSFULEVENTS, {
         type: "doughnut",
         options: {
             cutoutPercentage: 70,
@@ -74,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
             datasets: [
                 {
                     data: pie_data,
-                    borderWidth: 0,
+                    borderWidth: 3,
                     backgroundColor: ["#ff0000", "#49cd8b", "#54e69d", "#71e9ad"],
                     hoverBackgroundColor: ["#ff4400", "#49cd8b", "#54e69d", "#71e9ad"],
                 },
@@ -86,4 +89,117 @@ document.addEventListener("DOMContentLoaded", function () {
         responsive: true,
     };
 
+
+// ------------------------------------------------------- //
+    // Cost Chart
+    // ------------------------------------------------------ //
+    var COSTCHART = document.getElementById("CostChart");
+    var pieChartExample = new Chart(COSTCHART, {
+        type: "doughnut",
+        options: {
+            cutoutPercentage: 70,
+        },
+        data: {
+            labels: pie_label,
+            datasets: [
+                {
+                    data: [1, 2, 3],
+                    borderWidth: 3,
+                    backgroundColor: ["#ff0000", "#49cd8b", "#54e69d", "#71e9ad"],
+                    hoverBackgroundColor: ["#ff4400", "#49cd8b", "#54e69d", "#71e9ad"],
+                },
+            ],
+        },
+    });
+
+    var pieChartExample = {
+        responsive: true,
+    };
+
+
+
+    // ------------------------------------------------------- //
+    // Bar Chart 1
+    // ------------------------------------------------------ //
+    var BARCHART1 = document.getElementById("barChart1");
+    var barChartHome = new Chart(BARCHART1, {
+        type: "bar",
+        options: {
+            scales: {
+                xAxes: [
+                    {
+                        display: true,
+                    },
+                ],
+                yAxes: [
+                    {
+                        display: true,
+                    },
+                ],
+            },
+            legend: {
+                display: false,
+            },
+        },
+        data: {
+            labels: graph_labels,
+            datasets: [
+                {
+                    label: "Cost",
+                    backgroundColor: [
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                    ],
+                    borderColor: [
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                        "#44b2d7",
+                    ],
+                    borderWidth: 0,
+                    data: graph_data2,
+                },
+            ],
+        },
+    });
+
+
+    // ------------------------------------------------------- //
+    // Pie Chart
+    // ------------------------------------------------------ //
+    var PIECHARTEXMPLE = document.getElementById("pieChartExample");
+    var pieChartExample = new Chart(PIECHARTEXMPLE, {
+        type: "pie",
+        data: {
+            labels: cost_chart_label,
+            datasets: [
+                {
+                    data: cost_chart_data,
+                    borderWidth: 0,
+                    backgroundColor: ["#44b2d7", "#59c2e6", "#71d1f2", "#96e5ff"],
+                    hoverBackgroundColor: ["#44b2d7", "#59c2e6", "#71d1f2", "#96e5ff"],
+                },
+            ],
+        },
+    });
+
+    var pieChartExample = {
+        responsive: true,
+    };
+
+
+
 });
+
+
+

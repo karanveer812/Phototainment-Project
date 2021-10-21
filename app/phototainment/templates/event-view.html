@@ -80,9 +80,14 @@
                                         href="tel:{{event.client.primary_contact}}">{{event.client.primary_contact}}</a></strong>
                                 </p>
 
-                                <p>Email address<strong class="text-md d-block lh-1 mt-2"><a
+                                <p class="border-bottom pb-3">Email address<strong class="text-md d-block lh-1 mt-2"><a
                                         href="mailto:{{event.client.client_email}}">{{event.client.client_email}}</a></strong>
                                 </p>
+                                {% if event.estimated_cost %}
+                                <p>
+                                    Estimated Cost<strong class="text-md d-block lh-1 mt-2">{{event.estimated_cost}} $</strong>
+                                </p>
+                                {% endif %}
 
                             </div>
                         </div>
@@ -197,9 +202,15 @@
                         <div class="col-12 p-0">
                             <div class="card-body p-0">
                                 {% for comment in comments %}
-                                <div class="row g-0">
+                                <div class="comment-outer row border-bottom g-0">
                                     <div class="col-md-3 col-12 text-center comment-user">
-                                        {{ comment.user.username.title() }}
+                                        <div class="col p-0">
+                                        <p class="m-0">{{ comment.user.username.title() }}</p>
+                                            {% if comment.comment_time %}
+                                        <span>{{ comment.comment_time.strftime("<span>%d-%b-%y</span>")|safe }}</span>
+                                            <span>{{ comment.comment_time.strftime("%I:%M %p")|safe }}
+                                            {% endif %}
+                                            </div>
                                     </div>
                                     <div class="col-md-8 col-12 border-start border-gray-200 p-3">
                                         <h5 class="fw-normal">{{ comment.comment_action }}</h5>
