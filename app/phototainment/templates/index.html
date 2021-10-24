@@ -364,11 +364,12 @@ function switchTab(evt, filter) {
 
 
         var months = {{ months|tojson }}
-        let graph_data1 = [30, 50, 40, 61, 42, 35, 40];
-
 
         let graph_labels = months;
-        let graph_data2 = [50, 20, 35];;
+        let graph_data1 = {{ graph_data1 }};
+        let graph_data2 = {{ graph_data2 }};
+        graph_data1.push(0)
+        graph_data2.push(0)
 
 
  const monthlyEventChart = document.getElementById('monthlyEventChart');

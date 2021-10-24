@@ -11,11 +11,13 @@ document.addEventListener("DOMContentLoaded", function () {
     var ctx1 = canvas.getContext("2d");
     var gradient1 = ctx1.createLinearGradient(150, 0, 150, 300);
     gradient1.addColorStop(0, "rgba(133, 180, 242, 0.91)");
-    gradient1.addColorStop(1, "rgba(255, 119, 119, 0.94)");
+
+    gradient1.addColorStop(1, "rgba(76, 162, 205, 0.85)");
+
 
     var gradient2 = ctx1.createLinearGradient(146.0, 0.0, 154.0, 300.0);
     gradient2.addColorStop(0, "rgba(104, 179, 112, 0.85)");
-    gradient2.addColorStop(1, "rgba(76, 162, 205, 0.85)");
+    gradient2.addColorStop(1, "rgba(255, 119, 119, 0.94)");
 
     // ------------------------------------------------------- //
     // Line Chart
@@ -49,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
             labels: graph_labels,
             datasets: [
                 {
-                    label: "Data Set One",
+                    label: "Successful Events",
                     fill: true,
                     lineTension: 0.3,
                     backgroundColor: gradient1,
@@ -72,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     spanGaps: false,
                 },
                 {
-                    label: "Data Set Two",
+                    label: "Total Events",
                     fill: true,
                     lineTension: 0.3,
                     backgroundColor: gradient2,

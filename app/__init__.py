@@ -1,8 +1,10 @@
+#################### Imports #####################
 from flask import Flask
-
 from flask_bootstrap import Bootstrap
 import os
 
+
+#################### Create flask application #####################
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
@@ -18,9 +20,11 @@ def create_app():
     return app
 
 
+#################### Create app instance #####################
 app = create_app()
 
 
+#################### Create custom path #####################
 from app.phototainment.views import custom_bp
 app.register_blueprint(custom_bp, url_prefix='/phototainment')
 

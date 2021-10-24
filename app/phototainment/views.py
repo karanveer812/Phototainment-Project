@@ -99,6 +99,7 @@ def home():
     associated_companies = [company.company_name for company in
                             db.session.query(Company).order_by('company_name').all()]
     months = []
+    graph_data1 = []
     graph_data2 = []
     
     for event in events:
@@ -106,13 +107,21 @@ def home():
             continue
         else:
             months.append(event[0].lead_date.strftime("%b"))
-    
     for month in months:
-        monthly_revenue = 0
+        successful_event = 0
         for event in events:
-            if event[0].lead_date.strftime("%b") == month and event[0].estimated_cost:
-                monthly_revenue += int(event[0].estimated_cost)
-        graph_data2.append(monthly_revenue)
+            if event[0].lead_date.strftime("%b") == month and event[0].status_id == 4:
+                successful_event += 1
+        graph_data1.append(successful_event)
+
+    for month in months:
+        number_of_events = 0
+        for event in events:
+            if event[0].lead_date.strftime("%b") == month:
+                number_of_events += 1
+        graph_data2.append(number_of_events)
+                
+        
     
     type_form = TypeForm()
     company_form = CompanyForm()
@@ -126,6 +135,7 @@ def home():
         upcoming_events=upcoming_events,
         type_form=type_form,
         months=months,
+        graph_data1=graph_data1,
         graph_data2=graph_data2,
         event_num=len(upcoming_events),
         company_form=company_form,
