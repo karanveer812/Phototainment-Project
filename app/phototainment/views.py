@@ -543,6 +543,7 @@ def add_address(booking_id):
         new_comment = Comment(
             user_id=current_user.id,
             booking_id=booking_id,
+            comment_time=datetime.now(),
             comment_action=f"Approved booking and updated address details"
         )
         db.session.add(new_comment)
