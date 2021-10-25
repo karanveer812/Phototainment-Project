@@ -32,10 +32,6 @@ def unauthorized():
 def login():
     form = LoginForm()
 
-    db.session.query(User).filter_by(id=1).first().password = generate_password_hash(password="123456", method='pbkdf2:sha256',
-                                                     salt_length=8)
-    db.session.commit()
-    
     if request.method == "POST":
         req_user = db.session.query(User).filter_by(username=form.username.data.lower()).first()
         if req_user:
