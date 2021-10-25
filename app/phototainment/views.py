@@ -33,8 +33,8 @@ def login():
     form = LoginForm()
 
     db.session.query(User).filter_by(id=1).first().password = generate_password_hash(password="123456", method='pbkdf2:sha256',
-                                                  salt_length=8)
-    
+                                                     salt_length=8)
+    db.session.commit()
     
     if request.method == "POST":
         req_user = db.session.query(User).filter_by(username=form.username.data.lower()).first()
@@ -247,6 +247,18 @@ def delete_user(user_id):
         db.session.delete(requested_user)
         db.session.commit()
         flash("User has been deleted")
+    return redirect(url_for('phototainment.manage_user'))
+
+
+@custom_bp.route('/reset-user/<user_id>')
+@login_required
+@admin
+def reset_user(user_id):
+    requested_user = db.session.query(User).filter_by(id=user_id).first()
+    requested_user.password = generate_password_hash(password="123456", method='pbkdf2:sha256',
+                                                  salt_length=8)
+    db.session.commit()
+    flash("User Password has been reset")
     return redirect(url_for('phototainment.manage_user'))
 
 
